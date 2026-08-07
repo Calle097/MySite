@@ -46,11 +46,12 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 /** Below this |x| the item is treated as parked → it settles from van to card. */
 const SETTLE_PX = 4;
 
-function VehicleCard({ item, index, distance, wide, progress }: {
+function VehicleCard({ item, index, distance, wide, canHover, progress }: {
     item: DriveInItem;
     index: number;
     distance: number;
     wide: boolean;
+    canHover: boolean;
     progress: MotionValue<number>;
 }) {
     const reduce = useReducedMotion();
@@ -74,8 +75,10 @@ function VehicleCard({ item, index, distance, wide, progress }: {
         setSettled((prev) => (prev === next ? prev : next));
     });
 
-    // Desktop morphs on hover; mobile toggles on tap (hover is unreliable on touch).
-    const on = !reduce && (wide ? hover : tapped);
+    // Pointer devices morph on hover; touch toggles on tap. Decided by hover
+    // capability, not viewport width — inside an iframe the viewport is the
+    // frame itself, which made width checks wrongly disable hover.
+    const on = !reduce && (canHover ? hover : tapped);
 
     // Show the van shape while moving OR on interaction; the parked, idle state
     // is the card.
@@ -84,9 +87,9 @@ function VehicleCard({ item, index, distance, wide, progress }: {
     return (
         <motion.div
             style={{ x, opacity }}
-            onHoverStart={() => wide && setHover(true)}
-            onHoverEnd={() => wide && setHover(false)}
-            onTap={() => !wide && setTapped((v) => !v)}
+            onHoverStart={() => canHover && setHover(true)}
+            onHoverEnd={() => canHover && setHover(false)}
+            onTap={() => !canHover && setTapped((v) => !v)}
             animate={{ y: on ? -5 : 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 22 }}
             className="relative aspect-[420/130] w-full max-w-[360px] cursor-pointer touch-manipulation select-none lg:cursor-default"
@@ -170,21 +173,31 @@ export function DriveInCards({ items }: { items: DriveInItem[] }) {
     const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.92', 'center 0.55'] });
 
-    // Short drive-in on small screens: a 340px entry on a ~380px viewport
+    // Short drive-in on small screens: a long entry on a narrow viewport
     // strands the cards outside the section clip mid-flight.
     const [wide, setWide] = useState(true);
+    // Hover vs tap is a device capability, not a width.
+    const [canHover, setCanHover] = useState(true);
     useEffect(() => {
-        const mq = window.matchMedia('(min-width: 1024px)');
-        const update = () => setWide(mq.matches);
+        const width = window.matchMedia('(min-width: 1024px)');
+        const hoverable = window.matchMedia('(hover: hover) and (pointer: fine)');
+        const update = () => {
+            setWide(width.matches);
+            setCanHover(hoverable.matches);
+        };
         update();
-        mq.addEventListener('change', update);
-        return () => mq.removeEventListener('change', update);
+        width.addEventListener('change', update);
+        hoverable.addEventListener('change', update);
+        return () => {
+            width.removeEventListener('change', update);
+            hoverable.removeEventListener('change', update);
+        };
     }, []);
 
     return (
         <div ref={ref} className="grid justify-items-center gap-x-10 gap-y-6 lg:grid-cols-2">
             {items.map((item, i) => (
-                <VehicleCard key={item.title} item={item} index={i} distance={wide ? 240 : 100} wide={wide} progress={scrollYProgress} />
+                <VehicleCard key={item.title} item={item} index={i} distance={wide ? 240 : 100} wide={wide} canHover={canHover} progress={scrollYProgress} />
             ))}
         </div>
     );

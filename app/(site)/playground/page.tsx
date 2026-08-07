@@ -24,10 +24,11 @@ export default function Playground() {
           Playground
         </h1>
         <p
-          className="mt-6 font-mono text-xs uppercase tracking-[0.15em]"
+          className="mt-6 max-w-[52ch] leading-relaxed"
           style={{ color: 'var(--muted-foreground)' }}
         >
-          Component experiments — each demo runs in its own frame
+          Things I built and found too interesting — or too silly — to throw
+          away. Some shipped, some never left the sketchbook.
         </p>
       </section>
 

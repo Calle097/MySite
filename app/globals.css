@@ -11,11 +11,11 @@
 /* Palette: very light green paper with a faint gradient, orange accent.
    These five variables are also the contract DriveInCards relies on. */
 :root {
-  --background: #f0f5ec;
-  --background-edge: #e9f1e4;
-  --foreground: #191d17;
-  --muted-foreground: #5d665a;
-  --secondary-darker: #d5dfd0;
+  --background: #eaf3e2;
+  --background-edge: #dfecd3;
+  --foreground: #181d15;
+  --muted-foreground: #57644f;
+  --secondary-darker: #c9d9be;
   --brand-accent: #dd5307;
 }
 
