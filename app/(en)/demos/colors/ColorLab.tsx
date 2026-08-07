@@ -25,7 +25,7 @@ function luminance(hex: string): number {
 }
 
 const DEFAULTS = {
-  background: '#0f1a48',
+  background: '#182454',
   accent: '#46a08e',
 };
 

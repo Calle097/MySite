@@ -12,11 +12,11 @@
    LIGHTER than the background (on dark themes darker hairlines vanish).
    These five variables are also the contract DriveInCards relies on. */
 :root {
-  --background: #0f1a48;
-  --background-edge: #0e1844;
+  --background: #182454;
+  --background-edge: #17224f;
   --foreground: #e8eef6;
   --muted-foreground: #9fb3c8;
-  --secondary-darker: #353f65;
+  --secondary-darker: #3d476f;
   --brand-accent: #46a08e;
 }
 
@@ -41,7 +41,10 @@ body::before {
   inset: 0;
   z-index: 50;
   pointer-events: none;
-  opacity: 0.05;
+  /* overlay blend keeps the grain visible on dark backgrounds — plain
+     opacity alone disappears into them */
+  mix-blend-mode: overlay;
+  opacity: 0.1;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
