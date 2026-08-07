@@ -9,13 +9,16 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
   return (
     <div className="flex min-h-dvh flex-col">
       <header
-        className="gutter flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 py-5"
-        style={{ background: 'var(--header-bg)', color: 'var(--header-fg)' }}
+        className="gutter sticky top-0 z-40 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b py-5 backdrop-blur-md"
+        style={{
+          background: 'color-mix(in srgb, var(--background) 55%, transparent)',
+          borderColor: 'color-mix(in srgb, var(--foreground) 10%, transparent)',
+        }}
       >
         <Link href={`${p}/`} className="font-display text-lg font-semibold tracking-tight">
           Mattia Callegher
         </Link>
-        <nav className="flex gap-6 font-mono text-sm" style={{ color: 'var(--header-muted)' }}>
+        <nav className="flex gap-6 font-mono text-sm" style={{ color: 'var(--muted-foreground)' }}>
           <Link href={`${p}/playground/`} className="transition-colors hover:text-(--brand-accent)">
             /playground
           </Link>

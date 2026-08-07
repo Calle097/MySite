@@ -8,33 +8,16 @@
   --font-mono: var(--font-plex-mono);
 }
 
-/* Palette: very light green paper with a faint gradient, orange accent.
+/* Palette: dark navy, one theme for everyone. Light text; hairlines sit
+   LIGHTER than the background (on dark themes darker hairlines vanish).
    These five variables are also the contract DriveInCards relies on. */
 :root {
-  --background: #d7e6f5;
-  --background-edge: #c8ddf0;
-  --foreground: #141a1f;
-  --muted-foreground: #4e5e6c;
-  --secondary-darker: #adcbe3;
-  --brand-accent: #ec9a5e;
-  /* The header is its own darker band, distinct from the page. */
-  --header-bg: #16202b;
-  --header-fg: #e9f0f7;
-  --header-muted: #94a7ba;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #10151a;
-    --background-edge: #0c1015;
-    --foreground: #e7ebef;
-    --muted-foreground: #93a1ac;
-    --secondary-darker: #263039;
-    --brand-accent: #ffb183;
-    --header-bg: #1c2733;
-    --header-fg: #edf2f8;
-    --header-muted: #9db0c2;
-  }
+  --background: #022d55;
+  --background-edge: #022a50;
+  --foreground: #e8eef6;
+  --muted-foreground: #9fb3c8;
+  --secondary-darker: #1b4470;
+  --brand-accent: #5f6029;
 }
 
 body {

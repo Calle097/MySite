@@ -20,7 +20,7 @@ export function LangSwitcher({ lang }: { lang: Lang }) {
 
   const item = (l: Lang, href: string, label: string) =>
     lang === l ? (
-      <span aria-current="true" style={{ color: 'var(--header-fg, var(--foreground))' }}>
+      <span aria-current="true" style={{ color: 'var(--foreground)' }}>
         {label}
       </span>
     ) : (

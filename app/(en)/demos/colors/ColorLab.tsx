@@ -2,40 +2,54 @@
 
 import { useState, type CSSProperties } from 'react';
 
-// Dev tool: try header / accent / background colors against real site
-// pieces. Hairlines and the gradient edge are derived from the background
-// automatically, like the real theme.
+// Dev tool: try background / accent colors against real site pieces.
+// Text, hairlines, and the gradient edge derive from the background —
+// light text on dark backgrounds, dark text on light ones. The header is
+// glass (blurred, semi-transparent background), so it has no color of its own.
 
-function darken(hex: string, f: number): string {
+function shade(hex: string, f: number): string {
+  // f > 0 darkens toward black, f < 0 lightens toward white
   const n = hex.replace('#', '');
-  const [r, g, b] = [0, 2, 4].map((i) => Math.round(parseInt(n.slice(i, i + 2), 16) * (1 - f)));
-  return `#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
+  const ch = (i: number) => {
+    const v = parseInt(n.slice(i, i + 2), 16);
+    const out = f >= 0 ? v * (1 - f) : v + (255 - v) * -f;
+    return Math.round(Math.min(255, Math.max(0, out)));
+  };
+  return `#${[0, 2, 4].map((i) => ch(i).toString(16).padStart(2, '0')).join('')}`;
+}
+
+function luminance(hex: string): number {
+  const n = hex.replace('#', '');
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(n.slice(i, i + 2), 16) / 255);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
 const DEFAULTS = {
-  background: '#d7e6f5',
-  header: '#16202b',
-  accent: '#ec9a5e',
+  background: '#022d55',
+  accent: '#5f6029',
 };
 
 export function ColorLab() {
   const [background, setBackground] = useState(DEFAULTS.background);
-  const [header, setHeader] = useState(DEFAULTS.header);
   const [accent, setAccent] = useState(DEFAULTS.accent);
   const [copied, setCopied] = useState(false);
 
-  const edge = darken(background, 0.06);
-  const hairline = darken(background, 0.17);
+  const dark = luminance(background) < 0.45;
+  const edge = shade(background, 0.06);
+  const hairline = dark ? shade(background, -0.16) : shade(background, 0.17);
+  const foreground = dark ? '#e8eef6' : '#141a1f';
+  const muted = dark ? '#9fb3c8' : '#4e5e6c';
 
   const vars = {
     '--background': background,
     '--background-edge': edge,
     '--secondary-darker': hairline,
     '--brand-accent': accent,
-    '--header-bg': header,
+    '--foreground': foreground,
+    '--muted-foreground': muted,
   } as CSSProperties;
 
-  const summary = `--background: ${background};\n--background-edge: ${edge};\n--secondary-darker: ${hairline};\n--brand-accent: ${accent};\n--header-bg: ${header};`;
+  const summary = `--background: ${background};\n--background-edge: ${edge};\n--foreground: ${foreground};\n--muted-foreground: ${muted};\n--secondary-darker: ${hairline};\n--brand-accent: ${accent};`;
 
   const copy = async () => {
     try {
@@ -43,7 +57,7 @@ export function ColorLab() {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      /* clipboard blocked — values are visible below anyway */
+      /* clipboard blocked — values are visible in the summary anyway */
     }
   };
 
@@ -60,14 +74,13 @@ export function ColorLab() {
   );
 
   return (
-    <div style={vars}>
+    <div style={{ ...vars, color: 'var(--foreground)' }}>
       {/* controls */}
       <div
         className="gutter sticky top-0 z-10 flex flex-wrap items-center gap-x-8 gap-y-3 border-b py-4"
         style={{ background: 'var(--background)', borderColor: 'var(--secondary-darker)' }}
       >
         {picker('Background', background, setBackground)}
-        {picker('Header', header, setHeader)}
         {picker('Accent', accent, setAccent)}
         <button
           onClick={copy}
@@ -78,22 +91,25 @@ export function ColorLab() {
         </button>
       </div>
 
-      {/* preview: representative site pieces */}
+      {/* preview */}
       <div
         className="min-h-dvh pb-20"
-        style={{ background: `linear-gradient(180deg, ${background} 0%, ${edge} 100%)`, color: 'var(--foreground)' }}
+        style={{ background: `linear-gradient(180deg, ${background} 0%, ${edge} 100%)` }}
       >
-        {/* header band */}
+        {/* glass header */}
         <div
-          className="gutter flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 py-5"
-          style={{ background: 'var(--header-bg)', color: '#e9f0f7' }}
+          className="gutter flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b py-5 backdrop-blur-md"
+          style={{
+            background: 'color-mix(in srgb, var(--background) 55%, transparent)',
+            borderColor: 'color-mix(in srgb, var(--foreground) 10%, transparent)',
+          }}
         >
           <span className="text-lg font-semibold tracking-tight">Mattia Callegher</span>
-          <span className="flex gap-6 font-mono text-sm" style={{ color: '#94a7ba' }}>
+          <span className="flex gap-6 font-mono text-sm" style={{ color: 'var(--muted-foreground)' }}>
             <span>/playground</span>
             <span>/stack</span>
             <span>/cv ↓</span>
-            <span style={{ color: '#e9f0f7' }}>en</span>
+            <span style={{ color: 'var(--foreground)' }}>en</span>
           </span>
         </div>
 
