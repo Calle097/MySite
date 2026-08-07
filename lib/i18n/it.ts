@@ -163,7 +163,6 @@ export const it: Dict = {
           'Next.js 15, export statico — servito come semplici file',
           'React 19, TypeScript, Tailwind CSS 4',
           'Framer Motion, solo per il playground',
-          'Wix Madefor Text + IBM Plex Mono, self-hosted — nessuna richiesta verso terze parti',
         ],
       },
       {
