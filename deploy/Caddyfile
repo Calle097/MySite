@@ -17,15 +17,19 @@ calleghermattia.com {
 		# SAMEORIGIN, not DENY: the playground embeds its own demo pages in iframes
 		X-Frame-Options "SAMEORIGIN"
 		Referrer-Policy "strict-origin-when-cross-origin"
-		# Static export: no inline eval needed, keep a tight CSP.
-		# frame-ancestors 'self' (not 'none') for the same playground reason;
-		# frame-src 'self' allows the embeds themselves.
-		Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
+		# script-src needs 'unsafe-inline': Next.js static export bootstraps
+		# hydration via inline scripts (and our locale redirect is inline).
+		# Nonces are impossible on prebuilt HTML; per-build hashes unmaintainable.
+		# frame-ancestors/frame-src 'self': the playground embeds its own demos.
+		Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; frame-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
 	}
 
 	# Hashed Next.js assets are immutable — cache hard
 	@immutable path /_next/*
 	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	# Browsers blindly request /favicon.ico; the real icon is the SVG
+	redir /favicon.ico /icon.svg 301
 }
 
 www.calleghermattia.com {
