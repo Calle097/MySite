@@ -66,7 +66,7 @@ export default function Home() {
           {WORK.map((w) => (
             <li
               key={w.title}
-              className="gutter group grid gap-x-10 gap-y-2 border-b py-7 sm:py-8 lg:grid-cols-[10rem_minmax(0,1fr)_minmax(0,1.3fr)]"
+              className="gutter group row-hover grid gap-x-10 gap-y-2 border-b py-7 sm:py-8 lg:grid-cols-[10rem_minmax(0,1fr)_minmax(0,1.3fr)]"
               style={{ borderColor: 'var(--secondary-darker)' }}
             >
               <span className="font-mono text-xs uppercase tracking-[0.15em] lg:pt-1.5" style={{ color: 'var(--muted-foreground)' }}>
@@ -94,10 +94,17 @@ export default function Home() {
         <div className="gutter pt-8 sm:pt-10">
           <a
             href="mailto:callegher.mattia00@gmail.com"
-            className="font-semibold tracking-tight underline decoration-transparent underline-offset-8 transition-colors duration-300 hover:decoration-(--brand-accent)"
+            className="group inline-flex items-baseline gap-3 font-semibold tracking-tight underline decoration-transparent underline-offset-8 transition-colors duration-300 hover:decoration-(--brand-accent)"
             style={{ fontSize: 'clamp(1.35rem, 2.8vw, 2.5rem)', overflowWrap: 'anywhere' }}
           >
             callegher.mattia00@gmail.com
+            <span
+              aria-hidden
+              className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1"
+              style={{ color: 'var(--brand-accent)' }}
+            >
+              ↗
+            </span>
           </a>
         </div>
       </section>

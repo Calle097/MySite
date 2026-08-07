@@ -11,22 +11,22 @@
 /* Palette: very light green paper with a faint gradient, orange accent.
    These five variables are also the contract DriveInCards relies on. */
 :root {
-  --background: #edf8e0;
-  --background-edge: #e3f2d0;
-  --foreground: #181d15;
-  --muted-foreground: #57644f;
-  --secondary-darker: #cbe0b8;
-  --brand-accent: #dd5307;
+  --background: #e8f2fb;
+  --background-edge: #dcebf8;
+  --foreground: #151a1e;
+  --muted-foreground: #55636e;
+  --secondary-darker: #c4d8e8;
+  --brand-accent: #ec9a5e;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #111510;
-    --background-edge: #0d100c;
-    --foreground: #e9ece6;
-    --muted-foreground: #99a294;
-    --secondary-darker: #2b312a;
-    --brand-accent: #ff9557;
+    --background: #10151a;
+    --background-edge: #0c1015;
+    --foreground: #e7ebef;
+    --muted-foreground: #93a1ac;
+    --secondary-darker: #263039;
+    --brand-accent: #ffb183;
   }
 }
 
@@ -41,6 +41,26 @@ body {
 
 ::selection {
   background: color-mix(in srgb, var(--brand-accent) 24%, transparent);
+}
+
+/* Faint film grain over everything — takes the flat, sterile edge off.
+   Pure CSS, sits above content but ignores the pointer. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Work rows warm up under the pointer. */
+.row-hover {
+  transition: background-color 0.3s ease;
+}
+.row-hover:hover {
+  background-color: color-mix(in srgb, var(--brand-accent) 5%, transparent);
 }
 
 /* Full-width pages share one fluid gutter instead of a centered max-width. */

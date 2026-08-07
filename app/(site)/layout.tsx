@@ -10,18 +10,15 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <Link href="/" className="font-display text-lg font-semibold tracking-tight">
           Mattia Callegher
         </Link>
-        <nav
-          className="flex gap-6 font-mono text-xs uppercase tracking-[0.15em]"
-          style={{ color: 'var(--muted-foreground)' }}
-        >
+        <nav className="flex gap-6 font-mono text-sm" style={{ color: 'var(--muted-foreground)' }}>
           <Link href="/playground/" className="transition-colors hover:text-(--brand-accent)">
-            Playground
+            /playground
           </Link>
           <Link href="/stack/" className="transition-colors hover:text-(--brand-accent)">
-            Stack
+            /stack
           </Link>
           <a href="/cv.pdf" className="transition-colors hover:text-(--brand-accent)">
-            CV ↓
+            /cv ↓
           </a>
         </nav>
       </header>
