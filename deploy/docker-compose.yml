@@ -1,0 +1,19 @@
+# Lives at /srv/mysite/docker-compose.yml on the VPS.
+# The site itself is plain files in /srv/mysite/site, rsynced there by CI —
+# Caddy is the only running process.
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./site:/srv/site:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
