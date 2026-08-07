@@ -8,7 +8,7 @@ export const it: Dict = {
     line2: '& QA engineer',
     metaRow: ['Vivo in Italia', 'Mi piacerebbe lavorare in Giappone', 'React · Next.js · TypeScript · Tailwind · Playwright'],
     blurb:
-      'Costruisco web app con React, Next.js e TypeScript. Ho lavorato in QA, quindi testo quello che costruisco.',
+      'Costruisco web app con React, Next.js e TypeScript. Ho lavorato in QA, quindi testo quello che costruisco. Ogni tanto faccio anche backend: TypeScript, Python e SQL.',
   },
   work: {
     header: 'Esperienza',
