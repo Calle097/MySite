@@ -26,6 +26,12 @@ export interface Dict {
     intro: string;
     demo: { title: string; caption: string; open: string; source: string };
   };
+  demoDriveIn: {
+    scroll: string;
+    hover: string;
+    noscript: string;
+    items: { title: string; text: string }[];
+  };
   stack: {
     title: string;
     sourcePre: string;

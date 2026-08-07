@@ -45,6 +45,15 @@ export const it: Dict = {
       source: 'Codice ↗',
     },
   },
+  demoDriveIn: {
+    scroll: 'Scorri ↓',
+    hover: 'Passa il mouse su una card',
+    noscript: 'Questa demo ha bisogno di JavaScript: anima i path SVG mentre scorri.',
+    items: [
+      { title: 'Guidato dallo scroll', text: 'L’entrata segue lo scroll di questo riquadro.' },
+      { title: 'Morphing di path', text: 'Un unico scheletro SVG passa da furgoncino a card.' },
+    ],
+  },
   stack: {
     title: 'Come è fatto questo sito',
     sourcePre: 'Il codice sorgente è',

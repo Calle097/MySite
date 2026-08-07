@@ -1,8 +1,9 @@
-import { DICTS, type Lang } from '@/lib/i18n';
+import { DICTS, prefix, type Lang } from '@/lib/i18n';
 
 export function PlaygroundPage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];
   const demo = dict.playground.demo;
+  const demoSrc = `${prefix(lang)}/demos/drive-in/`;
 
   return (
     <div>
@@ -31,7 +32,7 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
               {demo.caption}
             </p>
             <p className="mt-6 flex gap-6 font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
-              <a href="/demos/drive-in/" className="underline underline-offset-4 transition-colors hover:text-(--brand-accent)">
+              <a href={demoSrc} className="underline underline-offset-4 transition-colors hover:text-(--brand-accent)">
                 {demo.open}
               </a>
               <a
@@ -44,7 +45,7 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
           </div>
 
           <iframe
-            src="/demos/drive-in/"
+            src={demoSrc}
             title={demo.title}
             loading="lazy"
             className="h-[400px] w-full border sm:h-[540px]"

@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function DriveInDemo() {
-  return <DriveInDemoPage lang="en" />;
+  return <DriveInDemoPage lang="it" />;
 }

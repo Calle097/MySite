@@ -44,6 +44,15 @@ export const en: Dict = {
       source: 'Source ↗',
     },
   },
+  demoDriveIn: {
+    scroll: 'Scroll ↓',
+    hover: 'Hover a parked card',
+    noscript: 'This demo needs JavaScript — it animates SVG paths as you scroll.',
+    items: [
+      { title: 'Scroll-scrubbed', text: 'Entry follows the scroll position of this frame.' },
+      { title: 'Path morphing', text: 'One SVG skeleton tweens between van and card.' },
+    ],
+  },
   stack: {
     title: 'How this site is built',
     sourcePre: 'The source is',
