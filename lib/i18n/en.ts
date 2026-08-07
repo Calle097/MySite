@@ -177,7 +177,10 @@ export const en: Dict = {
       {
         index: '03',
         title: 'Privacy',
-        items: ['No analytics, cookies, or tracking', 'Works without JavaScript, except the playground'],
+        items: [
+          'No analytics, cookies, or tracking scripts on my side. Traffic passes through Cloudflare, which keeps its own basic logs',
+          'Works without JavaScript, except the playground',
+        ],
       },
     ],
     aiLine: 'Built with help from Claude Code, reviewed line by line',

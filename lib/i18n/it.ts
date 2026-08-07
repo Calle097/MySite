@@ -177,7 +177,10 @@ export const it: Dict = {
       {
         index: '03',
         title: 'Privacy',
-        items: ['Niente analytics, niente cookie, niente tracciamento', 'Funziona anche senza JavaScript, playground escluso'],
+        items: [
+          'Niente analytics, cookie o script di tracciamento da parte mia. Il traffico passa da Cloudflare, che tiene i suoi log di base',
+          'Funziona anche senza JavaScript, playground escluso',
+        ],
       },
     ],
     aiLine: 'Costruito con l’aiuto di Claude Code, rivisto riga per riga',
