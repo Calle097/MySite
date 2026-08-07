@@ -1,7 +1,6 @@
 # Lives at /srv/mysite/Caddyfile on the VPS.
-# Replace example.com with your real domain (2 places).
 
-example.com {
+calleghermattia.com {
 	root * /srv/site
 	encode zstd gzip
 	file_server
@@ -29,6 +28,6 @@ example.com {
 	header @immutable Cache-Control "public, max-age=31536000, immutable"
 }
 
-www.example.com {
-	redir https://example.com{uri} permanent
+www.calleghermattia.com {
+	redir https://calleghermattia.com{uri} permanent
 }
