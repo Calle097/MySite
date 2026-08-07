@@ -65,7 +65,7 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
               </div>
 
               <iframe
-                src={src}
+                src={`${src}#embed`}
                 title={demo.title}
                 loading="lazy"
                 className={`w-full border ${HEIGHTS[demo.slug] ?? 'h-[400px]'}`}

@@ -91,14 +91,15 @@ body {
   }
 }
 
-/* Set on <html> by demo pages when they detect they're inside an iframe:
-   hide the scrollbar rail but keep wheel/touch scrolling working. Standalone
-   demo pages (Open ↗) keep their scrollbar. */
-.embedded {
+/* Demo pages embedded by the playground load with a #embed fragment
+   (<iframe src=".../#embed">), making the EmbedMarker element the :target.
+   Hide the scrollbar rail then — scrolling still works — while standalone
+   visits (no fragment) keep their scrollbar. Pure CSS, no JS. */
+html:has(#embed:target) {
   scrollbar-width: none;
 }
 
-.embedded::-webkit-scrollbar {
+html:has(#embed:target)::-webkit-scrollbar {
   display: none;
 }
 
