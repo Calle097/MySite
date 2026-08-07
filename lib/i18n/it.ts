@@ -82,7 +82,7 @@ export const it: Dict = {
       },
       {
         title: 'Sito per il noleggio di camper',
-        text: 'Sito vetrina e prenotazioni — Next.js, Tailwind, Framer Motion. I furgoncini del playground nascono qui.',
+        text: 'Sito vetrina e prenotazioni — Next.js, Tailwind, Framer Motion. I furgoncini del playground nascono qui, ma non sono mai stati pubblicati.',
       },
     ],
   },

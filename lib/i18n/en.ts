@@ -82,7 +82,7 @@ export const en: Dict = {
       },
       {
         title: 'Camper-van rental site',
-        text: 'Marketing and booking site — Next.js, Tailwind, Framer Motion. The playground vans started here.',
+        text: 'Marketing and booking site — Next.js, Tailwind, Framer Motion. The playground vans started here, though it never went through.',
       },
     ],
   },
