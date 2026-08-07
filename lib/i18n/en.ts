@@ -21,7 +21,7 @@ export const en: Dict = {
       {
         title: 'QA engineer, on dispatch',
         where: '2020 — 2023',
-        text: 'Dispatched by the same company to work as QA on a smart metering platform in the energy sector — later as test manager.',
+        text: 'Dispatched by the same company to work as QA on a smart metering platform in the energy sector, later as test manager.',
       },
       {
         title: 'Freelance',
@@ -51,13 +51,13 @@ export const en: Dict = {
         slug: 'spiral',
         title: 'Golden spiral',
         caption:
-          '500 dots placed with the golden angle — the same packing a sunflower uses. A pulse ripples outward forever. No libraries, just SVG.',
+          '500 dots placed with the golden angle, the same packing a sunflower uses. A pulse ripples outward forever. No libraries, just SVG.',
       },
       {
         slug: 'css-effects',
         title: 'CSS-only effects',
         caption:
-          'A jelly button hover and a spinning highlight ring carved out of a conic gradient with mask-composite. Pure CSS — no JavaScript at all.',
+          'A jelly button hover and a spinning highlight ring carved out of a conic gradient with mask-composite. Obviously pure CSS, no JavaScript at all.',
       },
       {
         slug: 'sakura',
@@ -75,7 +75,7 @@ export const en: Dict = {
         slug: 'chip-composer',
         title: 'Entity-chip composer',
         caption:
-          'Type @ and pick a destination: it becomes a chip the caret can’t split. Built on raw DOM Ranges and Selection, no editor library — the palette anchors to the caret and the panel below shows how the message serializes.',
+          'Type @ and pick a destination: it becomes a chip the caret can’t split. Built on raw DOM Ranges and Selection, no editor library. The palette anchors to the caret and the panel below shows how the message serializes.',
       },
       {
         slug: 'transit-drag',
@@ -87,7 +87,7 @@ export const en: Dict = {
   },
   demoNoscript: 'This demo needs JavaScript.',
   demoCss: {
-    hint: 'Everything here is CSS — no JavaScript.',
+    hint: 'Everything here is CSS, no JavaScript.',
     button: 'Hover me',
     card: 'Attention ring',
   },
@@ -99,7 +99,7 @@ export const en: Dict = {
   },
   demoComposer: {
     hint: 'Type @ to insert a destination',
-    empty: 'Write something — then type @ …',
+    empty: 'Write something, then type @ …',
     serialized: 'Serialized',
     plain: 'Plain text',
     entities: 'Entities',
@@ -107,7 +107,7 @@ export const en: Dict = {
     noResults: 'No match',
   },
   demoTransit: {
-    hint: 'Drag the train, or use the arrows — every time recalculates',
+    hint: 'Drag the train, or use the arrows. Every time recalculates',
     dropHint: 'Drop the train here',
     walk: '15 min transfer',
     activities: [
@@ -138,14 +138,14 @@ export const en: Dict = {
     title: 'About',
     paragraphs: [
       'I studied film and media at university. Then I taught myself how to program, and it stuck.',
-      'My first tech job was at an IT company: frontend work with React, while also being dispatched as QA on a large smart metering system — manual testing first, then Playwright automation, eventually coordinating the QA side.',
+      'My first tech job was at an IT company: frontend work with React, while also being dispatched as QA on a large smart metering system: manual testing first, then Playwright automation, eventually coordinating the QA side.',
       'Now I freelance from Italy, and I would like to move to Japan for work.',
     ],
   },
   demoDriveIn: {
     scroll: 'Scroll ↓',
     hover: 'Hover a parked card',
-    noscript: 'This demo needs JavaScript — it animates SVG paths as you scroll.',
+    noscript: 'This demo needs JavaScript. It animates SVG paths as you scroll.',
     items: [
       { title: 'Scroll-scrubbed', text: 'Entry follows the scroll position of this frame.' },
       { title: 'Path morphing', text: 'One SVG skeleton tweens between van and card.' },

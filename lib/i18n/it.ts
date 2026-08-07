@@ -75,7 +75,7 @@ export const it: Dict = {
         slug: 'chip-composer',
         title: 'Composer con chip',
         caption:
-          'Scrivi @ e scegli una destinazione: diventa una chip che il cursore non può spezzare. Fatto con Range e Selection del DOM, senza librerie per editor — la palette si aggancia al cursore e il pannello sotto mostra come viene serializzato il messaggio.',
+          'Scrivi @ e scegli una destinazione: diventa una chip che il cursore non può spezzare. Fatto con Range e Selection del DOM, senza librerie per editor. La palette si aggancia al cursore e il pannello sotto mostra come viene serializzato il messaggio.',
       },
       {
         slug: 'transit-drag',
@@ -87,7 +87,7 @@ export const it: Dict = {
   },
   demoNoscript: 'Questa demo ha bisogno di JavaScript.',
   demoCss: {
-    hint: 'Qui è tutto CSS — niente JavaScript.',
+    hint: 'Qui è tutto CSS, niente JavaScript.',
     button: 'Passaci sopra',
     card: 'Anello di evidenziazione',
   },
@@ -99,7 +99,7 @@ export const it: Dict = {
   },
   demoComposer: {
     hint: 'Scrivi @ per inserire una destinazione',
-    empty: 'Scrivi qualcosa — poi digita @ …',
+    empty: 'Scrivi qualcosa, poi digita @ …',
     serialized: 'Serializzato',
     plain: 'Testo semplice',
     entities: 'Entità',
@@ -138,7 +138,7 @@ export const it: Dict = {
     title: 'Chi sono',
     paragraphs: [
       'All’università ho studiato cinema e media. Poi ho imparato a programmare da autodidatta, e non ho più smesso.',
-      'Il mio primo lavoro tech è stato in un’azienda informatica: sviluppo frontend con React e, in parallelo, il distacco come QA su un grande sistema di smart metering — prima test manuali, poi automazione con Playwright, fino a coordinare la parte QA.',
+      'Il mio primo lavoro tech è stato in un’azienda informatica: sviluppo frontend con React e, in parallelo, il distacco come QA su un grande sistema di smart metering: prima test manuali, poi automazione con Playwright, fino a coordinare la parte QA.',
       'Oggi lavoro come freelance dall’Italia e mi piacerebbe trasferirmi in Giappone per lavoro.',
     ],
   },
@@ -160,7 +160,7 @@ export const it: Dict = {
         index: '01',
         title: 'Stack',
         items: [
-          'Next.js 15, export statico — servito come semplici file',
+          'Next.js 15, export statico. Servito come semplici file',
           'React 19, TypeScript, Tailwind CSS 4',
           'Framer Motion, solo per il playground',
         ],
