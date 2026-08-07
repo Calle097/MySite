@@ -155,7 +155,7 @@ function VehicleCard({ item, index, distance, wide, progress }: {
                 <item.icon className="relative h-5 w-5" style={{ color: 'var(--brand-accent)' }} />
             </span>
 
-            <div className={`pointer-events-none relative flex h-full flex-col justify-center pb-4 ${facingRight ? 'pl-6 pr-24' : 'pl-24 pr-6'}`}>
+            <div className={`pointer-events-none relative flex h-full flex-col justify-center pb-4 ${facingRight ? 'pl-8 pr-24' : 'pl-24 pr-8'}`}>
                 <h3 className="text-[15px] font-semibold" style={{ color: 'var(--foreground)' }}>{item.title}</h3>
                 <p className="mt-1 text-xs leading-snug" style={{ color: 'var(--muted-foreground)' }}>{item.text}</p>
             </div>

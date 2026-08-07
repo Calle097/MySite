@@ -1,15 +1,21 @@
 import Link from 'next/link';
 
+// Root-level so the static export's 404.html uses it. Renders without the
+// (site) chrome, so it carries its own minimal frame.
 export default function NotFound() {
   return (
-    <div className="max-w-2xl">
-      <h1 className="text-3xl font-semibold tracking-tight">404</h1>
-      <p className="mt-4 leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-        Page not found.{' '}
-        <Link href="/" className="underline underline-offset-2" style={{ color: 'var(--brand-accent)' }}>
+    <div className="gutter flex min-h-dvh flex-col justify-center">
+      <h1
+        className="font-display font-semibold leading-[0.98] tracking-tight"
+        style={{ fontSize: 'clamp(4rem, 12vw, 12rem)' }}
+      >
+        404<span style={{ color: 'var(--brand-accent)' }}>.</span>
+      </h1>
+      <p className="mt-6 font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
+        Page not found —{' '}
+        <Link href="/" className="underline underline-offset-4 transition-colors hover:text-(--brand-accent)">
           Back home
         </Link>
-        .
       </p>
     </div>
   );
