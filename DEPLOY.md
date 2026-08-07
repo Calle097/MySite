@@ -1,6 +1,8 @@
-# Deploying to the VPS — full walkthrough
+# Deploying a static Next.js export to a VPS
 
-One-time server setup, then every `git push` to `main` deploys automatically.
+A generic guide: one-time server setup, then every push to `main` deploys
+automatically. Works on any small VPS (1 vCPU / 1 GB is plenty) from any
+provider, running Ubuntu LTS or similar.
 
 The flow:
 
@@ -8,22 +10,22 @@ The flow:
 git push → GitHub Actions: pnpm build → rsync out/ → VPS:/srv/mysite/site → Caddy serves it
 ```
 
-The VPS never runs Node — it only runs Caddy serving static files, which is
-why 1 vCPU / 1 GB is plenty.
+The VPS never runs Node — it only runs Caddy serving static files. Never
+build on a 1 GB box; `next build` wants more RAM than that.
 
 ## 1. Harden the server (once)
 
-SSH in as root (Aruba gives you root + password at first):
+SSH in as root (most providers give you root credentials at first):
 
 ```bash
 # create your admin user
-adduser calle
-usermod -aG sudo calle
+adduser admin
+usermod -aG sudo admin
 
 # put your public key on it (paste your ~/.ssh/id_ed25519.pub)
-mkdir -p /home/calle/.ssh
-nano /home/calle/.ssh/authorized_keys
-chown -R calle:calle /home/calle/.ssh && chmod 700 /home/calle/.ssh && chmod 600 /home/calle/.ssh/authorized_keys
+mkdir -p /home/admin/.ssh
+nano /home/admin/.ssh/authorized_keys
+chown -R admin:admin /home/admin/.ssh && chmod 700 /home/admin/.ssh && chmod 600 /home/admin/.ssh/authorized_keys
 ```
 
 Then lock SSH down — edit `/etc/ssh/sshd_config`:
@@ -50,7 +52,7 @@ sudo ufw enable
 
 ```bash
 curl -fsSL https://get.docker.com | sudo sh
-sudo usermod -aG docker calle   # re-login to take effect
+sudo usermod -aG docker admin   # re-login to take effect
 ```
 
 ## 3. Create the deploy user + directory (once)
@@ -63,9 +65,9 @@ sudo mkdir -p /srv/mysite/site
 sudo chown -R deploy:deploy /srv/mysite/site
 ```
 
-Generate a **dedicated** keypair on your PC (not your personal key):
+Generate a **dedicated** keypair locally (not your personal key):
 
-```powershell
+```bash
 ssh-keygen -t ed25519 -f mysite_deploy_key -C "mysite-ci"
 ```
 
@@ -73,10 +75,10 @@ Public half → server: append `mysite_deploy_key.pub` to
 `/home/deploy/.ssh/authorized_keys` (create the dir like in step 1, owner `deploy`).
 Private half → GitHub repo → Settings → Secrets and variables → Actions:
 
-| Secret        | Value                                   |
-| ------------- | --------------------------------------- |
-| `VPS_HOST`    | server public IP                        |
-| `VPS_USER`    | `deploy`                                |
+| Secret        | Value                                     |
+| ------------- | ----------------------------------------- |
+| `VPS_HOST`    | server public IP                          |
+| `VPS_USER`    | `deploy`                                  |
 | `VPS_SSH_KEY` | contents of `mysite_deploy_key` (private) |
 
 Delete the local copy of the private key after pasting it.
@@ -84,24 +86,23 @@ Delete the local copy of the private key after pasting it.
 ## 4. Caddy (once)
 
 Copy `deploy/docker-compose.yml` and `deploy/Caddyfile` to `/srv/mysite/` on
-the server, put your real domain in the Caddyfile, then:
+the server, put your domain in the Caddyfile, then:
 
 ```bash
 cd /srv/mysite && docker compose up -d
 ```
 
-## 5. DNS on Cloudflare
+## 5. DNS (Cloudflare or any provider)
 
 1. Add an `A` record: `@` → VPS IP, and `CNAME`: `www` → `@`.
-2. **Start with the grey cloud (DNS only)** so Caddy can get its Let's Encrypt
-   certificate via HTTP challenge.
-3. Once `https://yourdomain.com` works, flip both records to the orange cloud
-   (proxied) and set SSL/TLS mode to **Full (strict)**.
+2. If using Cloudflare: **start with the grey cloud (DNS only)** so Caddy can
+   get its Let's Encrypt certificate via HTTP challenge.
+3. Once HTTPS works, flip both records to the orange cloud (proxied) and set
+   SSL/TLS mode to **Full (strict)**.
 
-> Note: with the orange cloud on, future automatic cert *renewals* via HTTP
-> challenge usually still work (Cloudflare passes `/.well-known/acme-challenge`
-> through), but if a renewal ever fails, the fix is the Caddy Cloudflare DNS
-> plugin — ask me and we'll switch to it.
+> With the proxy on, automatic cert renewals via HTTP challenge usually still
+> work; if one ever fails, switch Caddy to the DNS challenge (Cloudflare
+> plugin).
 
 ## 6. First deploy
 
@@ -109,29 +110,26 @@ cd /srv/mysite && docker compose up -d
 git push origin main
 ```
 
-Watch it under the repo's **Actions** tab. When it's green, the site is live.
+Watch the repo's **Actions** tab. When it's green, the site is live.
 Rollback = revert the commit and push; CI redeploys the previous state.
 
 ## Bots & abuse
 
-- Cloudflare (orange cloud): hides the origin IP, absorbs basic floods, and
-  its free Bot Fight Mode can be enabled in the dashboard.
-- Caddy serves only static files — there is nothing to inject into or brute-force.
+- Cloudflare proxy: hides the origin IP, absorbs basic floods; Bot Fight Mode
+  can be enabled in the dashboard.
+- Caddy serves only static files — nothing to inject into or brute-force.
 - SSH is key-only, root login off, and the CI key can only write site files.
-- Optional later: restrict ports 80/443 to Cloudflare's IP ranges in ufw.
+- Optional: restrict ports 80/443 to Cloudflare's published IP ranges.
 
-## Analytics (later, if wanted)
+## Analytics (optional)
 
-Keep it self-hosted and cookie-free so the colophon stays honest: run
-[Umami](https://umami.is) or Plausible CE as a second container in the same
-compose file, expose it on `stats.yourdomain.com` via Caddy, and add its one
-`<script>` tag to `app/layout.tsx`. Both fit fine in 1 GB alongside Caddy
-(they need a small Postgres, also containerized). Say the word and it can be
-added to the compose + Caddyfile.
+To keep a "no tracking" claim honest, prefer self-hosted and cookie-free:
+Umami or Plausible CE as a second container in the same compose file, exposed
+on a `stats.` subdomain via Caddy, plus one script tag in the site layout.
 
-## Updating dependencies (npm-worm era)
+## Updating dependencies safely
 
-Versions are pinned exactly and `.npmrc` disables lifecycle scripts. To update:
-bump versions deliberately, check the version's publish date and age
+Pin exact versions and keep lifecycle scripts disabled (`.npmrc`). To update:
+bump deliberately, check the version's publish date and age
 (`npm view <pkg>@<ver> time`), prefer versions at least a week old, reinstall,
-and re-audit `pnpm-lock.yaml`.
+and audit the lockfile before committing.

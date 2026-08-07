@@ -17,8 +17,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           <Link href="/playground/" className="transition-colors hover:text-(--brand-accent)">
             Playground
           </Link>
-          <Link href="/colophon/" className="transition-colors hover:text-(--brand-accent)">
-            Colophon
+          <Link href="/stack/" className="transition-colors hover:text-(--brand-accent)">
+            Stack
           </Link>
           <a href="/cv.pdf" className="transition-colors hover:text-(--brand-accent)">
             CV ↓

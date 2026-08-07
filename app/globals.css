@@ -1,37 +1,41 @@
 @import 'tailwindcss';
 
-/* Map the next/font variables to Tailwind font utilities:
-   font-sans, font-display, font-mono */
+/* Map the next/font variables to Tailwind font utilities. One family
+   (Archivo) for display and body; IBM Plex Mono for small labels. */
 @theme inline {
-  --font-sans: var(--font-instrument);
-  --font-display: var(--font-bricolage);
+  --font-sans: var(--font-archivo);
+  --font-display: var(--font-archivo);
   --font-mono: var(--font-plex-mono);
 }
 
-/* Swiss-editorial palette: cool paper, near-black ink, cobalt accent.
+/* Palette: very light green paper with a faint gradient, orange accent.
    These five variables are also the contract DriveInCards relies on. */
 :root {
-  --background: #f5f4f0;
-  --foreground: #161513;
-  --muted-foreground: #5d5a52;
-  --secondary-darker: #d8d5cd;
-  --brand-accent: #2440e0;
+  --background: #f0f5ec;
+  --background-edge: #e9f1e4;
+  --foreground: #191d17;
+  --muted-foreground: #5d665a;
+  --secondary-darker: #d5dfd0;
+  --brand-accent: #dd5307;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #121214;
-    --foreground: #eae8e3;
-    --muted-foreground: #9c9890;
-    --secondary-darker: #2e2d2f;
-    --brand-accent: #7183ff;
+    --background: #111510;
+    --background-edge: #0d100c;
+    --foreground: #e9ece6;
+    --muted-foreground: #99a294;
+    --secondary-darker: #2b312a;
+    --brand-accent: #ff9557;
   }
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
+  background-image: linear-gradient(180deg, var(--background) 0%, var(--background-edge) 100%);
+  background-attachment: fixed;
   color: var(--foreground);
-  font-family: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -44,9 +48,7 @@ body {
   padding-inline: clamp(1.25rem, 4vw, 4.5rem);
 }
 
-/* CSS-only entrance — runs without JavaScript, content never hidden if
-   animations are unsupported (`both` fill from an opacity:0 keyframe only
-   applies while the animation exists). */
+/* CSS-only entrance — runs without JavaScript. */
 @keyframes rise {
   from {
     opacity: 0;

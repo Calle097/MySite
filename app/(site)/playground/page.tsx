@@ -20,10 +20,7 @@ export default function Playground() {
   return (
     <div>
       <section className="gutter rise pt-16 sm:pt-24">
-        <h1
-          className="font-display font-semibold leading-[0.98] tracking-tight"
-          style={{ fontSize: 'clamp(2.75rem, 6.5vw, 6rem)' }}
-        >
+        <h1 className="font-semibold tracking-tight" style={{ fontSize: 'clamp(2rem, 3.6vw, 3.25rem)' }}>
           Playground
         </h1>
         <p
@@ -46,7 +43,7 @@ export default function Playground() {
 
           <div className="gutter grid gap-x-14 gap-y-8 pt-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
             <div>
-              <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">{demo.title}</h2>
+              <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">{demo.title}</h2>
               <p className="mt-4 max-w-[48ch] leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
                 {demo.caption}
               </p>
@@ -67,7 +64,7 @@ export default function Playground() {
               src={demo.src}
               title={`${demo.title} demo`}
               loading="lazy"
-              className="h-[540px] w-full border"
+              className="h-[400px] w-full border sm:h-[540px]"
               style={{ borderColor: 'var(--secondary-darker)', background: 'var(--background)' }}
             />
           </div>

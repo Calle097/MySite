@@ -26,7 +26,7 @@ export default function DriveInDemo() {
 
       {/* Scroll runway: the cards start below this frame's fold so the
           scroll-scrubbed entry has room to play. */}
-      <div className="h-[65vh]" aria-hidden />
+      <div className="h-[55vh]" aria-hidden />
 
       <div className="mx-auto max-w-4xl">
         <DemoCards />
@@ -40,7 +40,7 @@ export default function DriveInDemo() {
       </p>
 
       {/* Room below so the scrub reaches 100% before the page ends. */}
-      <div className="h-[45vh]" aria-hidden />
+      <div className="h-[35vh]" aria-hidden />
     </div>
   );
 }

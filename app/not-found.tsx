@@ -6,8 +6,8 @@ export default function NotFound() {
   return (
     <div className="gutter flex min-h-dvh flex-col justify-center">
       <h1
-        className="font-display font-semibold leading-[0.98] tracking-tight"
-        style={{ fontSize: 'clamp(4rem, 12vw, 12rem)' }}
+        className="font-semibold leading-[0.98] tracking-tight"
+        style={{ fontSize: 'clamp(3rem, 7vw, 6rem)' }}
       >
         404<span style={{ color: 'var(--brand-accent)' }}>.</span>
       </h1>

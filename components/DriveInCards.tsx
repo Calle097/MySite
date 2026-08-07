@@ -11,9 +11,6 @@ export interface DriveInItem {
 }
 
 /**
- * Ported from the kigumi/vanety-web dev lab (a camper-van rental project —
- * hence the vans).
- *
  * Two paths that share ONE command skeleton so framer-motion can tween the `d`
  * attribute directly (it interpolates each number when the letters + arity
  * match). REST is a tall rounded rectangle: the wheel arcs are flattened
