@@ -15,10 +15,13 @@ example.com {
 	header {
 		Strict-Transport-Security "max-age=31536000; includeSubDomains"
 		X-Content-Type-Options "nosniff"
-		X-Frame-Options "DENY"
+		# SAMEORIGIN, not DENY: the playground embeds its own demo pages in iframes
+		X-Frame-Options "SAMEORIGIN"
 		Referrer-Policy "strict-origin-when-cross-origin"
-		# Static export: no inline eval needed, keep a tight CSP
-		Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+		# Static export: no inline eval needed, keep a tight CSP.
+		# frame-ancestors 'self' (not 'none') for the same playground reason;
+		# frame-src 'self' allows the embeds themselves.
+		Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
 	}
 
 	# Hashed Next.js assets are immutable — cache hard

@@ -26,6 +26,7 @@ export interface Dict {
     intro: string;
     openLabel: string;
     sourceLabel: string;
+    loading: string;
     demos: { slug: string; title: string; caption: string }[];
   };
   demoDriveIn: {

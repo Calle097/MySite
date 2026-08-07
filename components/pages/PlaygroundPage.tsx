@@ -64,13 +64,26 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
                 </p>
               </div>
 
-              <iframe
-                src={`${src}#embed`}
-                title={demo.title}
-                loading="lazy"
-                className={`w-full border ${HEIGHTS[demo.slug] ?? 'h-[400px]'}`}
-                style={{ borderColor: 'var(--secondary-darker)', background: 'var(--background)' }}
-              />
+              {/* The iframe stays transparent until its document paints, so a
+                  loading label sits behind it and is covered on load. */}
+              <div
+                className={`relative w-full border ${HEIGHTS[demo.slug] ?? 'h-[400px]'}`}
+                style={{ borderColor: 'var(--secondary-darker)' }}
+              >
+                <span
+                  aria-hidden
+                  className="absolute inset-0 flex animate-pulse items-center justify-center font-mono text-xs uppercase tracking-[0.15em]"
+                  style={{ color: 'var(--muted-foreground)' }}
+                >
+                  {dict.playground.loading} —
+                </span>
+                <iframe
+                  src={`${src}#embed`}
+                  title={demo.title}
+                  loading="lazy"
+                  className="relative h-full w-full"
+                />
+              </div>
             </div>
           </section>
         );

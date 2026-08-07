@@ -39,6 +39,7 @@ export const it: Dict = {
       'Cose che ho costruito e che mi sembravano troppo interessanti, o troppo "uniche", per farle sparire. Alcune sono finite in produzione, altre no.',
     openLabel: 'Apri ↗',
     sourceLabel: 'Codice ↗',
+    loading: 'caricamento',
     demos: [
       {
         slug: 'drive-in',

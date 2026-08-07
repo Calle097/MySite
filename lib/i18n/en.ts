@@ -39,6 +39,7 @@ export const en: Dict = {
       'Things I built and found too interesting, or too silly, to throw away. Some shipped, some never left the sketchbook.',
     openLabel: 'Open ↗',
     sourceLabel: 'Source ↗',
+    loading: 'loading',
     demos: [
       {
         slug: 'drive-in',

@@ -20,9 +20,9 @@ export function DriveInDemoPage({ lang }: { lang: Lang }) {
         </p>
       </noscript>
 
-      {/* Scroll runway: the cards start below this frame's fold so the
-          scroll-scrubbed entry has room to play. */}
-      <div className="h-[55vh]" aria-hidden />
+      {/* Scroll runway: a full viewport tall, so with the hint above it the
+          cards always start beyond the fold — nothing leaks in half-clipped. */}
+      <div className="h-screen" aria-hidden />
 
       <div className="mx-auto max-w-4xl">
         <DemoCards lang={lang} />
