@@ -8,7 +8,7 @@ export const it: Dict = {
     line2: '& QA engineer',
     metaRow: ['Vivo in Italia', 'Mi piacerebbe lavorare in Giappone', 'React · Next.js · TypeScript · Playwright'],
     blurb:
-      'Costruisco web app con React, Next.js e TypeScript. Ho lavorato a lungo in QA, quindi quello che costruisco lo testo anche.',
+      'Costruisco web app con React, Next.js e TypeScript. Ho lavorato in QA, quindi testo quello che costruisco.',
   },
   work: {
     header: 'Esperienza',
@@ -36,11 +36,11 @@ export const it: Dict = {
   playground: {
     title: 'Playground',
     intro:
-      'Cose che ho costruito e che trovavo troppo interessanti — o troppo assurde — per buttarle via. Alcune sono finite in produzione, altre non sono mai uscite dal cassetto.',
+      'Cose che ho costruito e che mi sembravano troppo interessanti — o troppo stupide — per buttarle via. Alcune sono finite in produzione, altre no.',
     demo: {
       title: 'Drive-in cards',
       caption:
-        'Morphing di path SVG guidato dallo scroll: gli elementi arrivano come furgoncini e parcheggiano trasformandosi in card. Al passaggio del mouse una card parcheggiata si risveglia. Scorri all’interno del riquadro.',
+        'Path SVG che si trasformano con lo scroll: gli elementi arrivano come furgoncini e diventano card quando si fermano. Passa il mouse su una card per riattivarla. Scorri dentro il riquadro.',
       open: 'Apri ↗',
       source: 'Codice ↗',
     },
@@ -57,7 +57,7 @@ export const it: Dict = {
           'Next.js 15, export statico — servito come semplici file',
           'React 19, TypeScript, Tailwind CSS 4',
           'Framer Motion, solo per il playground',
-          'Onest + IBM Plex Mono, self-hosted — nessuna richiesta verso terze parti',
+          'Wix Madefor Text + IBM Plex Mono, self-hosted — nessuna richiesta verso terze parti',
         ],
       },
       {

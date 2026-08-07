@@ -3,8 +3,8 @@
 /* Map the next/font variables to Tailwind font utilities. One family
    (Archivo) for display and body; IBM Plex Mono for small labels. */
 @theme inline {
-  --font-sans: var(--font-onest);
-  --font-display: var(--font-onest);
+  --font-sans: var(--font-wix);
+  --font-display: var(--font-wix);
   --font-mono: var(--font-plex-mono);
 }
 
@@ -42,7 +42,7 @@ body {
   background-image: linear-gradient(180deg, var(--background) 0%, var(--background-edge) 100%);
   background-attachment: fixed;
   color: var(--foreground);
-  font-family: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-wix), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
