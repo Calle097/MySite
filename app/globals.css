@@ -73,6 +73,35 @@ body {
   }
 }
 
+/* Mobile menu panel slides in each time the <details> opens (display:none →
+   block re-triggers the animation). Opening only — <details> hides content
+   instantly on close, and that's fine. */
+.menu-panel {
+  animation: menu-drop 0.22s ease both;
+}
+
+@keyframes menu-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Set on <html> by demo pages when they detect they're inside an iframe:
+   hide the scrollbar rail but keep wheel/touch scrolling working. Standalone
+   demo pages (Open ↗) keep their scrollbar. */
+.embedded {
+  scrollbar-width: none;
+}
+
+.embedded::-webkit-scrollbar {
+  display: none;
+}
+
 /* Petals inside the SakuraBadge component. */
 .sakura-petal {
   animation: sakura-fall 2s ease-in infinite;

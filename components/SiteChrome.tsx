@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
 import { LangSwitcher } from './LangSwitcher';
+import { MobileMenu } from './MobileMenu';
 
 export function SiteChrome({ lang, children }: { lang: Lang; children: React.ReactNode }) {
   const dict = DICTS[lang];
@@ -38,27 +39,16 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
           <LangSwitcher lang={lang} />
         </nav>
 
-        {/* Mobile nav: <details> dropdown — works without JavaScript. Plain
-            <a> links so navigation is a document load and the menu closes. */}
-        <details className="relative sm:hidden">
-          <summary
-            className="cursor-pointer list-none font-mono text-sm select-none [&::-webkit-details-marker]:hidden"
-            style={{ color: 'var(--muted-foreground)' }}
-          >
-            menu ▾
-          </summary>
-          <div
-            className="absolute right-0 top-full z-50 mt-3 flex min-w-44 flex-col gap-4 border p-5 font-mono text-sm"
-            style={{ background: 'var(--background)', borderColor: 'var(--secondary-darker)', color: 'var(--muted-foreground)' }}
-          >
-            {links.map((l) => (
-              <a key={l.href} href={l.href} className="transition-colors hover:text-(--brand-accent)">
-                {l.label}
-              </a>
-            ))}
-            <LangSwitcher lang={lang} />
-          </div>
-        </details>
+        {/* Mobile nav — plain <a> links so navigation is a document load and
+            the menu closes on selection. */}
+        <MobileMenu label="menu ▾">
+          {links.map((l) => (
+            <a key={l.href} href={l.href} className="transition-colors hover:text-(--brand-accent)">
+              {l.label}
+            </a>
+          ))}
+          <LangSwitcher lang={lang} />
+        </MobileMenu>
       </header>
 
       <main className="flex-1">{children}</main>

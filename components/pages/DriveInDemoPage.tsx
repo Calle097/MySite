@@ -1,5 +1,6 @@
 import { DICTS, type Lang } from '@/lib/i18n';
 import { DemoCards } from '@/components/DemoCards';
+import { EmbedFrameTweaks } from '@/components/EmbedFrameTweaks';
 
 // Rendered bare (no site chrome) — designed to live inside the playground
 // iframe, where this page's own scrollbar scrubs the animation.
@@ -8,6 +9,7 @@ export function DriveInDemoPage({ lang }: { lang: Lang }) {
 
   return (
     <div className="px-6">
+      <EmbedFrameTweaks />
       <p className="pt-5 text-center font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
         {dict.scroll}
       </p>
