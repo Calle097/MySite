@@ -163,6 +163,7 @@ export const en: Dict = {
           'Next.js 15, static export — served as plain files',
           'React 19, TypeScript, Tailwind CSS 4',
           'Framer Motion, playground only',
+          'English and Italian without an i18n library: one static route tree per language, TypeScript dictionaries, a tiny script for detection and saved preference',
         ],
       },
       {
