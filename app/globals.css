@@ -12,11 +12,11 @@
    LIGHTER than the background (on dark themes darker hairlines vanish).
    These five variables are also the contract DriveInCards relies on. */
 :root {
-  --background: #001d38;
-  --background-edge: #001b35;
+  --background: #0f1a48;
+  --background-edge: #0e1844;
   --foreground: #e8eef6;
   --muted-foreground: #9fb3c8;
-  --secondary-darker: #294158;
+  --secondary-darker: #353f65;
   --brand-accent: #46a08e;
 }
 
