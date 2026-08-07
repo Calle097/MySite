@@ -7,6 +7,8 @@ const HEIGHTS: Record<string, string> = {
   'css-effects': 'h-[340px]',
   sakura: 'h-[260px]',
   'time-picker': 'h-[420px]',
+  'chip-composer': 'h-[480px]',
+  'transit-drag': 'h-[560px] sm:h-[640px]',
 };
 
 // Repo paths for each demo's "Source ↗" link, keyed by slug.
@@ -16,6 +18,8 @@ const SOURCES: Record<string, string> = {
   'css-effects': 'https://github.com/Calle097/MySite/blob/main/components/css-effects.css',
   sakura: 'https://github.com/Calle097/MySite/blob/main/components/SakuraBadge.tsx',
   'time-picker': 'https://github.com/Calle097/MySite/blob/main/components/TimePicker.tsx',
+  'chip-composer': 'https://github.com/Calle097/MySite/blob/main/components/ChipComposer.tsx',
+  'transit-drag': 'https://github.com/Calle097/MySite/blob/main/components/TransitDragDemo.tsx',
 };
 
 export function PlaygroundPage({ lang }: { lang: Lang }) {

@@ -43,6 +43,22 @@ export interface Dict {
     hint: string;
     picked: string;
   };
+  demoComposer: {
+    hint: string;
+    empty: string;
+    serialized: string;
+    plain: string;
+    entities: string;
+    clear: string;
+    noResults: string;
+  };
+  demoTransit: {
+    hint: string;
+    dropHint: string;
+    walk: string;
+    activities: { title: string; minutes: number }[];
+    train: { from: string; to: string; duration: string };
+  };
   projects: { header: string; items: { title: string; text: string; stack?: string }[] };
   about: { title: string; paragraphs: string[] };
   stack: {

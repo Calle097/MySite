@@ -71,6 +71,18 @@ export const en: Dict = {
         caption:
           'Built for a client project after every free time picker I looked into misbehaved somewhere — controlled values, mobile scrolling, popover clipping. Writing one was faster: staged selection, a “now” shortcut, per-slot disabling.',
       },
+      {
+        slug: 'chip-composer',
+        title: 'Entity-chip composer',
+        caption:
+          'Type @ and pick a destination: it becomes a chip the caret can’t split. Built on raw DOM Ranges and Selection, no editor library — the palette anchors to the caret and the panel below shows how the message serializes.',
+      },
+      {
+        slug: 'transit-drag',
+        title: 'Transit drag',
+        caption:
+          'A day of activities with a train in the middle. Drag the train (or use the arrows) and every later time recalculates: transfers, departure, the whole afternoon.',
+      },
     ],
   },
   demoNoscript: 'This demo needs JavaScript.',
@@ -84,6 +96,28 @@ export const en: Dict = {
     labels: { hours: 'Hours', minutes: 'Minutes', now: 'Now', ok: 'OK' },
     hint: 'Pick a time',
     picked: 'Picked:',
+  },
+  demoComposer: {
+    hint: 'Type @ to insert a destination',
+    empty: 'Write something — then type @ …',
+    serialized: 'Serialized',
+    plain: 'Plain text',
+    entities: 'Entities',
+    clear: 'Clear',
+    noResults: 'No match',
+  },
+  demoTransit: {
+    hint: 'Drag the train, or use the arrows — every time recalculates',
+    dropHint: 'Drop the train here',
+    walk: '15 min transfer',
+    activities: [
+      { title: 'Old town walk', minutes: 60 },
+      { title: 'Market & coffee', minutes: 45 },
+      { title: 'Seaside shrine', minutes: 40 },
+      { title: 'Botanical garden', minutes: 60 },
+      { title: 'Onsen', minutes: 90 },
+    ],
+    train: { from: 'Kamakura', to: 'Hakone', duration: '1 h 25 min' },
   },
   projects: {
     header: 'Recent projects',

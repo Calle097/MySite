@@ -103,6 +103,28 @@ html:has(#embed:target)::-webkit-scrollbar {
   display: none;
 }
 
+/* Entity chips inside the ChipComposer demo. */
+.composer-editor:empty::before {
+  content: attr(data-placeholder);
+  color: var(--muted-foreground);
+  pointer-events: none;
+}
+
+.composer-chip {
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 60%, transparent);
+  background: color-mix(in srgb, var(--brand-accent) 18%, transparent);
+  color: var(--foreground);
+}
+
+.composer-chip-x {
+  color: var(--brand-accent);
+}
+
+.composer-chip-x:hover {
+  color: var(--foreground);
+}
+
 /* Petals inside the SakuraBadge component. */
 .sakura-petal {
   animation: sakura-fall 2s ease-in infinite;

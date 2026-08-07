@@ -71,6 +71,18 @@ export const it: Dict = {
         caption:
           'Fatto per un progetto cliente dopo che tutti i time picker gratuiti che ho provato avevano qualche problema: valori controllati, scroll su mobile, popover tagliati. Era più veloce scriverne uno: selezione confermata con OK, scorciatoia “adesso”, fasce orarie disabilitabili.',
       },
+      {
+        slug: 'chip-composer',
+        title: 'Composer con chip',
+        caption:
+          'Scrivi @ e scegli una destinazione: diventa una chip che il cursore non può spezzare. Fatto con Range e Selection del DOM, senza librerie per editor — la palette si aggancia al cursore e il pannello sotto mostra come viene serializzato il messaggio.',
+      },
+      {
+        slug: 'transit-drag',
+        title: 'Transit drag',
+        caption:
+          'Una giornata di attività con un treno in mezzo. Trascina il treno (o usa le frecce) e tutti gli orari successivi si ricalcolano: trasferimenti, partenza, l’intero pomeriggio.',
+      },
     ],
   },
   demoNoscript: 'Questa demo ha bisogno di JavaScript.',
@@ -84,6 +96,28 @@ export const it: Dict = {
     labels: { hours: 'Ore', minutes: 'Minuti', now: 'Adesso', ok: 'OK' },
     hint: 'Scegli un orario',
     picked: 'Scelto:',
+  },
+  demoComposer: {
+    hint: 'Scrivi @ per inserire una destinazione',
+    empty: 'Scrivi qualcosa — poi digita @ …',
+    serialized: 'Serializzato',
+    plain: 'Testo semplice',
+    entities: 'Entità',
+    clear: 'Pulisci',
+    noResults: 'Nessun risultato',
+  },
+  demoTransit: {
+    hint: 'Trascina il treno, o usa le frecce: tutti gli orari si ricalcolano',
+    dropHint: 'Sposta il treno qui',
+    walk: '15 min di trasferimento',
+    activities: [
+      { title: 'Giro del centro storico', minutes: 60 },
+      { title: 'Mercato e caffè', minutes: 45 },
+      { title: 'Santuario sul mare', minutes: 40 },
+      { title: 'Giardino botanico', minutes: 60 },
+      { title: 'Onsen', minutes: 90 },
+    ],
+    train: { from: 'Kamakura', to: 'Hakone', duration: '1 h 25 min' },
   },
   projects: {
     header: 'Progetti recenti',
