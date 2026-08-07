@@ -1,5 +1,13 @@
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
 
+// Frame height per demo — scroll-driven demos need room, small ones don't.
+const HEIGHTS: Record<string, string> = {
+  'drive-in': 'h-[400px] sm:h-[540px]',
+  spiral: 'h-[380px] sm:h-[420px]',
+  'css-effects': 'h-[340px]',
+  sakura: 'h-[220px]',
+};
+
 // Repo paths for each demo's "Source ↗" link, keyed by slug.
 const SOURCES: Record<string, string> = {
   'drive-in': 'https://github.com/Calle097/MySite/blob/main/components/DriveInCards.tsx',
@@ -60,7 +68,7 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
                 src={src}
                 title={demo.title}
                 loading="lazy"
-                className="h-[400px] w-full border sm:h-[540px]"
+                className={`w-full border ${HEIGHTS[demo.slug] ?? 'h-[400px]'}`}
                 style={{ borderColor: 'var(--secondary-darker)', background: 'var(--background)' }}
               />
             </div>

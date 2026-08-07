@@ -101,9 +101,17 @@
 
 /* --- Rotating attention ring ------------------------------------------- */
 
-/* A conic gradient masked down to a 3px ring that sits OUTSIDE the card's
-   bounds (via negative insets), spinning forever. mask-composite: exclude
-   carves the ring: content-box mask minus full-box mask. */
+/* A conic gradient masked down to a 3px ring that hugs just outside the
+   card's bounds. mask-composite: exclude carves the ring: content-box mask
+   minus full-box mask. The SWEEP comes from animating the gradient's start
+   angle (a registered custom property) — rotating the element itself would
+   visibly spin the square ring. */
+@property --ring-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .spin-ring {
   position: relative;
   z-index: 1;
@@ -113,13 +121,13 @@
 .spin-ring::after {
   content: '';
   position: absolute;
-  inset: -6px;
-  border-radius: 0.6rem;
+  inset: -5px;
+  border-radius: 0.75rem;
   pointer-events: none;
   background: conic-gradient(
-    from 0deg,
+    from var(--ring-angle),
     rgba(70, 160, 142, 0.95),
-    rgba(70, 160, 142, 0.3),
+    rgba(70, 160, 142, 0.15),
     rgba(70, 160, 142, 0.95)
   );
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -127,16 +135,12 @@
   mask-composite: exclude;
   padding: 3px;
   opacity: 0.9;
-  animation: ring-spin 1.6s linear infinite;
-  mix-blend-mode: screen;
+  animation: ring-sweep 1.6s linear infinite;
 }
 
-@keyframes ring-spin {
-  from {
-    transform: rotate(0deg);
-  }
+@keyframes ring-sweep {
   to {
-    transform: rotate(360deg);
+    --ring-angle: 360deg;
   }
 }
 

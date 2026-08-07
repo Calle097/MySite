@@ -36,7 +36,7 @@ export const en: Dict = {
   playground: {
     title: 'Playground',
     intro:
-      'Things I built and found too interesting — or too silly — to throw away. Some shipped, some never left the sketchbook.',
+      'Things I built and found too interesting, or too silly, to throw away. Some shipped, some never left the sketchbook.',
     openLabel: 'Open ↗',
     sourceLabel: 'Source ↗',
     demos: [
@@ -78,7 +78,7 @@ export const en: Dict = {
     items: [
       {
         title: 'Travel-planning platform',
-        text: 'A large Next.js app: persistent map, six languages, AI-assisted itineraries. I work on frontend features and API integrations — transit, hotels, payments.',
+        text: 'Frontend and some backend on a large Next.js 15 app: streaming AI chat over SSE, MapLibre maps, Stripe checkout, REST integrations for transit and hotel booking, six locales, IndexedDB-persisted query cache.',
       },
       {
         title: 'Camper-van rental site',

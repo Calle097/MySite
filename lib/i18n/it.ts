@@ -36,7 +36,7 @@ export const it: Dict = {
   playground: {
     title: 'Playground',
     intro:
-      'Cose che ho costruito e che mi sembravano troppo interessanti — o troppo stupide — per buttarle via. Alcune sono finite in produzione, altre no.',
+      'Cose che ho costruito e che mi sembravano troppo interessanti, o troppo "uniche", per farle sparire. Alcune sono finite in produzione, altre no.',
     openLabel: 'Apri ↗',
     sourceLabel: 'Codice ↗',
     demos: [
@@ -78,7 +78,7 @@ export const it: Dict = {
     items: [
       {
         title: 'Piattaforma per pianificare viaggi',
-        text: 'Una grande app Next.js: mappa persistente, sei lingue, itinerari assistiti dall’AI. Lavoro su funzionalità frontend e integrazioni API: trasporti, hotel, pagamenti.',
+        text: 'Frontend e un po’ di backend su una grande app Next.js 15: chat AI in streaming via SSE, mappe MapLibre, pagamenti con Stripe, integrazioni REST per trasporti e hotel, sei lingue, cache delle query persistita su IndexedDB.',
       },
       {
         title: 'Sito per il noleggio di camper',
