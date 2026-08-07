@@ -3,19 +3,19 @@
 /* Map the next/font variables to Tailwind font utilities. One family
    (Archivo) for display and body; IBM Plex Mono for small labels. */
 @theme inline {
-  --font-sans: var(--font-archivo);
-  --font-display: var(--font-archivo);
+  --font-sans: var(--font-onest);
+  --font-display: var(--font-onest);
   --font-mono: var(--font-plex-mono);
 }
 
 /* Palette: very light green paper with a faint gradient, orange accent.
    These five variables are also the contract DriveInCards relies on. */
 :root {
-  --background: #eaf3e2;
-  --background-edge: #dfecd3;
+  --background: #edf8e0;
+  --background-edge: #e3f2d0;
   --foreground: #181d15;
   --muted-foreground: #57644f;
-  --secondary-darker: #c9d9be;
+  --secondary-darker: #cbe0b8;
   --brand-accent: #dd5307;
 }
 
@@ -35,7 +35,7 @@ body {
   background-image: linear-gradient(180deg, var(--background) 0%, var(--background-edge) 100%);
   background-attachment: fixed;
   color: var(--foreground);
-  font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
