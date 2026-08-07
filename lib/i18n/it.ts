@@ -6,7 +6,7 @@ export const it: Dict = {
   hero: {
     line1: 'Sviluppatore frontend',
     line2: '& QA engineer',
-    metaRow: ['Vivo in Italia', 'Mi piacerebbe lavorare in Giappone', 'React · Next.js · TypeScript · Playwright'],
+    metaRow: ['Vivo in Italia', 'Mi piacerebbe lavorare in Giappone', 'React · Next.js · TypeScript · Tailwind · Playwright'],
     blurb:
       'Costruisco web app con React, Next.js e TypeScript. Ho lavorato in QA, quindi testo quello che costruisco.',
   },

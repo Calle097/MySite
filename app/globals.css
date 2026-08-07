@@ -33,21 +33,6 @@ body {
   background: color-mix(in srgb, var(--brand-accent) 24%, transparent);
 }
 
-/* Faint film grain over everything — takes the flat, sterile edge off.
-   Pure CSS, sits above content but ignores the pointer. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  pointer-events: none;
-  /* overlay blend keeps the grain visible on dark backgrounds — plain
-     opacity alone disappears into them */
-  mix-blend-mode: overlay;
-  opacity: 0.1;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
 /* Work rows warm up under the pointer. */
 .row-hover {
   transition: background-color 0.3s ease;
