@@ -14,14 +14,14 @@ export const en: Dict = {
     header: 'Work',
     items: [
       {
-        title: 'Management system for a gym franchise',
-        where: '2020 — 2021',
-        text: 'React + TypeScript, in production with 500+ users. Handled end to end: requirements, development, Docker deployment.',
+        title: 'Frontend developer & IT consultant',
+        where: '2020 — 2024',
+        text: 'Employed at an IT company. React + TypeScript web apps, including a management system for a gym franchise used by 500+ people.',
       },
       {
-        title: 'Smart metering platform, energy sector',
+        title: 'QA engineer, on dispatch',
         where: '2020 — 2023',
-        text: 'QA engineer, later test manager. Test plans, Playwright automation, coordination with several development teams.',
+        text: 'Dispatched by the same company to work as QA on a smart metering platform in the energy sector — later as test manager.',
       },
       {
         title: 'Freelance',
@@ -86,16 +86,17 @@ export const en: Dict = {
     picked: 'Picked:',
   },
   projects: {
-    header: 'Projects',
+    header: 'Recent projects',
     items: [
       {
         title: 'Travel-planning platform',
         text: 'Frontend and some backend on a large Next.js 15 app: streaming AI chat over SSE, a persistent MapLibre map in a parallel route that survives navigation, modals as real URLs via intercepting routes, Stripe checkout, REST integrations for transit and hotel booking, six locales, IndexedDB-persisted query cache.',
-        stack: 'Most relevant stack: TypeScript · Tailwind · Zustand · TanStack Query · react-map-gl · Firebase auth · Playwright',
+        stack: 'Stack: TypeScript · Tailwind · Zustand · TanStack Query · react-map-gl · Firebase auth · Playwright',
       },
       {
         title: 'Camper-van rental site',
-        text: 'Marketing and booking site — Next.js, Tailwind, Framer Motion. The playground vans started here, though it never went through.',
+        text: 'Marketing and booking site for a camper-van rental service. The playground vans started here, though the project never went through.',
+        stack: 'Stack: Next.js · Tailwind · Framer Motion',
       },
     ],
   },

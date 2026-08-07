@@ -14,14 +14,14 @@ export const it: Dict = {
     header: 'Esperienza',
     items: [
       {
-        title: 'Gestionale per una catena di palestre',
-        where: '2020 — 2021',
-        text: 'React + TypeScript, in produzione con oltre 500 utenti. Seguito dall’inizio alla fine: requisiti, sviluppo e deploy con Docker.',
+        title: 'Sviluppatore frontend e consulente IT',
+        where: '2020 — 2024',
+        text: 'Dipendente di un’azienda informatica. Web app in React + TypeScript, tra cui un gestionale per una catena di palestre usato da più di 500 persone.',
       },
       {
-        title: 'Piattaforma di smart metering per il settore energetico',
+        title: 'QA engineer, in distacco',
         where: '2020 — 2023',
-        text: 'QA engineer, poi test manager. Piani di test, automazione con Playwright e coordinamento con diversi team di sviluppo.',
+        text: 'In distacco per conto della stessa azienda come QA su una piattaforma di smart metering nel settore energetico, poi come test manager.',
       },
       {
         title: 'Freelance',
@@ -86,16 +86,17 @@ export const it: Dict = {
     picked: 'Scelto:',
   },
   projects: {
-    header: 'Progetti',
+    header: 'Progetti recenti',
     items: [
       {
         title: 'Piattaforma per pianificare viaggi',
         text: 'Frontend e un po’ di backend su una grande app Next.js 15: chat AI in streaming via SSE, una mappa MapLibre persistente in una parallel route che sopravvive alla navigazione, modali con URL reali tramite intercepting routes, pagamenti con Stripe, integrazioni REST per trasporti e hotel, sei lingue, cache delle query persistita su IndexedDB.',
-        stack: 'Stack più rilevante: TypeScript · Tailwind · Zustand · TanStack Query · react-map-gl · autenticazione Firebase · Playwright',
+        stack: 'Stack: TypeScript · Tailwind · Zustand · TanStack Query · react-map-gl · autenticazione Firebase · Playwright',
       },
       {
         title: 'Sito per il noleggio di camper',
-        text: 'Sito vetrina e prenotazioni — Next.js, Tailwind, Framer Motion. I furgoncini del playground nascono qui, ma non sono mai stati pubblicati.',
+        text: 'Sito vetrina e prenotazioni per un servizio di noleggio camper. I furgoncini del playground nascono qui, ma non sono mai stati pubblicati.',
+        stack: 'Stack: Next.js · Tailwind · Framer Motion',
       },
     ],
   },
