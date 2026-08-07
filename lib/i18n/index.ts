@@ -38,6 +38,11 @@ export interface Dict {
   demoNoscript: string;
   demoCss: { hint: string; button: string; card: string };
   demoSakura: { label: string };
+  demoTimePicker: {
+    labels: { hours: string; minutes: string; now: string; ok: string };
+    hint: string;
+    picked: string;
+  };
   projects: { header: string; items: { title: string; text: string }[] };
   about: { title: string; paragraphs: string[] };
   stack: {

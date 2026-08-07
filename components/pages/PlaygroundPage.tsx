@@ -6,6 +6,7 @@ const HEIGHTS: Record<string, string> = {
   spiral: 'h-[380px] sm:h-[420px]',
   'css-effects': 'h-[340px]',
   sakura: 'h-[260px]',
+  'time-picker': 'h-[420px]',
 };
 
 // Repo paths for each demo's "Source ↗" link, keyed by slug.
@@ -14,6 +15,7 @@ const SOURCES: Record<string, string> = {
   spiral: 'https://github.com/Calle097/MySite/blob/main/components/SpiralDots.tsx',
   'css-effects': 'https://github.com/Calle097/MySite/blob/main/components/css-effects.css',
   sakura: 'https://github.com/Calle097/MySite/blob/main/components/SakuraBadge.tsx',
+  'time-picker': 'https://github.com/Calle097/MySite/blob/main/components/TimePicker.tsx',
 };
 
 export function PlaygroundPage({ lang }: { lang: Lang }) {
@@ -33,6 +35,7 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
 
       {dict.playground.demos.map((demo, i) => {
         const src = `${p}/demos/${demo.slug}/`;
+        const eager = i === 0;
         return (
           <section key={demo.slug} className="mt-20 sm:mt-24">
             <div
@@ -66,8 +69,10 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
 
               {/* The iframe stays transparent until its document paints, so a
                   loading label sits behind it and is covered on load. */}
+              {/* overflow-hidden: children can never paint over the border,
+                  regardless of fractional-pixel rounding at any zoom level. */}
               <div
-                className={`relative w-full border ${HEIGHTS[demo.slug] ?? 'h-[400px]'}`}
+                className={`relative w-full overflow-hidden border ${HEIGHTS[demo.slug] ?? 'h-[400px]'}`}
                 style={{ borderColor: 'var(--secondary-darker)' }}
               >
                 <span
@@ -80,8 +85,8 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
                 <iframe
                   src={`${src}#embed`}
                   title={demo.title}
-                  loading="lazy"
-                  className="relative h-full w-full"
+                  loading={eager ? 'eager' : 'lazy'}
+                  className="relative block h-full w-full"
                 />
               </div>
             </div>

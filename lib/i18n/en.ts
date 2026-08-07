@@ -65,6 +65,12 @@ export const en: Dict = {
         caption:
           'A little badge with cherry-blossom petals falling inside it. Petal positions are randomized client-side to avoid hydration mismatches.',
       },
+      {
+        slug: 'time-picker',
+        title: 'Time picker',
+        caption:
+          'Built for a client project after every free time picker misbehaved somewhere — controlled values, mobile scrolling, popover clipping. Writing one was faster: staged selection, a “now” shortcut, per-slot disabling.',
+      },
     ],
   },
   demoNoscript: 'This demo needs JavaScript.',
@@ -74,12 +80,17 @@ export const en: Dict = {
     card: 'Attention ring',
   },
   demoSakura: { label: 'Cherry blossoms' },
+  demoTimePicker: {
+    labels: { hours: 'Hours', minutes: 'Minutes', now: 'Now', ok: 'OK' },
+    hint: 'Pick a time',
+    picked: 'Picked:',
+  },
   projects: {
     header: 'Projects',
     items: [
       {
         title: 'Travel-planning platform',
-        text: 'Frontend and some backend on a large Next.js 15 app: streaming AI chat over SSE, MapLibre maps, Stripe checkout, REST integrations for transit and hotel booking, six locales, IndexedDB-persisted query cache.',
+        text: 'Frontend and some backend on a large Next.js 15 app: streaming AI chat over SSE, a persistent MapLibre map in a parallel route that survives navigation, modals as real URLs via intercepting routes, Stripe checkout, REST integrations for transit and hotel booking, six locales, IndexedDB-persisted query cache.',
       },
       {
         title: 'Camper-van rental site',

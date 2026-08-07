@@ -65,6 +65,12 @@ export const it: Dict = {
         caption:
           'Un piccolo badge con petali di ciliegio che cadono al suo interno. Le posizioni dei petali sono casuali e generate lato client per evitare problemi di hydration.',
       },
+      {
+        slug: 'time-picker',
+        title: 'Time picker',
+        caption:
+          'Fatto per un progetto cliente dopo che ogni time picker gratuito aveva qualche problema: valori controllati, scroll su mobile, popover tagliati. Era più veloce scriverne uno: selezione confermata con OK, scorciatoia “adesso”, fasce orarie disabilitabili.',
+      },
     ],
   },
   demoNoscript: 'Questa demo ha bisogno di JavaScript.',
@@ -74,12 +80,17 @@ export const it: Dict = {
     card: 'Anello di evidenziazione',
   },
   demoSakura: { label: 'Fioritura dei ciliegi' },
+  demoTimePicker: {
+    labels: { hours: 'Ore', minutes: 'Minuti', now: 'Adesso', ok: 'OK' },
+    hint: 'Scegli un orario',
+    picked: 'Scelto:',
+  },
   projects: {
     header: 'Progetti',
     items: [
       {
         title: 'Piattaforma per pianificare viaggi',
-        text: 'Frontend e un po’ di backend su una grande app Next.js 15: chat AI in streaming via SSE, mappe MapLibre, pagamenti con Stripe, integrazioni REST per trasporti e hotel, sei lingue, cache delle query persistita su IndexedDB.',
+        text: 'Frontend e un po’ di backend su una grande app Next.js 15: chat AI in streaming via SSE, una mappa MapLibre persistente in una parallel route che sopravvive alla navigazione, modali con URL reali tramite intercepting routes, pagamenti con Stripe, integrazioni REST per trasporti e hotel, sei lingue, cache delle query persistita su IndexedDB.',
       },
       {
         title: 'Sito per il noleggio di camper',
