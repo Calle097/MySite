@@ -13,7 +13,7 @@ const SECTIONS: { title: string; items: string[] }[] = [
       'React 19, TypeScript',
       'Tailwind CSS 4',
       'Framer Motion, playground only',
-      'System fonts, no webfonts',
+      'Instrument Sans, self-hosted at build time — no third-party requests when you visit',
     ],
   },
   {

@@ -1,6 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Instrument_Sans } from 'next/font/google';
 import './globals.css';
+
+// Self-hosted via next/font at build time — no runtime requests to Google.
+const sans = Instrument_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -13,13 +21,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={sans.variable}>
       <body className="flex min-h-dvh flex-col">
-        <header className="mx-auto flex w-full max-w-4xl items-baseline justify-between px-6 pb-4 pt-8">
+        <header className="mx-auto flex w-full max-w-6xl items-baseline justify-between px-6 pb-4 pt-8 sm:px-10">
           <Link href="/" className="font-semibold tracking-tight">
             Mattia Callegher
           </Link>
-          <nav className="flex gap-5 text-sm" style={{ color: 'var(--muted-foreground)' }}>
+          <nav className="flex gap-5 text-sm sm:gap-7" style={{ color: 'var(--muted-foreground)' }}>
             <Link href="/playground/" className="hover:underline">
               Playground
             </Link>
@@ -32,10 +40,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </nav>
         </header>
 
-        <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">{children}</main>
+        <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10 sm:px-10 sm:py-14">{children}</main>
 
         <footer
-          className="mx-auto w-full max-w-4xl border-t px-6 py-8 text-sm"
+          className="mx-auto w-full max-w-6xl border-t px-6 py-8 text-sm sm:px-10"
           style={{ borderColor: 'var(--secondary-darker)', color: 'var(--muted-foreground)' }}
         >
           <div className="flex flex-wrap justify-between gap-x-6 gap-y-2">
