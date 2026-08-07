@@ -5,7 +5,7 @@ const HEIGHTS: Record<string, string> = {
   'drive-in': 'h-[400px] sm:h-[540px]',
   spiral: 'h-[380px] sm:h-[420px]',
   'css-effects': 'h-[340px]',
-  sakura: 'h-[220px]',
+  sakura: 'h-[260px]',
 };
 
 // Repo paths for each demo's "Source ↗" link, keyed by slug.
@@ -21,7 +21,7 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
   const p = prefix(lang);
 
   return (
-    <div>
+    <div className="pb-10">
       <section className="gutter rise pt-8 sm:pt-12">
         <h1 className="font-semibold tracking-tight" style={{ fontSize: 'clamp(2rem, 3.6vw, 3.25rem)' }}>
           {dict.playground.title}
