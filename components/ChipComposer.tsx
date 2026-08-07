@@ -24,22 +24,22 @@ export interface ComposerStrings {
 type Destination = { id: string; name: string; keywords: string };
 
 const DESTINATIONS: Destination[] = [
-  { id: 'tokyo', name: 'Tokyo', keywords: 'shibuya shinjuku capital' },
-  { id: 'kyoto', name: 'Kyoto', keywords: 'temples gion kansai' },
-  { id: 'osaka', name: 'Osaka', keywords: 'dotonbori food kansai' },
-  { id: 'nara', name: 'Nara', keywords: 'deer todaiji kansai' },
-  { id: 'hakone', name: 'Hakone', keywords: 'onsen fuji ropeway' },
-  { id: 'kamakura', name: 'Kamakura', keywords: 'buddha beach daibutsu' },
-  { id: 'nikko', name: 'Nikko', keywords: 'shrines waterfalls toshogu' },
-  { id: 'sapporo', name: 'Sapporo', keywords: 'hokkaido snow beer' },
-  { id: 'fukuoka', name: 'Fukuoka', keywords: 'kyushu ramen hakata' },
-  { id: 'nagoya', name: 'Nagoya', keywords: 'castle chubu' },
-  { id: 'hiroshima', name: 'Hiroshima', keywords: 'miyajima peace' },
-  { id: 'sendai', name: 'Sendai', keywords: 'tohoku tanabata' },
-  { id: 'kanazawa', name: 'Kanazawa', keywords: 'kenrokuen gold' },
-  { id: 'takayama', name: 'Takayama', keywords: 'alps old town' },
-  { id: 'okinawa', name: 'Okinawa', keywords: 'beach islands naha' },
-  { id: 'yokohama', name: 'Yokohama', keywords: 'chinatown port' },
+  { id: 'paris', name: 'Paris', keywords: 'louvre seine france' },
+  { id: 'london', name: 'London', keywords: 'thames tube england' },
+  { id: 'rome', name: 'Rome', keywords: 'colosseum italy' },
+  { id: 'berlin', name: 'Berlin', keywords: 'wall germany' },
+  { id: 'madrid', name: 'Madrid', keywords: 'prado spain' },
+  { id: 'lisbon', name: 'Lisbon', keywords: 'tram hills portugal' },
+  { id: 'vienna', name: 'Vienna', keywords: 'opera austria' },
+  { id: 'prague', name: 'Prague', keywords: 'bridge castle czech' },
+  { id: 'amsterdam', name: 'Amsterdam', keywords: 'canals netherlands' },
+  { id: 'athens', name: 'Athens', keywords: 'acropolis greece' },
+  { id: 'dublin', name: 'Dublin', keywords: 'pubs ireland' },
+  { id: 'oslo', name: 'Oslo', keywords: 'fjord norway' },
+  { id: 'warsaw', name: 'Warsaw', keywords: 'old town poland' },
+  { id: 'budapest', name: 'Budapest', keywords: 'danube baths hungary' },
+  { id: 'zurich', name: 'Zurich', keywords: 'lake switzerland' },
+  { id: 'porto', name: 'Porto', keywords: 'douro wine portugal' },
 ];
 
 const ZWSP = '​';

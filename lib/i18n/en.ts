@@ -113,11 +113,11 @@ export const en: Dict = {
     activities: [
       { title: 'Old town walk', minutes: 60 },
       { title: 'Market & coffee', minutes: 45 },
-      { title: 'Seaside shrine', minutes: 40 },
+      { title: 'Harbor lighthouse', minutes: 40 },
       { title: 'Botanical garden', minutes: 60 },
-      { title: 'Onsen', minutes: 90 },
+      { title: 'Thermal baths', minutes: 90 },
     ],
-    train: { from: 'Kamakura', to: 'Hakone', duration: '1 h 25 min' },
+    train: { from: 'Verona', to: 'Venice', duration: '1 h 25 min' },
   },
   projects: {
     header: 'Recent projects',

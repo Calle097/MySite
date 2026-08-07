@@ -113,11 +113,11 @@ export const it: Dict = {
     activities: [
       { title: 'Giro del centro storico', minutes: 60 },
       { title: 'Mercato e caffè', minutes: 45 },
-      { title: 'Santuario sul mare', minutes: 40 },
+      { title: 'Faro del porto', minutes: 40 },
       { title: 'Giardino botanico', minutes: 60 },
-      { title: 'Onsen', minutes: 90 },
+      { title: 'Terme', minutes: 90 },
     ],
-    train: { from: 'Kamakura', to: 'Hakone', duration: '1 h 25 min' },
+    train: { from: 'Verona', to: 'Venezia', duration: '1 h 25 min' },
   },
   projects: {
     header: 'Progetti recenti',
