@@ -8,7 +8,7 @@ export function DriveInDemoPage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang].demoDriveIn;
 
   return (
-    <div className="relative px-6">
+    <div className="px-6">
       <EmbedMarker />
       <p className="pt-5 text-center font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
         {dict.scroll}
