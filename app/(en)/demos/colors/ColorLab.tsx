@@ -25,8 +25,8 @@ function luminance(hex: string): number {
 }
 
 const DEFAULTS = {
-  background: '#022d55',
-  accent: '#5f6029',
+  background: '#001d38',
+  accent: '#46a08e',
 };
 
 export function ColorLab() {

@@ -11,8 +11,13 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
       <header
         className="gutter sticky top-0 z-40 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b py-5 backdrop-blur-md"
         style={{
-          background: 'color-mix(in srgb, var(--background) 55%, transparent)',
-          borderColor: 'color-mix(in srgb, var(--foreground) 10%, transparent)',
+          // Frosted tint from the foreground, not the background, so the
+          // glass reads as its own surface even before any content scrolls
+          // underneath it.
+          background:
+            'linear-gradient(color-mix(in srgb, var(--foreground) 9%, transparent), color-mix(in srgb, var(--foreground) 5%, transparent))',
+          borderColor: 'color-mix(in srgb, var(--foreground) 14%, transparent)',
+          boxShadow: '0 1px 0 color-mix(in srgb, var(--foreground) 7%, transparent) inset',
         }}
       >
         <Link href={`${p}/`} className="font-display text-lg font-semibold tracking-tight">

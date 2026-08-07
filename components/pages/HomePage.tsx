@@ -17,7 +17,7 @@ export function HomePage({ lang }: { lang: Lang }) {
 
   return (
     <div>
-      <section className="gutter rise pt-14 sm:pt-20">
+      <section className="gutter rise pt-8 sm:pt-12">
         <h1
           className="font-semibold leading-[1.04] tracking-tight"
           style={{ fontSize: 'clamp(2.25rem, 4.5vw, 4.25rem)' }}

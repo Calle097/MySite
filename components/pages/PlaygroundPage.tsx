@@ -6,7 +6,7 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
 
   return (
     <div>
-      <section className="gutter rise pt-14 sm:pt-20">
+      <section className="gutter rise pt-8 sm:pt-12">
         <h1 className="font-semibold tracking-tight" style={{ fontSize: 'clamp(2rem, 3.6vw, 3.25rem)' }}>
           {dict.playground.title}
         </h1>
