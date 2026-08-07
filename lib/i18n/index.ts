@@ -43,7 +43,7 @@ export interface Dict {
     hint: string;
     picked: string;
   };
-  projects: { header: string; items: { title: string; text: string }[] };
+  projects: { header: string; items: { title: string; text: string; stack?: string }[] };
   about: { title: string; paragraphs: string[] };
   stack: {
     title: string;

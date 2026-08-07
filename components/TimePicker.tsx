@@ -141,7 +141,8 @@ export function TimePicker({
     const rect = triggerRef.current?.getBoundingClientRect();
     if (!rect) return;
     const margin = 8;
-    let left = rect.left;
+    // Centered under the trigger, clamped to the viewport
+    let left = rect.left + rect.width / 2 - POPOVER_WIDTH / 2;
     left = Math.min(left, window.innerWidth - margin - POPOVER_WIDTH);
     left = Math.max(left, margin);
     setPosition({ top: rect.bottom + 4, left });

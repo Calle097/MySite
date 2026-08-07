@@ -83,9 +83,16 @@ export function HomePage({ lang }: { lang: Lang }) {
               <h3 className="text-xl font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1.5 sm:text-2xl">
                 {project.title}
               </h3>
-              <p className="max-w-[60ch] leading-relaxed lg:pt-0.5" style={{ color: 'var(--muted-foreground)' }}>
-                {project.text}
-              </p>
+              <div className="lg:pt-0.5">
+                <p className="max-w-[60ch] leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+                  {project.text}
+                </p>
+                {project.stack && (
+                  <p className="mt-3 font-mono text-xs leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+                    {project.stack}
+                  </p>
+                )}
+              </div>
             </li>
           ))}
         </ul>

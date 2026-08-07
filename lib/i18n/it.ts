@@ -69,7 +69,7 @@ export const it: Dict = {
         slug: 'time-picker',
         title: 'Time picker',
         caption:
-          'Fatto per un progetto cliente dopo che ogni time picker gratuito aveva qualche problema: valori controllati, scroll su mobile, popover tagliati. Era più veloce scriverne uno: selezione confermata con OK, scorciatoia “adesso”, fasce orarie disabilitabili.',
+          'Fatto per un progetto cliente dopo che tutti i time picker gratuiti che ho provato avevano qualche problema: valori controllati, scroll su mobile, popover tagliati. Era più veloce scriverne uno: selezione confermata con OK, scorciatoia “adesso”, fasce orarie disabilitabili.',
       },
     ],
   },
@@ -91,6 +91,7 @@ export const it: Dict = {
       {
         title: 'Piattaforma per pianificare viaggi',
         text: 'Frontend e un po’ di backend su una grande app Next.js 15: chat AI in streaming via SSE, una mappa MapLibre persistente in una parallel route che sopravvive alla navigazione, modali con URL reali tramite intercepting routes, pagamenti con Stripe, integrazioni REST per trasporti e hotel, sei lingue, cache delle query persistita su IndexedDB.',
+        stack: 'Stack più rilevante: TypeScript · Tailwind · Zustand · TanStack Query · react-map-gl · autenticazione Firebase · Playwright',
       },
       {
         title: 'Sito per il noleggio di camper',

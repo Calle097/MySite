@@ -69,7 +69,7 @@ export const en: Dict = {
         slug: 'time-picker',
         title: 'Time picker',
         caption:
-          'Built for a client project after every free time picker misbehaved somewhere — controlled values, mobile scrolling, popover clipping. Writing one was faster: staged selection, a “now” shortcut, per-slot disabling.',
+          'Built for a client project after every free time picker I looked into misbehaved somewhere — controlled values, mobile scrolling, popover clipping. Writing one was faster: staged selection, a “now” shortcut, per-slot disabling.',
       },
     ],
   },
@@ -91,6 +91,7 @@ export const en: Dict = {
       {
         title: 'Travel-planning platform',
         text: 'Frontend and some backend on a large Next.js 15 app: streaming AI chat over SSE, a persistent MapLibre map in a parallel route that survives navigation, modals as real URLs via intercepting routes, Stripe checkout, REST integrations for transit and hotel booking, six locales, IndexedDB-persisted query cache.',
+        stack: 'Most relevant stack: TypeScript · Tailwind · Zustand · TanStack Query · react-map-gl · Firebase auth · Playwright',
       },
       {
         title: 'Camper-van rental site',
