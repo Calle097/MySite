@@ -99,6 +99,12 @@ html:has(#embed:target) {
   scrollbar-width: none;
 }
 
+/* Embedded demos also hide the site chrome — standalone visits (no
+   fragment) keep header and footer so nobody gets stranded on a bare page. */
+html:has(#embed:target) .site-chrome {
+  display: none;
+}
+
 html:has(#embed:target)::-webkit-scrollbar {
   display: none;
 }

@@ -19,13 +19,13 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
     <div className="flex min-h-dvh flex-col">
       <a
         href="#main"
-        className="sr-only font-mono text-sm focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:px-4 focus:py-2"
+        className="site-chrome sr-only font-mono text-sm focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:px-4 focus:py-2"
         style={{ background: 'var(--brand-accent)', color: 'var(--background)' }}
       >
         {dict.skipToContent}
       </a>
       <header
-        className="gutter sticky top-0 z-40 flex items-baseline justify-between gap-x-6 border-b py-5 backdrop-blur-md"
+        className="site-chrome gutter sticky top-0 z-40 flex items-baseline justify-between gap-x-6 border-b py-5 backdrop-blur-md"
         style={{
           background:
             'linear-gradient(color-mix(in srgb, var(--foreground) 9%, transparent), color-mix(in srgb, var(--foreground) 5%, transparent))',
@@ -70,7 +70,7 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
       <main id="main" className="flex-1">{children}</main>
 
       <footer
-        className="gutter mt-28 flex flex-wrap justify-between gap-x-6 gap-y-2 border-t py-6 font-mono text-xs uppercase tracking-[0.15em]"
+        className="site-chrome gutter mt-28 flex flex-wrap justify-between gap-x-6 gap-y-2 border-t py-6 font-mono text-xs uppercase tracking-[0.15em]"
         style={{ borderColor: 'var(--secondary-darker)', color: 'var(--muted-foreground)' }}
       >
         <span>{dict.footer.location}</span>
