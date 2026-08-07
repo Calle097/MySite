@@ -52,9 +52,40 @@ export const en: Dict = {
         caption:
           '500 dots placed with the golden angle — the same packing a sunflower uses. A pulse ripples outward forever. No libraries, just SVG.',
       },
+      {
+        slug: 'css-effects',
+        title: 'CSS-only effects',
+        caption:
+          'A jelly button hover and a spinning highlight ring carved out of a conic gradient with mask-composite. Pure CSS — no JavaScript at all.',
+      },
+      {
+        slug: 'sakura',
+        title: 'Sakura badge',
+        caption:
+          'A little badge with cherry-blossom petals falling inside it. Petal positions are randomized client-side to avoid hydration mismatches.',
+      },
     ],
   },
   demoNoscript: 'This demo needs JavaScript.',
+  demoCss: {
+    hint: 'Everything here is CSS — no JavaScript.',
+    button: 'Hover me',
+    card: 'Attention ring',
+  },
+  demoSakura: { label: 'Cherry blossoms' },
+  projects: {
+    header: 'Projects',
+    items: [
+      {
+        title: 'Travel-planning platform',
+        text: 'A large Next.js app: persistent map, six languages, AI-assisted itineraries. I work on frontend features and API integrations — transit, hotels, payments.',
+      },
+      {
+        title: 'Camper-van rental site',
+        text: 'Marketing and booking site — Next.js, Tailwind, Framer Motion. The playground vans started here.',
+      },
+    ],
+  },
   about: {
     title: 'About',
     paragraphs: [

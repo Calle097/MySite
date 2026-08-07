@@ -72,7 +72,27 @@ export function HomePage({ lang }: { lang: Lang }) {
       </section>
 
       <section className="mt-20 sm:mt-28">
-        <SectionHeader index="02" title={dict.contact.header} />
+        <SectionHeader index="02" title={dict.projects.header} />
+        <ul>
+          {dict.projects.items.map((project) => (
+            <li
+              key={project.title}
+              className="gutter group row-hover grid gap-x-10 gap-y-2 border-b py-7 sm:py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]"
+              style={{ borderColor: 'var(--secondary-darker)' }}
+            >
+              <h3 className="text-xl font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1.5 sm:text-2xl">
+                {project.title}
+              </h3>
+              <p className="max-w-[60ch] leading-relaxed lg:pt-0.5" style={{ color: 'var(--muted-foreground)' }}>
+                {project.text}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="mt-20 sm:mt-28">
+        <SectionHeader index="03" title={dict.contact.header} />
         <div className="gutter pt-8 sm:pt-10">
           <a
             href="mailto:callegher.mattia00@gmail.com"

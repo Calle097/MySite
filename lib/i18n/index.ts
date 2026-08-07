@@ -35,6 +35,9 @@ export interface Dict {
     items: { title: string; text: string }[];
   };
   demoNoscript: string;
+  demoCss: { hint: string; button: string; card: string };
+  demoSakura: { label: string };
+  projects: { header: string; items: { title: string; text: string }[] };
   about: { title: string; paragraphs: string[] };
   stack: {
     title: string;

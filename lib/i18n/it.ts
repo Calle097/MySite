@@ -52,9 +52,40 @@ export const it: Dict = {
         caption:
           '500 punti disposti secondo l’angolo aureo, lo stesso schema dei semi di girasole. Un impulso si propaga verso l’esterno all’infinito. Nessuna libreria, solo SVG.',
       },
+      {
+        slug: 'css-effects',
+        title: 'Effetti solo CSS',
+        caption:
+          'Un bottone con effetto gelatina e un anello di evidenziazione che ruota, ritagliato da un gradiente conico con mask-composite. Solo CSS, niente JavaScript.',
+      },
+      {
+        slug: 'sakura',
+        title: 'Badge sakura',
+        caption:
+          'Un piccolo badge con petali di ciliegio che cadono al suo interno. Le posizioni dei petali sono casuali e generate lato client per evitare problemi di hydration.',
+      },
     ],
   },
   demoNoscript: 'Questa demo ha bisogno di JavaScript.',
+  demoCss: {
+    hint: 'Qui è tutto CSS — niente JavaScript.',
+    button: 'Passaci sopra',
+    card: 'Anello di evidenziazione',
+  },
+  demoSakura: { label: 'Fioritura dei ciliegi' },
+  projects: {
+    header: 'Progetti',
+    items: [
+      {
+        title: 'Piattaforma per pianificare viaggi',
+        text: 'Una grande app Next.js: mappa persistente, sei lingue, itinerari assistiti dall’AI. Lavoro su funzionalità frontend e integrazioni API: trasporti, hotel, pagamenti.',
+      },
+      {
+        title: 'Sito per il noleggio di camper',
+        text: 'Sito vetrina e prenotazioni — Next.js, Tailwind, Framer Motion. I furgoncini del playground nascono qui.',
+      },
+    ],
+  },
   about: {
     title: 'Chi sono',
     paragraphs: [

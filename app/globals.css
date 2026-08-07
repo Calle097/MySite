@@ -72,3 +72,22 @@ body {
     animation: none;
   }
 }
+
+/* Petals inside the SakuraBadge component. */
+.sakura-petal {
+  animation: sakura-fall 2s ease-in infinite;
+}
+
+@keyframes sakura-fall {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(20px) translateX(8px) rotate(360deg);
+    opacity: 0;
+  }
+}

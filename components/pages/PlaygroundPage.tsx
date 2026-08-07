@@ -4,6 +4,8 @@ import { DICTS, prefix, type Lang } from '@/lib/i18n';
 const SOURCES: Record<string, string> = {
   'drive-in': 'https://github.com/Calle097/MySite/blob/main/components/DriveInCards.tsx',
   spiral: 'https://github.com/Calle097/MySite/blob/main/components/SpiralDots.tsx',
+  'css-effects': 'https://github.com/Calle097/MySite/blob/main/components/css-effects.css',
+  sakura: 'https://github.com/Calle097/MySite/blob/main/components/SakuraBadge.tsx',
 };
 
 export function PlaygroundPage({ lang }: { lang: Lang }) {
