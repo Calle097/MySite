@@ -36,7 +36,7 @@ export const en: Dict = {
   playground: {
     title: 'Playground',
     intro:
-      'Things I built and found too interesting, or too silly, to throw away. Some shipped, some never left the sketchbook.',
+      'Simple things I built and found too interesting, or too silly, to throw away. Some shipped, some never left the sketchbook.',
     openLabel: 'Open ↗',
     sourceLabel: 'Source ↗',
     loading: 'loading',
