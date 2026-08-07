@@ -8,6 +8,7 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
   const p = prefix(lang);
 
   const links = [
+    { href: `${p}/`, label: '/home' },
     { href: `${p}/about/`, label: '/about' },
     { href: `${p}/playground/`, label: '/playground' },
     { href: `${p}/stack/`, label: '/stack' },
@@ -16,6 +17,13 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
 
   return (
     <div className="flex min-h-dvh flex-col">
+      <a
+        href="#main"
+        className="sr-only font-mono text-sm focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:px-4 focus:py-2"
+        style={{ background: 'var(--brand-accent)', color: 'var(--background)' }}
+      >
+        {dict.skipToContent}
+      </a>
       <header
         className="gutter sticky top-0 z-40 flex items-baseline justify-between gap-x-6 border-b py-5 backdrop-blur-md"
         style={{
@@ -59,7 +67,7 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
         </MobileMenu>
       </header>
 
-      <main className="flex-1">{children}</main>
+      <main id="main" className="flex-1">{children}</main>
 
       <footer
         className="gutter mt-28 flex flex-wrap justify-between gap-x-6 gap-y-2 border-t py-6 font-mono text-xs uppercase tracking-[0.15em]"

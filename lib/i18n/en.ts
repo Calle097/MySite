@@ -104,7 +104,7 @@ export const en: Dict = {
     title: 'About',
     paragraphs: [
       'I studied film and media at university. Then I taught myself how to program, and it stuck.',
-      'My first tech job was QA on a large smart metering system — manual testing first, then Playwright automation, eventually coordinating the QA side. Building web apps with React started as a side thing and became the main one.',
+      'My first tech job was at an IT company: frontend work with React, while also being dispatched as QA on a large smart metering system — manual testing first, then Playwright automation, eventually coordinating the QA side.',
       'Now I freelance from Italy, and I would like to move to Japan for work.',
     ],
   },
@@ -149,4 +149,5 @@ export const en: Dict = {
     aiLine: 'Built with help from Claude Code, reviewed line by line',
   },
   footer: { location: 'Mattia Callegher — Italy', email: 'Email', github: 'GitHub', source: 'Source' },
+  skipToContent: 'Skip to content',
 };

@@ -1,14 +1,23 @@
 import type { Metadata } from 'next';
 import { fontVariables } from '@/lib/fonts';
 import { DICTS } from '@/lib/i18n';
+import { SITE_URL } from '@/lib/site';
 import '../globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Mattia Callegher — Frontend Developer & QA Engineer',
     template: '%s — Mattia Callegher',
   },
   description: DICTS.en.description,
+  openGraph: {
+    type: 'website',
+    siteName: 'Mattia Callegher',
+    locale: 'en',
+    title: 'Mattia Callegher — Frontend Developer & QA Engineer',
+    description: DICTS.en.description,
+  },
 };
 
 // First visit with an Italian browser (and no saved choice) → /it mirror.

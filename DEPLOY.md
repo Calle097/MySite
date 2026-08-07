@@ -81,6 +81,10 @@ Private half → GitHub repo → Settings → Secrets and variables → Actions:
 | `VPS_USER`    | `deploy`                                  |
 | `VPS_SSH_KEY` | contents of `mysite_deploy_key` (private) |
 
+Also add a repository **variable** (same page, Variables tab): `SITE_URL` set to
+the canonical origin (e.g. `https://example.com`) — used at build time for
+hreflang, sitemap, and OpenGraph URLs.
+
 Delete the local copy of the private key after pasting it.
 
 ## 4. Caddy (once)

@@ -53,6 +53,7 @@ export interface Dict {
     aiLine: string;
   };
   footer: { location: string; email: string; github: string; source: string };
+  skipToContent: string;
 }
 
 export const DICTS: Record<Lang, Dict> = { en, it };

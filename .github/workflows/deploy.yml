@@ -33,7 +33,12 @@ jobs:
       # installs exactly what was audited locally.
       - run: pnpm install --frozen-lockfile
 
+      # SITE_URL is a repository *variable* (Settings → Secrets and variables →
+      # Actions → Variables): the canonical origin, e.g. https://example.com.
+      # Used for hreflang, sitemap, and OpenGraph absolute URLs.
       - run: pnpm build
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ vars.SITE_URL }}
 
       - name: Upload to VPS
         env:

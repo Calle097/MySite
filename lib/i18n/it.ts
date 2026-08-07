@@ -104,7 +104,7 @@ export const it: Dict = {
     title: 'Chi sono',
     paragraphs: [
       'All’università ho studiato cinema e media. Poi ho imparato a programmare da autodidatta, e non ho più smesso.',
-      'Il mio primo lavoro tech è stato in QA su un grande sistema di smart metering: prima test manuali, poi automazione con Playwright, fino a coordinare la parte QA. Nel frattempo costruivo web app con React, che da attività secondaria è diventata quella principale.',
+      'Il mio primo lavoro tech è stato in un’azienda informatica: sviluppo frontend con React e, in parallelo, il distacco come QA su un grande sistema di smart metering — prima test manuali, poi automazione con Playwright, fino a coordinare la parte QA.',
       'Oggi lavoro come freelance dall’Italia e mi piacerebbe trasferirmi in Giappone per lavoro.',
     ],
   },
@@ -149,4 +149,5 @@ export const it: Dict = {
     aiLine: 'Costruito con l’aiuto di Claude Code, rivisto riga per riga',
   },
   footer: { location: 'Mattia Callegher — Italia', email: 'Email', github: 'GitHub', source: 'Codice' },
+  skipToContent: 'Vai al contenuto',
 };
