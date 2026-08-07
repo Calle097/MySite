@@ -29,13 +29,21 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
           Mattia Callegher
         </Link>
 
-        {/* Desktop nav */}
+        {/* Desktop nav. The CV is a file, not a route — a Next <Link> would
+            prefetch it as an RSC payload (cv.pdf.txt → 404), so it gets a
+            plain <a>. */}
         <nav className="hidden items-baseline gap-6 font-mono text-sm sm:flex" style={{ color: 'var(--muted-foreground)' }}>
-          {links.map((l) => (
-            <Link key={l.href} href={l.href} className="transition-colors hover:text-(--brand-accent)">
-              {l.label}
-            </Link>
-          ))}
+          {links.map((l) =>
+            l.href.endsWith('.pdf') ? (
+              <a key={l.href} href={l.href} className="transition-colors hover:text-(--brand-accent)">
+                {l.label}
+              </a>
+            ) : (
+              <Link key={l.href} href={l.href} className="transition-colors hover:text-(--brand-accent)">
+                {l.label}
+              </Link>
+            ),
+          )}
           <LangSwitcher lang={lang} />
         </nav>
 

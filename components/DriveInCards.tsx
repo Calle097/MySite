@@ -101,9 +101,13 @@ function VehicleCard({ item, index, distance, wide, canHover, progress }: {
                 style={{ transform: facingRight ? undefined : 'scaleX(-1)' }}
                 aria-hidden
             >
-                {/* the card body — rounded rectangle that morphs into a van */}
+                {/* the card body — rounded rectangle that morphs into a van.
+                    initial={false}: animate from the DOM's current d, never
+                    from a framer-reconciled initial keyframe — reconciliation
+                    during the post-mount `wide` flip wrote d="undefined". */}
                 <motion.path
                     d={REST_PATH}
+                    initial={false}
                     animate={{ d: van ? VAN_PATH : REST_PATH }}
                     transition={{ duration: 0.4, ease: EASE }}
                     fill="var(--background)"
