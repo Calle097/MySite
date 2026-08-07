@@ -20,9 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # version comes from package.json's "packageManager" field — setting it
+      # here too makes pnpm/action-setup error out ("multiple versions").
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - uses: actions/setup-node@v4
         with:
