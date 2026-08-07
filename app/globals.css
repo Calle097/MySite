@@ -11,12 +11,16 @@
 /* Palette: very light green paper with a faint gradient, orange accent.
    These five variables are also the contract DriveInCards relies on. */
 :root {
-  --background: #e8f2fb;
-  --background-edge: #dcebf8;
-  --foreground: #151a1e;
-  --muted-foreground: #55636e;
-  --secondary-darker: #c4d8e8;
+  --background: #d7e6f5;
+  --background-edge: #c8ddf0;
+  --foreground: #141a1f;
+  --muted-foreground: #4e5e6c;
+  --secondary-darker: #adcbe3;
   --brand-accent: #ec9a5e;
+  /* The header is its own darker band, distinct from the page. */
+  --header-bg: #16202b;
+  --header-fg: #e9f0f7;
+  --header-muted: #94a7ba;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +31,9 @@
     --muted-foreground: #93a1ac;
     --secondary-darker: #263039;
     --brand-accent: #ffb183;
+    --header-bg: #1c2733;
+    --header-fg: #edf2f8;
+    --header-muted: #9db0c2;
   }
 }
 

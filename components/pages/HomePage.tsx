@@ -1,20 +1,4 @@
-const WORK = [
-  {
-    title: 'Management system for a gym franchise',
-    where: '2020 — 2021',
-    text: 'React + TypeScript, in production with 500+ users. Handled end to end: requirements, development, Docker deployment.',
-  },
-  {
-    title: 'Smart metering platform, energy sector',
-    where: '2020 — 2023',
-    text: 'QA engineer, later test manager. Test plans, Playwright automation, coordination with several development teams.',
-  },
-  {
-    title: 'Freelance',
-    where: '2024 — now',
-    text: 'Web apps with Next.js and React, TypeScript backends, Python automation and bots.',
-  },
-];
+import { DICTS, type Lang } from '@/lib/i18n';
 
 function SectionHeader({ index, title }: { index: string; title: string }) {
   return (
@@ -28,7 +12,9 @@ function SectionHeader({ index, title }: { index: string; title: string }) {
   );
 }
 
-export default function Home() {
+export function HomePage({ lang }: { lang: Lang }) {
+  const dict = DICTS[lang];
+
   return (
     <div>
       <section className="gutter rise pt-14 sm:pt-20">
@@ -36,9 +22,9 @@ export default function Home() {
           className="font-semibold leading-[1.04] tracking-tight"
           style={{ fontSize: 'clamp(2.25rem, 4.5vw, 4.25rem)' }}
         >
-          Frontend developer
+          {dict.hero.line1}
           <br />
-          &amp; QA engineer
+          {dict.hero.line2}
           <span style={{ color: 'var(--brand-accent)' }}>.</span>
         </h1>
 
@@ -46,24 +32,20 @@ export default function Home() {
           className="mt-9 flex flex-wrap gap-x-10 gap-y-2 font-mono text-xs uppercase tracking-[0.15em]"
           style={{ color: 'var(--muted-foreground)' }}
         >
-          <span>Based in Italy</span>
-          <span>Interested in working in Japan</span>
-          <span>React · Next.js · TypeScript · Playwright</span>
+          {dict.hero.metaRow.map((m) => (
+            <span key={m}>{m}</span>
+          ))}
         </div>
 
-        <p
-          className="rise-late mt-10 max-w-[52ch] leading-relaxed sm:text-lg"
-          style={{ color: 'var(--muted-foreground)' }}
-        >
-          I build web apps with React, Next.js and TypeScript. I started in QA,
-          so I also test what I build.
+        <p className="rise-late mt-10 max-w-[52ch] leading-relaxed sm:text-lg" style={{ color: 'var(--muted-foreground)' }}>
+          {dict.hero.blurb}
         </p>
       </section>
 
       <section className="mt-20 sm:mt-28">
-        <SectionHeader index="01" title="Work" />
+        <SectionHeader index="01" title={dict.work.header} />
         <ul>
-          {WORK.map((w) => (
+          {dict.work.items.map((w) => (
             <li
               key={w.title}
               className="gutter group row-hover grid gap-x-10 gap-y-2 border-b py-7 sm:py-8 lg:grid-cols-[10rem_minmax(0,1fr)_minmax(0,1.3fr)]"
@@ -82,15 +64,15 @@ export default function Home() {
           ))}
         </ul>
         <p className="gutter pt-5 font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
-          Full history —{' '}
+          {dict.work.fullHistory}{' '}
           <a href="/cv.pdf" className="underline underline-offset-4 transition-colors hover:text-(--brand-accent)">
-            CV (PDF)
+            {dict.work.cvLabel}
           </a>
         </p>
       </section>
 
       <section className="mt-20 sm:mt-28">
-        <SectionHeader index="02" title="Contact" />
+        <SectionHeader index="02" title={dict.contact.header} />
         <div className="gutter pt-8 sm:pt-10">
           <a
             href="mailto:callegher.mattia00@gmail.com"
