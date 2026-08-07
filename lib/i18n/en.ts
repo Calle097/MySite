@@ -37,13 +37,31 @@ export const en: Dict = {
     title: 'Playground',
     intro:
       'Things I built and found too interesting — or too silly — to throw away. Some shipped, some never left the sketchbook.',
-    demo: {
-      title: 'Drive-in cards',
-      caption:
-        'SVG path morph driven by scroll: items arrive as vans, park as cards. Hover a parked card to wake it. Scroll inside the frame.',
-      open: 'Open ↗',
-      source: 'Source ↗',
-    },
+    openLabel: 'Open ↗',
+    sourceLabel: 'Source ↗',
+    demos: [
+      {
+        slug: 'drive-in',
+        title: 'Drive-in cards',
+        caption:
+          'SVG path morph driven by scroll: items arrive as vans, park as cards. Hover a parked card to wake it. Scroll inside the frame.',
+      },
+      {
+        slug: 'spiral',
+        title: 'Golden spiral',
+        caption:
+          '500 dots placed with the golden angle — the same packing a sunflower uses. A pulse ripples outward forever. No libraries, just SVG.',
+      },
+    ],
+  },
+  demoNoscript: 'This demo needs JavaScript.',
+  about: {
+    title: 'About',
+    paragraphs: [
+      'I studied film and media at university. Then I taught myself how to program, and it stuck.',
+      'My first tech job was QA on a large smart metering system — manual testing first, then Playwright automation, eventually coordinating the QA side. Building web apps with React started as a side thing and became the main one.',
+      'Now I freelance from Italy, and I would like to move to Japan for work.',
+    ],
   },
   demoDriveIn: {
     scroll: 'Scroll ↓',

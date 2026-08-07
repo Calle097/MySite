@@ -24,6 +24,9 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
           Mattia Callegher
         </Link>
         <nav className="flex gap-6 font-mono text-sm" style={{ color: 'var(--muted-foreground)' }}>
+          <Link href={`${p}/about/`} className="transition-colors hover:text-(--brand-accent)">
+            /about
+          </Link>
           <Link href={`${p}/playground/`} className="transition-colors hover:text-(--brand-accent)">
             /playground
           </Link>

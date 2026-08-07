@@ -37,13 +37,31 @@ export const it: Dict = {
     title: 'Playground',
     intro:
       'Cose che ho costruito e che mi sembravano troppo interessanti — o troppo stupide — per buttarle via. Alcune sono finite in produzione, altre no.',
-    demo: {
-      title: 'Drive-in cards',
-      caption:
-        'Path SVG che si trasformano con lo scroll: gli elementi arrivano come furgoncini e diventano card quando si fermano. Passa il mouse su una card per riattivarla. Scorri dentro il riquadro.',
-      open: 'Apri ↗',
-      source: 'Codice ↗',
-    },
+    openLabel: 'Apri ↗',
+    sourceLabel: 'Codice ↗',
+    demos: [
+      {
+        slug: 'drive-in',
+        title: 'Drive-in cards',
+        caption:
+          'Path SVG che si trasformano con lo scroll: gli elementi arrivano come furgoncini e diventano card quando si fermano. Passa il mouse su una card per riattivarla. Scorri dentro il riquadro.',
+      },
+      {
+        slug: 'spiral',
+        title: 'Spirale aurea',
+        caption:
+          '500 punti disposti secondo l’angolo aureo, lo stesso schema dei semi di girasole. Un impulso si propaga verso l’esterno all’infinito. Nessuna libreria, solo SVG.',
+      },
+    ],
+  },
+  demoNoscript: 'Questa demo ha bisogno di JavaScript.',
+  about: {
+    title: 'Chi sono',
+    paragraphs: [
+      'All’università ho studiato cinema e media. Poi ho imparato a programmare da autodidatta, e non ho più smesso.',
+      'Il mio primo lavoro tech è stato in QA su un grande sistema di smart metering: prima test manuali, poi automazione con Playwright, fino a coordinare la parte QA. Nel frattempo costruivo web app con React, che da attività secondaria è diventata quella principale.',
+      'Oggi lavoro come freelance dall’Italia e mi piacerebbe trasferirmi in Giappone per lavoro.',
+    ],
   },
   demoDriveIn: {
     scroll: 'Scorri ↓',

@@ -24,7 +24,9 @@ export interface Dict {
   playground: {
     title: string;
     intro: string;
-    demo: { title: string; caption: string; open: string; source: string };
+    openLabel: string;
+    sourceLabel: string;
+    demos: { slug: string; title: string; caption: string }[];
   };
   demoDriveIn: {
     scroll: string;
@@ -32,6 +34,8 @@ export interface Dict {
     noscript: string;
     items: { title: string; text: string }[];
   };
+  demoNoscript: string;
+  about: { title: string; paragraphs: string[] };
   stack: {
     title: string;
     sourcePre: string;
