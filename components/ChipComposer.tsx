@@ -276,13 +276,20 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
         closePalette();
         return;
       }
-    } else if (e.key === '@' && !e.metaKey && !e.ctrlKey && !e.altKey) {
-      e.preventDefault();
-      openPalette();
-      return;
     }
     if (e.key === 'Backspace' && removeAdjacentChip('backward')) e.preventDefault();
     if (e.key === 'Delete' && removeAdjacentChip('forward')) e.preventDefault();
+  };
+
+  // The @ trigger lives on beforeinput, not keydown: virtual keyboards on
+  // mobile report keydown as "Unidentified", but beforeinput always carries
+  // the actual character about to be inserted.
+  const onBeforeInput = (e: React.FormEvent<HTMLDivElement>) => {
+    const data = (e.nativeEvent as InputEvent).data;
+    if (!open && data === '@') {
+      e.preventDefault();
+      openPalette();
+    }
   };
 
   const onInput = () => {
@@ -341,6 +348,7 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
             background: 'color-mix(in srgb, var(--foreground) 5%, transparent)',
           }}
           onKeyDown={onKeyDown}
+          onBeforeInput={onBeforeInput}
           onInput={onInput}
           onMouseDown={onMouseDown}
           onKeyUp={() => {
