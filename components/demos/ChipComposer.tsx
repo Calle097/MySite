@@ -1,6 +1,13 @@
 'use client';
 
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import {
+  CHIP_ATTR,
+  MARKER_ATTR,
+  ZWSP,
+  readSegments,
+  type Segment,
+} from '@/lib/segments';
 
 /**
  * An @-mention composer built directly on DOM Range/Selection — no Lexical,
@@ -46,10 +53,6 @@ const DESTINATIONS: Destination[] = [
   { id: 'porto', name: 'Porto', keywords: 'douro wine portugal' },
 ];
 
-const ZWSP = '​';
-const MARKER_ATTR = 'data-marker';
-const CHIP_ATTR = 'data-chip-id';
-
 /** Palette width. One definition — it was previously stated three times (a
     local const, a `w-58` class, and an inline style that silently won). */
 const PALETTE_WIDTH = 232;
@@ -57,11 +60,6 @@ const PALETTE_WIDTH = 232;
     collide — the same reason TimePicker takes an idPrefix. */
 const listboxId = (uid: string) => `${uid}-destinations`;
 const optionId = (uid: string, id: string) => `${uid}-option-${id}`;
-
-/** Elements contenteditable uses to start a new line. */
-const BLOCK_TAGS = new Set(['DIV', 'P', 'LI', 'BLOCKQUOTE', 'PRE', 'H1', 'H2', 'H3']);
-
-type Segment = { type: 'text'; value: string } | { type: 'chip'; id: string; name: string };
 
 function search(query: string): Destination[] {
   const q = query.trim().toLowerCase();
@@ -77,44 +75,6 @@ function search(query: string): Destination[] {
     .sort((a, b) => a.score - b.score)
     .slice(0, 6)
     .map((r) => r.d);
-}
-
-function readSegments(root: HTMLElement): Segment[] {
-  const segments: Segment[] = [];
-  const pushText = (value: string) => {
-    const clean = value.replaceAll(ZWSP, '');
-    if (!clean) return;
-    const last = segments.at(-1);
-    if (last?.type === 'text') last.value += clean;
-    else segments.push({ type: 'text', value: clean });
-  };
-  // Browsers disagree about how a new line is represented. Firefox emits bare
-  // <br>s; Chrome wraps each line in a <div> and puts a filler <br> inside an
-  // empty one. So a line break is "entering a block after the first" OR "a
-  // <br> that has something after it" — a trailing <br> is only there to give
-  // an empty block height, and counting it too would double every blank line.
-  let blocksSeen = 0;
-  const walk = (node: Node) => {
-    if (node.nodeType === Node.TEXT_NODE) return pushText(node.textContent ?? '');
-    if (!(node instanceof HTMLElement)) return;
-    if (node.hasAttribute(MARKER_ATTR)) return;
-    const chipId = node.getAttribute(CHIP_ATTR);
-    if (chipId) {
-      segments.push({ type: 'chip', id: chipId, name: node.getAttribute('data-chip-name') ?? '' });
-      return;
-    }
-    if (node.tagName === 'BR') {
-      if (node.nextSibling) pushText('\n');
-      return;
-    }
-    if (BLOCK_TAGS.has(node.tagName)) {
-      if (blocksSeen > 0 || segments.length > 0) pushText('\n');
-      blocksSeen++;
-    }
-    node.childNodes.forEach(walk);
-  };
-  root.childNodes.forEach(walk);
-  return segments;
 }
 
 export function ChipComposer({ strings }: { strings: ComposerStrings }) {
@@ -325,7 +285,6 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
     if (e.key === 'Backspace' && removeAdjacentChip('backward')) e.preventDefault();
     if (e.key === 'Delete' && removeAdjacentChip('forward')) e.preventDefault();
   };
-
 
   // The listeners below are registered once, against document and the editor
   // node, but must call into the *current* render's closures. One ref

@@ -11,6 +11,10 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    // The tests run on `node --test` with no build step, and Node's type
+    // stripping needs the real extension in the specifier. Safe here because
+    // nothing is emitted — noEmit is on.
+    "allowImportingTsExtensions": true,
     "jsx": "preserve",
     "incremental": true,
     "plugins": [{ "name": "next" }],

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { formatHHmm, pad, parseHHmm, roundToGrid } from '@/lib/time';
 
 /**
  * Scrollable hour/minute picker. Built for a client project after every free
@@ -28,7 +29,9 @@ export interface TimePickerProps {
 }
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
-const MINUTES = Array.from({ length: 12 }, (_, i) => i * 5); // 0,5,10 … 55
+/** The minute column's granularity; "now" rounds to the same grid. */
+const MINUTE_STEP = 5;
+const MINUTES = Array.from({ length: 60 / MINUTE_STEP }, (_, i) => i * MINUTE_STEP); // 0,5,10 … 55
 const ITEM_HEIGHT = 32;
 const POPOVER_WIDTH = 168;
 /** Rows shown per column; the popover height is derived from it. */
@@ -41,27 +44,9 @@ const COLUMN_HEADER_HEIGHT = 34;
     estimating would let it overlap the trigger, which is not. */
 const FOOTER_HEIGHT = 40;
 
-const pad = (n: number) => String(n).padStart(2, '0');
-
 /** Stable option ids for aria-activedescendant; useId keeps two pickers on
     the same page from colliding. */
 const optionId = (prefix: string, value: number) => `${prefix}-${value}`;
-
-/**
- * Parse "HH:mm". Number.isFinite, not Number.isNaN: isNaN doesn't coerce, so
- * isNaN(undefined) is false and "12" (no colon) would slip through as
- * { h: 12, m: undefined } and be re-emitted as the string "12:undefined".
- * Out-of-range values are rejected too — "99:99" is not a time.
- */
-function parseHHmm(v?: string | null): { h: number; m: number } | null {
-  if (!v) return null;
-  const parts = v.split(':');
-  if (parts.length !== 2) return null;
-  const [h, m] = parts.map((x) => Number(x.trim()));
-  if (!Number.isInteger(h) || !Number.isInteger(m)) return null;
-  if (h < 0 || h > 23 || m < 0 || m > 59) return null;
-  return { h, m };
-}
 
 function ScrollColumn({
   items,
@@ -293,18 +278,12 @@ export function TimePicker({
 
   const handleOk = () => {
     if (okBlocked) return;
-    onChange?.(`${pad(localHour)}:${pad(localMinute)}`);
+    onChange?.(formatHHmm(localHour, localMinute));
     close();
   };
 
   const handleNow = () => {
-    const now = new Date();
-    // Round to the 5-minute grid the minute column offers. Rounding 58 up
-    // gives 60, which is the next hour — carry it instead of taking % 60,
-    // which silently threw the hour away and turned 10:58 into 10:00.
-    const rounded = Math.round(now.getMinutes() / 5) * 5;
-    const h = (now.getHours() + Math.floor(rounded / 60)) % 24;
-    const m = rounded % 60;
+    const { h, m } = roundToGrid(new Date(), MINUTE_STEP);
     // If now lands on a blocked slot, stage it so the user can see which part
     // is unavailable rather than silently committing it.
     if (isBlocked(h, m)) {
@@ -312,7 +291,7 @@ export function TimePicker({
       setLocalMinute(m);
       return;
     }
-    onChange?.(`${pad(h)}:${pad(m)}`);
+    onChange?.(formatHHmm(h, m));
     close();
   };
 

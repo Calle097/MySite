@@ -12,7 +12,14 @@ pnpm install   # lifecycle scripts are disabled via .npmrc (supply-chain hardeni
 pnpm dev       # http://localhost:3000
 pnpm build     # static export → out/
 pnpm type-check
+pnpm test      # node --test, no test framework needed
 ```
+
+Tests cover the pure logic in `lib/` — clock arithmetic, the transit schedule,
+and the contenteditable serializer — which is where every bug in this repo has
+actually lived. They import those modules directly and run on Node's built-in
+test runner and type stripping, so they add no dependencies. Component
+rendering and browser interaction are not covered.
 
 ## Structure
 
@@ -23,6 +30,9 @@ pnpm type-check
 - `components/demos/` — the playground's showcase components
 - `lib/i18n/` — `en.ts`, `it.ts`, and the `Dict` type they both satisfy
 - `lib/demos.ts` — the demo registry (slugs, frame heights, source links)
+- `lib/time.ts`, `lib/schedule.ts`, `lib/segments.ts` — logic the demos use,
+  kept out of the components so it can be tested without a browser
+- `test/` — `node --test` suites for those modules
 - `deploy/` — Caddyfile + docker-compose for the server
 - `.github/workflows/deploy.yml` — build + rsync on push to main
 

@@ -3,6 +3,8 @@
 import { useMemo, useState } from 'react';
 import { ChevronDown, ChevronUp, GripVertical, TrainFront } from 'lucide-react';
 import { DICTS, type Lang } from '@/lib/i18n';
+import { formatMinutes as fmt } from '@/lib/time';
+import { planDay, type TimedActivity } from '@/lib/schedule';
 
 /**
  * A day of activities split by a train. Move the train — by dragging it or
@@ -11,39 +13,10 @@ import { DICTS, type Lang } from '@/lib/i18n';
  * minutes after the previous activity ends, the whole afternoon shifting.
  */
 
-const pad = (n: number) => String(n).padStart(2, '0');
-
-/**
- * Times are carried as minutes since midnight and formatted only for display.
- * Formatting earlier meant the departure had to be parsed back out of an
- * already-rendered "HH:mm", so any wrap past midnight silently lost a day.
- */
-const fmt = (mins: number) => `${pad(Math.floor(mins / 60) % 24)}:${pad(mins % 60)}`;
-
-/** Everything starts at 09:00. */
-const DAY_START = 9 * 60;
-
 /** Marks a drag as ours, so drops of foreign text/links/files are ignored. */
 const DRAG_PAYLOAD = 'train';
 
-/** Walking time between two consecutive activities. */
-const TRANSFER_MIN = 15;
-/** Slack between the last morning activity and the train leaving. */
-const BOARDING_MIN = 20;
-
-type Timed = { title: string; minutes: number; start: number; end: number };
-
-function recalcTimes(items: { title: string; minutes: number }[], startMin: number): Timed[] {
-  let at = startMin;
-  return items.map((item, idx) => {
-    if (idx > 0) at += TRANSFER_MIN;
-    const start = at;
-    at += item.minutes;
-    return { ...item, start, end: at };
-  });
-}
-
-function ActivityRow({ activity }: { activity: Timed }) {
+function ActivityRow({ activity }: { activity: TimedActivity }) {
   return (
     <div
       className="flex items-baseline justify-between gap-4 border px-4 py-3"
@@ -68,20 +41,10 @@ export function TransitDragDemo({ lang }: { lang: Lang }) {
 
   const items = dict.activities;
 
-  const before = useMemo(() => recalcTimes(items.slice(0, trainPosition), DAY_START), [items, trainPosition]);
-
-  const { after, dep, arr } = useMemo(() => {
-    const lastEnd = before.at(-1)?.end;
-    const depart = lastEnd === undefined ? DAY_START : lastEnd + BOARDING_MIN;
-    // Arrival derives from the dictionary's own journey length, so the
-    // "1 h 25 min" label and this arithmetic can never disagree.
-    const arrive = depart + dict.train.minutes;
-    return {
-      after: recalcTimes(items.slice(trainPosition), arrive + TRANSFER_MIN),
-      dep: depart,
-      arr: arrive,
-    };
-  }, [items, trainPosition, before, dict.train.minutes]);
+  const { before, after, dep, arr } = useMemo(
+    () => planDay(items, trainPosition, dict.train.minutes),
+    [items, trainPosition, dict.train.minutes],
+  );
 
   const move = (position: number) => {
     setTrainPosition(Math.max(0, Math.min(items.length, position)));
