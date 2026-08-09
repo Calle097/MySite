@@ -13,10 +13,13 @@
 /* Palette: dark navy, one theme for everyone. Light text; hairlines sit
    LIGHTER than the background (on dark themes darker hairlines vanish).
    These six variables are also the contract DriveInCards relies on.
-   Declared in @theme (not `inline`) so Tailwind both generates the colour
-   utilities — bg-background, text-muted-foreground, border-secondary-darker
-   — and emits the variables to :root, which is what lets the /demos/colors
-   lab override them at runtime to preview a new palette. */
+
+   Declared in @theme, NOT `@theme inline`, which matters: plain @theme both
+   generates the colour utilities (bg-background, text-muted-foreground,
+   border-secondary-darker) and emits the variables to :root, so the rules
+   below and the remaining dynamic color-mix() styles in components can go on
+   reading var(--color-*). `inline` would bake the values into the utilities
+   and leave every one of those var() references undefined. */
 @theme {
   --color-background: #182454;
   --color-background-edge: #17224f;
