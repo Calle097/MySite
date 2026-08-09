@@ -1,26 +1,6 @@
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
-
-// Frame height per demo — scroll-driven demos need room, small ones don't.
-const HEIGHTS: Record<string, string> = {
-  'drive-in': 'h-[400px] sm:h-[540px]',
-  spiral: 'h-[380px] sm:h-[420px]',
-  'css-effects': 'h-[340px]',
-  sakura: 'h-[260px]',
-  'time-picker': 'h-[420px]',
-  'chip-composer': 'h-[480px]',
-  'transit-drag': 'h-[560px] sm:h-[640px]',
-};
-
-// Repo paths for each demo's "Source ↗" link, keyed by slug.
-const SOURCES: Record<string, string> = {
-  'drive-in': 'https://github.com/Calle097/MySite/blob/main/components/DriveInCards.tsx',
-  spiral: 'https://github.com/Calle097/MySite/blob/main/components/SpiralDots.tsx',
-  'css-effects': 'https://github.com/Calle097/MySite/blob/main/components/css-effects.css',
-  sakura: 'https://github.com/Calle097/MySite/blob/main/components/SakuraBadge.tsx',
-  'time-picker': 'https://github.com/Calle097/MySite/blob/main/components/TimePicker.tsx',
-  'chip-composer': 'https://github.com/Calle097/MySite/blob/main/components/ChipComposer.tsx',
-  'transit-drag': 'https://github.com/Calle097/MySite/blob/main/components/TransitDragDemo.tsx',
-};
+import { DEMOS, DEMO_SLUGS } from '@/lib/demos';
+import { SectionHeader } from '@/components/SectionHeader';
 
 export function PlaygroundPage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];
@@ -32,42 +12,29 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
         <h1 className="font-semibold tracking-tight" style={{ fontSize: 'clamp(2rem, 3.6vw, 3.25rem)' }}>
           {dict.playground.title}
         </h1>
-        <p className="mt-6 max-w-[52ch] leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-          {dict.playground.intro}
-        </p>
+        <p className="mt-6 max-w-[52ch] leading-relaxed text-muted-foreground">{dict.playground.intro}</p>
       </section>
 
-      {dict.playground.demos.map((demo, i) => {
-        const src = `${p}/demos/${demo.slug}/`;
-        const eager = i === 0;
+      {DEMO_SLUGS.map((slug, i) => {
+        const { height, source } = DEMOS[slug];
+        const { title, caption } = dict.playground.items[slug];
+        const src = `${p}/demos/${slug}/`;
+
         return (
-          <section key={demo.slug} className="mt-20 sm:mt-24">
-            <div
-              className="gutter flex items-baseline justify-between border-b pb-3 font-mono text-xs uppercase tracking-[0.15em]"
-              style={{ borderColor: 'var(--secondary-darker)', color: 'var(--muted-foreground)' }}
-            >
-              <span>{String(i + 1).padStart(2, '0')}</span>
-              <span>{demo.title}</span>
-            </div>
+          <section key={slug} className="mt-20 sm:mt-24">
+            <SectionHeader index={i + 1} title={title} />
 
             <div className="gutter grid gap-x-14 gap-y-8 pt-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
               <div>
-                <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">{demo.title}</h2>
-                <p className="mt-4 max-w-[48ch] leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-                  {demo.caption}
-                </p>
-                <p className="mt-6 flex gap-6 font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
-                  <a href={src} className="underline underline-offset-4 transition-colors hover:text-(--brand-accent)">
+                <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">{title}</h2>
+                <p className="mt-4 max-w-[48ch] leading-relaxed text-muted-foreground">{caption}</p>
+                <p className="label mt-6 flex gap-6 text-muted-foreground">
+                  <a href={src} className="underline underline-offset-4 transition-colors hover:text-brand-accent">
                     {dict.playground.openLabel}
                   </a>
-                  {SOURCES[demo.slug] && (
-                    <a
-                      href={SOURCES[demo.slug]}
-                      className="underline underline-offset-4 transition-colors hover:text-(--brand-accent)"
-                    >
-                      {dict.playground.sourceLabel}
-                    </a>
-                  )}
+                  <a href={source} className="underline underline-offset-4 transition-colors hover:text-brand-accent">
+                    {dict.playground.sourceLabel}
+                  </a>
                 </p>
               </div>
 
@@ -75,21 +42,17 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
                   loading label sits behind it and is covered on load. */}
               {/* overflow-hidden: children can never paint over the border,
                   regardless of fractional-pixel rounding at any zoom level. */}
-              <div
-                className={`relative w-full overflow-hidden border ${HEIGHTS[demo.slug] ?? 'h-[400px]'}`}
-                style={{ borderColor: 'var(--secondary-darker)' }}
-              >
+              <div className={`relative w-full overflow-hidden border border-secondary-darker ${height}`}>
                 <span
                   aria-hidden
-                  className="absolute inset-0 flex animate-pulse items-center justify-center font-mono text-xs uppercase tracking-[0.15em]"
-                  style={{ color: 'var(--muted-foreground)' }}
+                  className="label absolute inset-0 flex animate-pulse items-center justify-center text-muted-foreground"
                 >
                   {dict.playground.loading} —
                 </span>
                 <iframe
                   src={`${src}#embed`}
-                  title={demo.title}
-                  loading={eager ? 'eager' : 'lazy'}
+                  title={title}
+                  loading={i === 0 ? 'eager' : 'lazy'}
                   className="relative block h-full w-full"
                 />
               </div>

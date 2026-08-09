@@ -1,4 +1,5 @@
 import { DICTS, type Lang } from '@/lib/i18n';
+import { SectionHeader } from '@/components/SectionHeader';
 
 export function StackPage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];
@@ -9,11 +10,11 @@ export function StackPage({ lang }: { lang: Lang }) {
         <h1 className="font-semibold tracking-tight" style={{ fontSize: 'clamp(2rem, 3.6vw, 3.25rem)' }}>
           {dict.stack.title}
         </h1>
-        <p className="mt-5 max-w-[52ch] leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+        <p className="mt-5 max-w-[52ch] leading-relaxed text-muted-foreground">
           {dict.stack.sourcePre}{' '}
           <a
             href="https://github.com/Calle097/MySite"
-            className="underline underline-offset-4 transition-colors hover:text-(--brand-accent)"
+            className="underline underline-offset-4 transition-colors hover:text-brand-accent"
           >
             {dict.stack.sourceLabel}
           </a>
@@ -21,19 +22,13 @@ export function StackPage({ lang }: { lang: Lang }) {
         </p>
       </section>
 
-      {dict.stack.sections.map((s) => (
-        <section key={s.index} className="mt-14 sm:mt-16">
-          <div
-            className="gutter flex items-baseline justify-between border-b pb-3 font-mono text-xs uppercase tracking-[0.15em]"
-            style={{ borderColor: 'var(--secondary-darker)', color: 'var(--muted-foreground)' }}
-          >
-            <span>{s.index}</span>
-            <span>{s.title}</span>
-          </div>
+      {dict.stack.sections.map((s, i) => (
+        <section key={s.title} className="mt-14 sm:mt-16">
+          <SectionHeader index={i + 1} title={s.title} />
           <ul className="gutter max-w-3xl space-y-2.5 pt-5 leading-relaxed">
             {s.items.map((item) => (
               <li key={item} className="flex gap-4">
-                <span aria-hidden style={{ color: 'var(--brand-accent)' }}>
+                <span aria-hidden className="text-brand-accent">
                   —
                 </span>
                 <span>{item}</span>
@@ -43,7 +38,7 @@ export function StackPage({ lang }: { lang: Lang }) {
         </section>
       ))}
 
-      <p className="gutter mt-16 font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
+      <p className="gutter mt-16 label text-muted-foreground">
         {dict.stack.aiLine}
       </p>
     </div>

@@ -31,6 +31,10 @@ export function SpiralDots({
     if (!svgRef.current) return;
 
     const svg = svgRef.current;
+    // SMIL <animate> ignores prefers-reduced-motion — a CSS media query can't
+    // reach it — so the preference is honoured by simply not emitting the
+    // animation elements. The spiral itself still renders, just static.
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
     const CENTER = size / 2;
     const MAX_RADIUS = CENTER - margin - dotRadius;
@@ -53,6 +57,8 @@ export function SpiralDots({
       c.setAttribute('fill', 'currentColor');
       c.setAttribute('opacity', '0.6');
       svg.appendChild(c);
+
+      if (still) continue;
 
       const animR = document.createElementNS(svgNS, 'animate');
       animR.setAttribute('attributeName', 'r');

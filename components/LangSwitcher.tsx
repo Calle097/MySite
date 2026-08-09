@@ -20,11 +20,11 @@ export function LangSwitcher({ lang }: { lang: Lang }) {
 
   const item = (l: Lang, href: string, label: string) =>
     lang === l ? (
-      <span aria-current="true" style={{ color: 'var(--foreground)' }}>
+      <span aria-current="true" className="text-foreground">
         {label}
       </span>
     ) : (
-      <a href={href} onClick={() => save(l)} className="transition-colors hover:text-(--brand-accent)">
+      <a href={href} onClick={() => save(l)} className="transition-colors hover:text-brand-accent">
         {label}
       </a>
     );

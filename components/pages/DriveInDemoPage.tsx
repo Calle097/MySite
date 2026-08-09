@@ -1,21 +1,21 @@
 import { DICTS, type Lang } from '@/lib/i18n';
-import { DemoCards } from '@/components/DemoCards';
+import { DemoCards } from '@/components/demos/DemoCards';
 import { EmbedMarker } from '@/components/EmbedMarker';
 
-// Rendered bare (no site chrome) — designed to live inside the playground
-// iframe, where this page's own scrollbar scrubs the animation.
+// Chrome hides itself when embedded (iframe src carries #embed). Inside the
+// playground iframe this page's own scrollbar scrubs the animation.
 export function DriveInDemoPage({ lang }: { lang: Lang }) {
-  const dict = DICTS[lang].demoDriveIn;
+  const dict = DICTS[lang].demos.driveIn;
 
   return (
     <div className="px-6">
       <EmbedMarker />
-      <p className="pt-5 text-center font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
+      <p className="pt-5 text-center label text-muted-foreground">
         {dict.scroll}
       </p>
 
       <noscript>
-        <p className="mx-auto mt-10 max-w-md text-center text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+        <p className="mx-auto mt-10 max-w-md text-center text-sm leading-relaxed text-muted-foreground">
           {dict.noscript}
         </p>
       </noscript>
@@ -28,7 +28,7 @@ export function DriveInDemoPage({ lang }: { lang: Lang }) {
         <DemoCards lang={lang} />
       </div>
 
-      <p className="mt-10 text-center font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
+      <p className="mt-10 text-center label text-muted-foreground">
         {dict.hover}
       </p>
 

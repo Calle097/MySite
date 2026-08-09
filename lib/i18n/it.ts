@@ -40,84 +40,93 @@ export const it: Dict = {
     openLabel: 'Apri ↗',
     sourceLabel: 'Codice ↗',
     loading: 'caricamento',
-    demos: [
-      {
-        slug: 'drive-in',
+    items: {
+      'drive-in': {
         title: 'Drive-in cards',
         caption:
           'Path SVG che si trasformano con lo scroll: gli elementi arrivano come furgoncini e diventano card quando si fermano. Passa il mouse su una card per riattivarla. Scorri dentro il riquadro.',
       },
-      {
-        slug: 'spiral',
+      spiral: {
         title: 'Spirale aurea',
         caption:
           '500 punti disposti secondo l’angolo aureo, lo stesso schema dei semi di girasole. Un impulso si propaga verso l’esterno all’infinito. Nessuna libreria, solo SVG.',
       },
-      {
-        slug: 'css-effects',
+      'css-effects': {
         title: 'Effetti solo CSS',
         caption:
           'Un bottone con effetto gelatina e un anello di evidenziazione che ruota, ritagliato da un gradiente conico con mask-composite. Solo CSS, niente JavaScript.',
       },
-      {
-        slug: 'sakura',
+      sakura: {
         title: 'Badge sakura',
         caption:
           'Un piccolo badge con petali di ciliegio che cadono al suo interno. Le posizioni dei petali sono casuali e generate lato client per evitare problemi di hydration.',
       },
-      {
-        slug: 'time-picker',
+      'time-picker': {
         title: 'Time picker',
         caption:
           'Fatto per un progetto cliente dopo che tutti i time picker gratuiti che ho provato avevano qualche problema: valori controllati, scroll su mobile, popover tagliati. Era più veloce scriverne uno: selezione confermata con OK, scorciatoia “adesso”, fasce orarie disabilitabili.',
       },
-      {
-        slug: 'chip-composer',
+      'chip-composer': {
         title: 'Composer con chip',
         caption:
           'Scrivi @ e scegli una destinazione: diventa una chip che il cursore non può spezzare. Fatto con Range e Selection del DOM, senza librerie per editor. La palette si aggancia al cursore e il pannello sotto mostra come viene serializzato il messaggio.',
       },
-      {
-        slug: 'transit-drag',
+      'transit-drag': {
         title: 'Transit drag',
         caption:
           'Una giornata di attività con un treno in mezzo. Trascina il treno (o usa le frecce) e tutti gli orari successivi si ricalcolano: trasferimenti, partenza, l’intero pomeriggio.',
       },
-    ],
+    },
   },
-  demoNoscript: 'Questa demo ha bisogno di JavaScript.',
-  demoCss: {
-    hint: 'Qui è tutto CSS, niente JavaScript.',
-    button: 'Passaci sopra',
-    card: 'Anello di evidenziazione',
-  },
-  demoSakura: { label: 'Fioritura dei ciliegi' },
-  demoTimePicker: {
-    labels: { hours: 'Ore', minutes: 'Minuti', now: 'Adesso', ok: 'OK' },
-    hint: 'Scegli un orario',
-    picked: 'Scelto:',
-  },
-  demoComposer: {
-    hint: 'Scrivi @ per inserire una destinazione',
-    empty: 'Scrivi qualcosa, poi digita @ …',
-    serialized: 'Serializzato',
-    plain: 'Testo semplice',
-    entities: 'Entità',
-    clear: 'Pulisci',
-    noResults: 'Nessun risultato',
-  },
-  demoTransit: {
-    hint: 'Trascina il treno, o usa le frecce: tutti gli orari si ricalcolano',
-    dropHint: 'Sposta il treno qui',
-    walk: '15 min di trasferimento',
-    activities: [
-      { title: 'Giro del centro storico', minutes: 60 },
-      { title: 'Mercato e caffè', minutes: 45 },
-      { title: 'Faro del porto', minutes: 40 },
-      { title: 'Giardino botanico', minutes: 60 },
-      { title: 'Terme', minutes: 90 },
-    ],
-    train: { from: 'Verona', to: 'Venezia', duration: '1 h 25 min' },
+  demos: {
+    driveIn: {
+      scroll: 'Scorri ↓',
+      hover: 'Passa il mouse su una card',
+      noscript: 'Questa demo ha bisogno di JavaScript: anima i path SVG mentre scorri.',
+      items: [
+        { title: 'Guidato dallo scroll', text: 'L’entrata segue lo scroll di questo riquadro.' },
+        { title: 'Morphing di path', text: 'Un unico scheletro SVG passa da furgoncino a card.' },
+      ],
+    },
+    noscript: 'Questa demo ha bisogno di JavaScript.',
+    css: {
+      hint: 'Qui è tutto CSS, niente JavaScript.',
+      button: 'Passaci sopra',
+      card: 'Anello di evidenziazione',
+    },
+    sakura: { label: 'Fioritura dei ciliegi' },
+    timePicker: {
+      labels: { hours: 'Ore', minutes: 'Minuti', now: 'Adesso', ok: 'OK' },
+      hint: 'Scegli un orario',
+      picked: 'Scelto:',
+    },
+    composer: {
+      hint: 'Scrivi @ per inserire una destinazione',
+      empty: 'Scrivi qualcosa, poi digita @ …',
+      serialized: 'Serializzato',
+      plain: 'Testo semplice',
+      entities: 'Entità',
+      clear: 'Pulisci',
+      noResults: 'Nessun risultato',
+      removeChip: 'Rimuovi {name}',
+      editorLabel: 'Messaggio',
+      resultsLabel: 'Destinazioni',
+    },
+    transit: {
+      hint: 'Trascina il treno, o usa le frecce: tutti gli orari si ricalcolano',
+      dropHint: 'Sposta il treno qui',
+      walk: '15 min di trasferimento',
+      earlier: 'Sposta il treno prima',
+      later: 'Sposta il treno dopo',
+      activities: [
+        { title: 'Giro del centro storico', minutes: 60 },
+        { title: 'Mercato e caffè', minutes: 45 },
+        { title: 'Faro del porto', minutes: 40 },
+        { title: 'Giardino botanico', minutes: 60 },
+        { title: 'Terme', minutes: 90 },
+      ],
+      train: { from: 'Verona', to: 'Venezia', minutes: 85 },
+    },
   },
   projects: {
     header: 'Progetti recenti',
@@ -142,22 +151,12 @@ export const it: Dict = {
       'Oggi lavoro come freelance dall’Italia e mi piacerebbe trasferirmi in Giappone per lavoro.',
     ],
   },
-  demoDriveIn: {
-    scroll: 'Scorri ↓',
-    hover: 'Passa il mouse su una card',
-    noscript: 'Questa demo ha bisogno di JavaScript: anima i path SVG mentre scorri.',
-    items: [
-      { title: 'Guidato dallo scroll', text: 'L’entrata segue lo scroll di questo riquadro.' },
-      { title: 'Morphing di path', text: 'Un unico scheletro SVG passa da furgoncino a card.' },
-    ],
-  },
   stack: {
     title: 'Come è fatto questo sito',
     sourcePre: 'Il codice sorgente è',
     sourceLabel: 'su GitHub',
     sections: [
       {
-        index: '01',
         title: 'Stack',
         items: [
           'Next.js 15, export statico. Servito come semplici file',
@@ -167,7 +166,6 @@ export const it: Dict = {
         ],
       },
       {
-        index: '02',
         title: 'Hosting',
         items: [
           'Un piccolo VPS gestito da me, Caddy in Docker, DNS su Cloudflare',
@@ -175,7 +173,6 @@ export const it: Dict = {
         ],
       },
       {
-        index: '03',
         title: 'Privacy',
         items: [
           'Niente analytics, cookie o script di tracciamento da parte mia. Il traffico passa da Cloudflare, che tiene i suoi log di base',

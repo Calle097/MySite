@@ -40,84 +40,93 @@ export const en: Dict = {
     openLabel: 'Open ↗',
     sourceLabel: 'Source ↗',
     loading: 'loading',
-    demos: [
-      {
-        slug: 'drive-in',
+    items: {
+      'drive-in': {
         title: 'Drive-in cards',
         caption:
           'SVG path morph driven by scroll: items arrive as vans, park as cards. Hover a parked card to wake it. Scroll inside the frame.',
       },
-      {
-        slug: 'spiral',
+      spiral: {
         title: 'Golden spiral',
         caption:
           '500 dots placed with the golden angle, the same packing a sunflower uses. A pulse ripples outward forever. No libraries, just SVG.',
       },
-      {
-        slug: 'css-effects',
+      'css-effects': {
         title: 'CSS-only effects',
         caption:
           'A jelly button hover and a spinning highlight ring carved out of a conic gradient with mask-composite. Obviously pure CSS, no JavaScript at all.',
       },
-      {
-        slug: 'sakura',
+      sakura: {
         title: 'Sakura badge',
         caption:
           'A little badge with cherry-blossom petals falling inside it. Petal positions are randomized client-side to avoid hydration mismatches.',
       },
-      {
-        slug: 'time-picker',
+      'time-picker': {
         title: 'Time picker',
         caption:
           'Built for a client project after every free time picker I looked into misbehaved somewhere — controlled values, mobile scrolling, popover clipping. Writing one was faster: staged selection, a “now” shortcut, per-slot disabling.',
       },
-      {
-        slug: 'chip-composer',
+      'chip-composer': {
         title: 'Entity-chip composer',
         caption:
           'Type @ and pick a destination: it becomes a chip the caret can’t split. Built on raw DOM Ranges and Selection, no editor library. The palette anchors to the caret and the panel below shows how the message serializes.',
       },
-      {
-        slug: 'transit-drag',
+      'transit-drag': {
         title: 'Transit drag',
         caption:
           'A day of activities with a train in the middle. Drag the train (or use the arrows) and every later time recalculates: transfers, departure, the whole afternoon.',
       },
-    ],
+    },
   },
-  demoNoscript: 'This demo needs JavaScript.',
-  demoCss: {
-    hint: 'Everything here is CSS, no JavaScript.',
-    button: 'Hover me',
-    card: 'Attention ring',
-  },
-  demoSakura: { label: 'Cherry blossoms' },
-  demoTimePicker: {
-    labels: { hours: 'Hours', minutes: 'Minutes', now: 'Now', ok: 'OK' },
-    hint: 'Pick a time',
-    picked: 'Picked:',
-  },
-  demoComposer: {
-    hint: 'Type @ to insert a destination',
-    empty: 'Write something, then type @ …',
-    serialized: 'Serialized',
-    plain: 'Plain text',
-    entities: 'Entities',
-    clear: 'Clear',
-    noResults: 'No match',
-  },
-  demoTransit: {
-    hint: 'Drag the train, or use the arrows. Every time recalculates',
-    dropHint: 'Drop the train here',
-    walk: '15 min transfer',
-    activities: [
-      { title: 'Old town walk', minutes: 60 },
-      { title: 'Market & coffee', minutes: 45 },
-      { title: 'Harbor lighthouse', minutes: 40 },
-      { title: 'Botanical garden', minutes: 60 },
-      { title: 'Thermal baths', minutes: 90 },
-    ],
-    train: { from: 'Verona', to: 'Venice', duration: '1 h 25 min' },
+  demos: {
+    driveIn: {
+      scroll: 'Scroll ↓',
+      hover: 'Hover a parked card',
+      noscript: 'This demo needs JavaScript. It animates SVG paths as you scroll.',
+      items: [
+        { title: 'Scroll-scrubbed', text: 'Entry follows the scroll position of this frame.' },
+        { title: 'Path morphing', text: 'One SVG skeleton tweens between van and card.' },
+      ],
+    },
+    noscript: 'This demo needs JavaScript.',
+    css: {
+      hint: 'Everything here is CSS, no JavaScript.',
+      button: 'Hover me',
+      card: 'Attention ring',
+    },
+    sakura: { label: 'Cherry blossoms' },
+    timePicker: {
+      labels: { hours: 'Hours', minutes: 'Minutes', now: 'Now', ok: 'OK' },
+      hint: 'Pick a time',
+      picked: 'Picked:',
+    },
+    composer: {
+      hint: 'Type @ to insert a destination',
+      empty: 'Write something, then type @ …',
+      serialized: 'Serialized',
+      plain: 'Plain text',
+      entities: 'Entities',
+      clear: 'Clear',
+      noResults: 'No match',
+      removeChip: 'Remove {name}',
+      editorLabel: 'Message',
+      resultsLabel: 'Destinations',
+    },
+    transit: {
+      hint: 'Drag the train, or use the arrows. Every time recalculates',
+      dropHint: 'Drop the train here',
+      walk: '15 min transfer',
+      earlier: 'Move train earlier',
+      later: 'Move train later',
+      activities: [
+        { title: 'Old town walk', minutes: 60 },
+        { title: 'Market & coffee', minutes: 45 },
+        { title: 'Harbor lighthouse', minutes: 40 },
+        { title: 'Botanical garden', minutes: 60 },
+        { title: 'Thermal baths', minutes: 90 },
+      ],
+      train: { from: 'Verona', to: 'Venice', minutes: 85 },
+    },
   },
   projects: {
     header: 'Recent projects',
@@ -142,22 +151,12 @@ export const en: Dict = {
       'Now I freelance from Italy, and I would like to move to Japan for work.',
     ],
   },
-  demoDriveIn: {
-    scroll: 'Scroll ↓',
-    hover: 'Hover a parked card',
-    noscript: 'This demo needs JavaScript. It animates SVG paths as you scroll.',
-    items: [
-      { title: 'Scroll-scrubbed', text: 'Entry follows the scroll position of this frame.' },
-      { title: 'Path morphing', text: 'One SVG skeleton tweens between van and card.' },
-    ],
-  },
   stack: {
     title: 'How this site is built',
     sourcePre: 'The source is',
     sourceLabel: 'on GitHub',
     sections: [
       {
-        index: '01',
         title: 'Stack',
         items: [
           'Next.js 15, static export — served as plain files',
@@ -167,7 +166,6 @@ export const en: Dict = {
         ],
       },
       {
-        index: '02',
         title: 'Hosting',
         items: [
           'A small VPS I manage myself, Caddy in Docker, Cloudflare DNS',
@@ -175,7 +173,6 @@ export const en: Dict = {
         ],
       },
       {
-        index: '03',
         title: 'Privacy',
         items: [
           'No analytics, cookies, or tracking scripts on my side. Traffic passes through Cloudflare, which keeps its own basic logs',

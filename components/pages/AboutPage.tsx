@@ -8,7 +8,7 @@ export function AboutPage({ lang }: { lang: Lang }) {
       <h1 className="font-semibold tracking-tight" style={{ fontSize: 'clamp(2rem, 3.6vw, 3.25rem)' }}>
         {dict.about.title}
       </h1>
-      <div className="mt-8 max-w-[58ch] space-y-5 leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+      <div className="mt-8 max-w-[58ch] space-y-5 leading-relaxed text-muted-foreground">
         {dict.about.paragraphs.map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>
         ))}

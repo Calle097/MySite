@@ -9,11 +9,11 @@ export default function NotFound() {
         className="font-semibold leading-[0.98] tracking-tight"
         style={{ fontSize: 'clamp(3rem, 7vw, 6rem)' }}
       >
-        404<span style={{ color: 'var(--brand-accent)' }}>.</span>
+        404<span className="text-brand-accent">.</span>
       </h1>
-      <p className="mt-6 font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
+      <p className="mt-6 label text-muted-foreground">
         Page not found —{' '}
-        <Link href="/" className="underline underline-offset-4 transition-colors hover:text-(--brand-accent)">
+        <Link href="/" className="underline underline-offset-4 transition-colors hover:text-brand-accent">
           Back home
         </Link>
       </p>

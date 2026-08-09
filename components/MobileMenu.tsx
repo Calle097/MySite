@@ -25,9 +25,7 @@ export function MobileMenu({ label, children }: { label: string; children: React
   return (
     <details ref={ref} suppressHydrationWarning className="sm:hidden">
       <summary
-        className="cursor-pointer list-none font-mono text-sm select-none [&::-webkit-details-marker]:hidden"
-        style={{ color: 'var(--muted-foreground)' }}
-      >
+        className="cursor-pointer list-none font-mono text-sm select-none [&::-webkit-details-marker]:hidden text-muted-foreground">
         {label}
       </summary>
       {/* Positioned against the sticky header (nearest positioned ancestor),
@@ -35,9 +33,9 @@ export function MobileMenu({ label, children }: { label: string; children: React
       <div
         className="menu-panel absolute inset-x-0 top-full z-50 flex flex-col gap-5 border-b p-6 font-mono text-sm"
         style={{
-          background: 'var(--background)',
-          borderColor: 'var(--secondary-darker)',
-          color: 'var(--muted-foreground)',
+          background: 'var(--color-background)',
+          borderColor: 'var(--color-secondary-darker)',
+          color: 'var(--color-muted-foreground)',
           boxShadow: '0 18px 30px rgba(0, 0, 0, 0.25)',
         }}
       >

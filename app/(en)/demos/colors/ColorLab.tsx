@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type CSSProperties } from 'react';
+import { SectionHeader } from '@/components/SectionHeader';
 
 // Dev tool: try background / accent colors against real site pieces.
 // Text, hairlines, and the gradient edge derive from the background —
@@ -62,11 +63,11 @@ export function ColorLab() {
   };
 
   const picker = (label: string, value: string, set: (v: string) => void) => (
-    <label className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.15em]">
+    <label className="flex items-center gap-3 label">
       <input type="color" value={value} onChange={(e) => set(e.target.value)} className="h-9 w-12 cursor-pointer" />
       <span>
         {label}
-        <span className="ml-2 normal-case" style={{ color: 'var(--muted-foreground)' }}>
+        <span className="ml-2 normal-case text-muted-foreground">
           {value}
         </span>
       </span>
@@ -74,19 +75,16 @@ export function ColorLab() {
   );
 
   return (
-    <div style={{ ...vars, color: 'var(--foreground)' }}>
+    <div style={{ ...vars, color: 'var(--color-foreground)' }}>
       {/* controls */}
       <div
-        className="gutter sticky top-0 z-10 flex flex-wrap items-center gap-x-8 gap-y-3 border-b py-4"
-        style={{ background: 'var(--background)', borderColor: 'var(--secondary-darker)' }}
+        className="gutter sticky top-0 z-10 flex flex-wrap items-center gap-x-8 gap-y-3 border-b py-4 bg-background border-secondary-darker"
       >
         {picker('Background', background, setBackground)}
         {picker('Accent', accent, setAccent)}
         <button
           onClick={copy}
-          className="cursor-pointer font-mono text-xs uppercase tracking-[0.15em] underline underline-offset-4"
-          style={{ color: 'var(--brand-accent)' }}
-        >
+          className="cursor-pointer label underline underline-offset-4 text-brand-accent">
           {copied ? 'Copied ✓' : 'Copy values'}
         </button>
       </div>
@@ -100,16 +98,16 @@ export function ColorLab() {
         <div
           className="gutter flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b py-5 backdrop-blur-md"
           style={{
-            background: 'color-mix(in srgb, var(--background) 55%, transparent)',
-            borderColor: 'color-mix(in srgb, var(--foreground) 10%, transparent)',
+            background: 'color-mix(in srgb, var(--color-background) 55%, transparent)',
+            borderColor: 'color-mix(in srgb, var(--color-foreground) 10%, transparent)',
           }}
         >
           <span className="text-lg font-semibold tracking-tight">Mattia Callegher</span>
-          <span className="flex gap-6 font-mono text-sm" style={{ color: 'var(--muted-foreground)' }}>
+          <span className="flex gap-6 font-mono text-sm text-muted-foreground">
             <span>/playground</span>
             <span>/stack</span>
             <span>/cv ↓</span>
-            <span style={{ color: 'var(--foreground)' }}>en</span>
+            <span className="text-foreground">en</span>
           </span>
         </div>
 
@@ -119,35 +117,27 @@ export function ColorLab() {
             Frontend developer
             <br />
             &amp; QA engineer
-            <span style={{ color: 'var(--brand-accent)' }}>.</span>
+            <span className="text-brand-accent">.</span>
           </h1>
-          <div className="mt-9 flex flex-wrap gap-x-10 gap-y-2 font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
+          <div className="mt-9 flex flex-wrap gap-x-10 gap-y-2 label text-muted-foreground">
             <span>Based in Italy</span>
             <span>Interested in working in Japan</span>
           </div>
-          <p className="mt-8 max-w-[52ch] leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+          <p className="mt-8 max-w-[52ch] leading-relaxed text-muted-foreground">
             I build web apps with React, Next.js and TypeScript. I started in QA, so I also test what I build.
           </p>
         </div>
 
         {/* section header + work row */}
         <div className="mt-16">
+          <SectionHeader index={1} title="Work" />
           <div
-            className="gutter flex items-baseline justify-between border-b pb-3 font-mono text-xs uppercase tracking-[0.15em]"
-            style={{ borderColor: 'var(--secondary-darker)', color: 'var(--muted-foreground)' }}
-          >
-            <span>01</span>
-            <span>Work</span>
-          </div>
-          <div
-            className="gutter grid gap-x-10 gap-y-2 border-b py-7 lg:grid-cols-[10rem_minmax(0,1fr)_minmax(0,1.3fr)]"
-            style={{ borderColor: 'var(--secondary-darker)' }}
-          >
-            <span className="font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
+            className="gutter grid gap-x-10 gap-y-2 border-b py-7 lg:grid-cols-[10rem_minmax(0,1fr)_minmax(0,1.3fr)] border-secondary-darker">
+            <span className="label text-muted-foreground">
               2020 — 2021
             </span>
             <span className="text-xl font-semibold tracking-tight">Management system for a gym franchise</span>
-            <span className="max-w-[55ch] leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+            <span className="max-w-[55ch] leading-relaxed text-muted-foreground">
               React + TypeScript, in production with 500+ users.
             </span>
           </div>
@@ -155,21 +145,18 @@ export function ColorLab() {
 
         {/* links + accent samples */}
         <div className="gutter mt-12 flex flex-wrap items-baseline gap-x-10 gap-y-4">
-          <a href="#" className="underline underline-offset-4" style={{ color: 'var(--brand-accent)' }}>
+          <a href="#" className="underline underline-offset-4 text-brand-accent">
             Accent link
           </a>
-          <span className="font-mono text-xs uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>
+          <span className="label text-muted-foreground">
             Muted label
           </span>
-          <span
-            className="inline-block border px-4 py-2 text-sm"
-            style={{ borderColor: 'var(--secondary-darker)', background: 'var(--background)' }}
-          >
+          <span className="inline-block border px-4 py-2 text-sm border-secondary-darker bg-background">
             Card surface with hairline
           </span>
           <span className="text-2xl font-semibold">
             Email link
-            <span style={{ color: 'var(--brand-accent)' }}> ↗</span>
+            <span className="text-brand-accent"> ↗</span>
           </span>
         </div>
       </div>

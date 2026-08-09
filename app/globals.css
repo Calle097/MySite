@@ -1,7 +1,9 @@
 @import 'tailwindcss';
 
 /* Map the next/font variables to Tailwind font utilities. One family
-   (Archivo) for display and body; IBM Plex Mono for small labels. */
+   (Wix Madefor Text) for display and body; IBM Plex Mono for small labels.
+   `inline` because next/font sets these on <html> at runtime — the utility
+   must reference the variable rather than bake in a value. */
 @theme inline {
   --font-sans: var(--font-wix);
   --font-display: var(--font-wix);
@@ -10,27 +12,31 @@
 
 /* Palette: dark navy, one theme for everyone. Light text; hairlines sit
    LIGHTER than the background (on dark themes darker hairlines vanish).
-   These five variables are also the contract DriveInCards relies on. */
-:root {
-  --background: #182454;
-  --background-edge: #17224f;
-  --foreground: #e8eef6;
-  --muted-foreground: #9fb3c8;
-  --secondary-darker: #3d476f;
-  --brand-accent: #46a08e;
+   These six variables are also the contract DriveInCards relies on.
+   Declared in @theme (not `inline`) so Tailwind both generates the colour
+   utilities — bg-background, text-muted-foreground, border-secondary-darker
+   — and emits the variables to :root, which is what lets the /demos/colors
+   lab override them at runtime to preview a new palette. */
+@theme {
+  --color-background: #182454;
+  --color-background-edge: #17224f;
+  --color-foreground: #e8eef6;
+  --color-muted-foreground: #9fb3c8;
+  --color-secondary-darker: #3d476f;
+  --color-brand-accent: #46a08e;
 }
 
 body {
-  background-color: var(--background);
-  background-image: linear-gradient(180deg, var(--background) 0%, var(--background-edge) 100%);
+  background-color: var(--color-background);
+  background-image: linear-gradient(180deg, var(--color-background) 0%, var(--color-background-edge) 100%);
   background-attachment: fixed;
-  color: var(--foreground);
+  color: var(--color-foreground);
   font-family: var(--font-wix), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--brand-accent) 24%, transparent);
+  background: color-mix(in srgb, var(--color-brand-accent) 24%, transparent);
 }
 
 /* Work rows warm up under the pointer. */
@@ -38,12 +44,25 @@ body {
   transition: background-color 0.3s ease;
 }
 .row-hover:hover {
-  background-color: color-mix(in srgb, var(--brand-accent) 5%, transparent);
+  background-color: color-mix(in srgb, var(--color-brand-accent) 5%, transparent);
 }
 
 /* Full-width pages share one fluid gutter instead of a centered max-width. */
 .gutter {
   padding-inline: clamp(1.25rem, 4vw, 4.5rem);
+}
+
+/* The mono micro-label the whole site is built on: nav, footer, section
+   indices, demo hints. Colour is deliberately NOT part of it — the same
+   shape is used in muted and accent — so pair it with a text-* utility.
+   @utility (not a plain class) so it lands in Tailwind's utilities layer
+   and variants like sm:label and later text-* overrides still work. */
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
 }
 
 /* CSS-only entrance — runs without JavaScript. */
@@ -66,9 +85,16 @@ body {
   animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
 }
 
+/* Every decorative animation in this file opts out together. Keep new
+   keyframes listed here — the menu panel and the sakura petals were both
+   defined below this block and quietly kept animating. SpiralDots can't be
+   covered from CSS (SMIL ignores media queries) so it checks the same
+   preference in JS. */
 @media (prefers-reduced-motion: reduce) {
   .rise,
-  .rise-late {
+  .rise-late,
+  .menu-panel,
+  .sakura-petal {
     animation: none;
   }
 }
@@ -110,25 +136,25 @@ html:has(#embed:target)::-webkit-scrollbar {
 }
 
 /* Entity chips inside the ChipComposer demo. */
-.composer-editor:empty::before {
+.composer-editor[data-empty]::before {
   content: attr(data-placeholder);
-  color: var(--muted-foreground);
+  color: var(--color-muted-foreground);
   pointer-events: none;
 }
 
 .composer-chip {
   border-radius: 9999px;
-  border: 1px solid color-mix(in srgb, var(--brand-accent) 60%, transparent);
-  background: color-mix(in srgb, var(--brand-accent) 18%, transparent);
-  color: var(--foreground);
+  border: 1px solid color-mix(in srgb, var(--color-brand-accent) 60%, transparent);
+  background: color-mix(in srgb, var(--color-brand-accent) 18%, transparent);
+  color: var(--color-foreground);
 }
 
 .composer-chip-x {
-  color: var(--brand-accent);
+  color: var(--color-brand-accent);
 }
 
 .composer-chip-x:hover {
-  color: var(--foreground);
+  color: var(--color-foreground);
 }
 
 /* Petals inside the SakuraBadge component. */
