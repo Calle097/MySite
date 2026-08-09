@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 
 /**
  * An @-mention composer built directly on DOM Range/Selection — no Lexical,
@@ -53,8 +53,10 @@ const CHIP_ATTR = 'data-chip-id';
 /** Palette width. One definition — it was previously stated three times (a
     local const, a `w-58` class, and an inline style that silently won). */
 const PALETTE_WIDTH = 232;
-const LISTBOX_ID = 'composer-destinations';
-const optionId = (id: string) => `composer-option-${id}`;
+/** Ids are derived from a useId() prefix so two composers on one page can't
+    collide — the same reason TimePicker takes an idPrefix. */
+const listboxId = (uid: string) => `${uid}-destinations`;
+const optionId = (uid: string, id: string) => `${uid}-option-${id}`;
 
 /** Elements contenteditable uses to start a new line. */
 const BLOCK_TAGS = new Set(['DIV', 'P', 'LI', 'BLOCKQUOTE', 'PRE', 'H1', 'H2', 'H3']);
@@ -86,6 +88,12 @@ function readSegments(root: HTMLElement): Segment[] {
     if (last?.type === 'text') last.value += clean;
     else segments.push({ type: 'text', value: clean });
   };
+  // Browsers disagree about how a new line is represented. Firefox emits bare
+  // <br>s; Chrome wraps each line in a <div> and puts a filler <br> inside an
+  // empty one. So a line break is "entering a block after the first" OR "a
+  // <br> that has something after it" — a trailing <br> is only there to give
+  // an empty block height, and counting it too would double every blank line.
+  let blocksSeen = 0;
   const walk = (node: Node) => {
     if (node.nodeType === Node.TEXT_NODE) return pushText(node.textContent ?? '');
     if (!(node instanceof HTMLElement)) return;
@@ -95,11 +103,14 @@ function readSegments(root: HTMLElement): Segment[] {
       segments.push({ type: 'chip', id: chipId, name: node.getAttribute('data-chip-name') ?? '' });
       return;
     }
-    if (node.tagName === 'BR') return pushText('\n');
-    // Chrome wraps each new line in a <div> rather than emitting a <br>.
-    // Descending into one without marking the boundary serialized "a⏎b" as
-    // "ab" — and the serialized readout is the whole point of this demo.
-    if (BLOCK_TAGS.has(node.tagName) && segments.length > 0) pushText('\n');
+    if (node.tagName === 'BR') {
+      if (node.nextSibling) pushText('\n');
+      return;
+    }
+    if (BLOCK_TAGS.has(node.tagName)) {
+      if (blocksSeen > 0 || segments.length > 0) pushText('\n');
+      blocksSeen++;
+    }
     node.childNodes.forEach(walk);
   };
   root.childNodes.forEach(walk);
@@ -107,6 +118,7 @@ function readSegments(root: HTMLElement): Segment[] {
 }
 
 export function ChipComposer({ strings }: { strings: ComposerStrings }) {
+  const uid = useId();
   const shellRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<HTMLDivElement>(null);
   const savedRangeRef = useRef<Range | null>(null);
@@ -460,16 +472,20 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
           // the popup, and aria-activedescendant points at the highlighted
           // option without moving DOM focus off the editor.
           role="combobox"
-          aria-multiline="true"
           aria-label={strings.editorLabel}
           aria-expanded={open}
-          aria-controls={LISTBOX_ID}
+          // Only while the listbox is actually rendered — aria-controls naming
+          // a missing id is invalid, and it is missing whenever the palette is
+          // closed, which is most of the time.
+          aria-controls={open ? listboxId(uid) : undefined}
           aria-haspopup="listbox"
           aria-autocomplete="list"
-          aria-activedescendant={open && results[activeIndex] ? optionId(results[activeIndex].id) : undefined}
-          // Driven by parsed state rather than CSS :empty — contenteditable
-          // leaves a stray <br> or empty text node behind after the first
-          // edit, which defeats :empty and lost the placeholder for good.
+          aria-activedescendant={open && results[activeIndex] ? optionId(uid, results[activeIndex].id) : undefined}
+          // Driven by the parsed segments rather than CSS :empty, because
+          // contenteditable leaves a filler <br> or an empty text node behind
+          // after the first edit and :empty then never matches again. This is
+          // the same emptiness the readout below reports, so the placeholder
+          // and the "plain text" panel can never disagree.
           data-placeholder={strings.empty}
           data-empty={segments.length === 0 || undefined}
           className="composer-editor min-h-24 w-full border p-3 text-sm leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
@@ -488,7 +504,7 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
 
         {open && anchor && (
           <div
-            id={LISTBOX_ID}
+            id={listboxId(uid)}
             role="listbox"
             aria-label={strings.resultsLabel}
             className="absolute z-20 border border-secondary-darker bg-background shadow-2xl"
@@ -498,7 +514,7 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
             {results.map((d, i) => (
               <button
                 key={d.id}
-                id={optionId(d.id)}
+                id={optionId(uid, d.id)}
                 role="option"
                 aria-selected={i === activeIndex}
                 type="button"

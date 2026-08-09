@@ -35,8 +35,11 @@ const POPOVER_WIDTH = 168;
 const VISIBLE_ITEMS = 7;
 /** Column header + its bottom rule. */
 const COLUMN_HEADER_HEIGHT = 34;
-/** The "now" / OK row under the columns. */
-const FOOTER_HEIGHT = 34;
+/** The "now" / OK row under the columns. Deliberately a touch generous: it
+    only feeds the "is there room below?" test, and over-estimating flips the
+    popover above the trigger slightly early, which is harmless. Under-
+    estimating would let it overlap the trigger, which is not. */
+const FOOTER_HEIGHT = 40;
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -83,16 +86,32 @@ function ScrollColumn({
   // key rather than 23 Tab presses. Focus stays on the listbox itself and
   // aria-activedescendant reports which option is current.
   const onColumnKeyDown = (e: React.KeyboardEvent) => {
+    // -1 when a controlled value sits off the 5-minute grid; treat that as
+    // "before the first row" so ArrowDown still enters the list.
     const idx = items.indexOf(selected);
-    let next = idx;
-    if (e.key === 'ArrowDown') next = Math.min(items.length - 1, idx + 1);
-    else if (e.key === 'ArrowUp') next = Math.max(0, idx - 1);
-    else if (e.key === 'Home') next = 0;
-    else if (e.key === 'End') next = items.length - 1;
-    else return;
+    const from = idx === -1 ? -1 : idx;
+
+    // Each key is "start here, then step this way until a row is selectable".
+    const move = {
+      ArrowDown: { start: from, step: 1 },
+      ArrowUp: { start: from, step: -1 },
+      Home: { start: -1, step: 1 },
+      End: { start: items.length, step: -1 },
+    }[e.key];
+    if (!move) return;
     e.preventDefault();
-    const value = items[next];
-    if (value !== undefined && !isDisabled?.(value)) onSelect(value);
+    const { start, step } = move;
+
+    // Walk past disabled rows instead of stopping on the first one — landing
+    // on a blocked slot and refusing to move left the arrows wedged there,
+    // with the native scroll suppressed too.
+    for (let i = start + step; i >= 0 && i < items.length; i += step) {
+      const value = items[i];
+      if (!isDisabled?.(value)) {
+        onSelect(value);
+        return;
+      }
+    }
   };
 
   // Centre the selected row in the visible area: put its midpoint
@@ -121,7 +140,7 @@ function ScrollColumn({
         ref={containerRef}
         role="listbox"
         aria-label={label}
-        aria-activedescendant={optionId(idPrefix, selected)}
+        aria-activedescendant={items.includes(selected) ? optionId(idPrefix, selected) : undefined}
         tabIndex={0}
         onKeyDown={onColumnKeyDown}
         className="flex-1 overflow-y-auto [scrollbar-width:thin] focus-visible:outline-2 focus-visible:outline-brand-accent"
@@ -224,16 +243,27 @@ export function TimePicker({
 
   const close = useCallback(() => {
     setOpen(false);
-    // Send focus back where it came from; without this it fell to <body>,
-    // and the popover portals to the end of the document.
-    triggerRef.current?.focus();
+    // Send focus back where it came from; without this it fell to <body>, and
+    // the popover portals to the end of the document. preventScroll because
+    // this also runs on outside-click: if the trigger has been scrolled out of
+    // view, restoring focus would otherwise yank the page back to it.
+    triggerRef.current?.focus({ preventScroll: true });
   }, []);
 
+  // Focus the popover once per opening, so Tab lands on the columns next
+  // rather than walking the rest of the page. Latched: `position` is a
+  // dependency because the portal isn't mounted on the first pass, but it also
+  // changes on every scroll and resize — without the latch, scrolling the page
+  // stole focus back from whichever column the user had tabbed into.
+  const focusedThisOpen = useRef(false);
   useEffect(() => {
-    if (!open) return;
-    // Focus the popover itself so Tab lands on the columns next, rather than
-    // walking the rest of the page first.
-    popoverRef.current?.focus();
+    if (!open) {
+      focusedThisOpen.current = false;
+      return;
+    }
+    if (focusedThisOpen.current || !popoverRef.current) return;
+    popoverRef.current.focus({ preventScroll: true });
+    focusedThisOpen.current = true;
   }, [open, position]);
 
   // Outside click + Escape

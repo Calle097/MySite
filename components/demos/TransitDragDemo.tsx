@@ -12,8 +12,16 @@ import { DICTS, type Lang } from '@/lib/i18n';
  */
 
 const pad = (n: number) => String(n).padStart(2, '0');
-/** Wraps past midnight so a long enough day can't render "25:00". */
-const fmt = (h: number, m: number) => `${pad(h % 24)}:${pad(m)}`;
+
+/**
+ * Times are carried as minutes since midnight and formatted only for display.
+ * Formatting earlier meant the departure had to be parsed back out of an
+ * already-rendered "HH:mm", so any wrap past midnight silently lost a day.
+ */
+const fmt = (mins: number) => `${pad(Math.floor(mins / 60) % 24)}:${pad(mins % 60)}`;
+
+/** Everything starts at 09:00. */
+const DAY_START = 9 * 60;
 
 /** Marks a drag as ours, so drops of foreign text/links/files are ignored. */
 const DRAG_PAYLOAD = 'train';
@@ -23,20 +31,15 @@ const TRANSFER_MIN = 15;
 /** Slack between the last morning activity and the train leaving. */
 const BOARDING_MIN = 20;
 
-type Timed = { title: string; minutes: number; start: string; end: string };
+type Timed = { title: string; minutes: number; start: number; end: number };
 
-function recalcTimes(items: { title: string; minutes: number }[], startH: number, startM: number): Timed[] {
-  let h = startH;
-  let m = startM;
+function recalcTimes(items: { title: string; minutes: number }[], startMin: number): Timed[] {
+  let at = startMin;
   return items.map((item, idx) => {
-    if (idx > 0) {
-      m += TRANSFER_MIN;
-      while (m >= 60) { h++; m -= 60; }
-    }
-    const start = fmt(h, m);
-    m += item.minutes;
-    while (m >= 60) { h++; m -= 60; }
-    return { ...item, start, end: fmt(h, m) };
+    if (idx > 0) at += TRANSFER_MIN;
+    const start = at;
+    at += item.minutes;
+    return { ...item, start, end: at };
   });
 }
 
@@ -51,7 +54,7 @@ function ActivityRow({ activity }: { activity: Timed }) {
     >
       <span className="text-sm font-semibold">{activity.title}</span>
       <span className="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
-        {activity.start} — {activity.end}
+        {fmt(activity.start)} — {fmt(activity.end)}
       </span>
     </div>
   );
@@ -65,27 +68,19 @@ export function TransitDragDemo({ lang }: { lang: Lang }) {
 
   const items = dict.activities;
 
-  const before = useMemo(() => recalcTimes(items.slice(0, trainPosition), 9, 0), [items, trainPosition]);
+  const before = useMemo(() => recalcTimes(items.slice(0, trainPosition), DAY_START), [items, trainPosition]);
 
   const { after, dep, arr } = useMemo(() => {
-    let dh = 9;
-    let dm = 0;
-    if (before.length > 0) {
-      const [eh, em] = before[before.length - 1].end.split(':').map(Number);
-      dh = eh;
-      dm = em + BOARDING_MIN;
-      while (dm >= 60) { dh++; dm -= 60; }
-    }
-    const depTime = fmt(dh, dm);
+    const lastEnd = before.at(-1)?.end;
+    const depart = lastEnd === undefined ? DAY_START : lastEnd + BOARDING_MIN;
     // Arrival derives from the dictionary's own journey length, so the
     // "1 h 25 min" label and this arithmetic can never disagree.
-    let ah = dh;
-    let am = dm + dict.train.minutes;
-    while (am >= 60) { ah++; am -= 60; }
-    const arrTime = fmt(ah, am);
-    am += TRANSFER_MIN;
-    while (am >= 60) { ah++; am -= 60; }
-    return { after: recalcTimes(items.slice(trainPosition), ah, am), dep: depTime, arr: arrTime };
+    const arrive = depart + dict.train.minutes;
+    return {
+      after: recalcTimes(items.slice(trainPosition), arrive + TRANSFER_MIN),
+      dep: depart,
+      arr: arrive,
+    };
   }, [items, trainPosition, before, dict.train.minutes]);
 
   const move = (position: number) => {
@@ -184,7 +179,7 @@ export function TransitDragDemo({ lang }: { lang: Lang }) {
             {dict.train.from} → {dict.train.to}
           </p>
           <p className="font-mono text-xs tabular-nums text-muted-foreground">
-            {dep} — {arr} · {Math.floor(dict.train.minutes / 60)} h {dict.train.minutes % 60} min
+            {fmt(dep)} — {fmt(arr)} · {Math.floor(dict.train.minutes / 60)} h {dict.train.minutes % 60} min
           </p>
         </div>
         <span className="flex shrink-0 flex-col">
@@ -212,7 +207,7 @@ export function TransitDragDemo({ lang }: { lang: Lang }) {
       {/* The demo's thesis — "every later time recalculates" — happens with no
           visual focus change, so assistive tech gets it as a polite update. */}
       <p aria-live="polite" className="sr-only">
-        {dict.train.from} → {dict.train.to}: {dep} — {arr}
+        {dict.train.from} → {dict.train.to}: {fmt(dep)} — {fmt(arr)}
       </p>
 
       {after.map((a, i) => {

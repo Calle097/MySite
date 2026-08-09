@@ -1,8 +1,8 @@
 /**
  * The hairline rule that opens every section: a zero-padded index on the
- * left, the section name on the right. Home, playground, stack and the
- * colour lab all use it — extracted so the index formatting has exactly one
- * definition. Callers pass a 1-based number and never format it themselves.
+ * left, the section name on the right. Home, playground and stack all use it
+ * — extracted so the index formatting has exactly one definition. Callers
+ * pass a 1-based number and never format it themselves.
  */
 export function SectionHeader({ index, title }: { index: number; title: string }) {
   return (
