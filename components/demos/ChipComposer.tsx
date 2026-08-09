@@ -56,6 +56,9 @@ const PALETTE_WIDTH = 232;
 const LISTBOX_ID = 'composer-destinations';
 const optionId = (id: string) => `composer-option-${id}`;
 
+/** Elements contenteditable uses to start a new line. */
+const BLOCK_TAGS = new Set(['DIV', 'P', 'LI', 'BLOCKQUOTE', 'PRE', 'H1', 'H2', 'H3']);
+
 type Segment = { type: 'text'; value: string } | { type: 'chip'; id: string; name: string };
 
 function search(query: string): Destination[] {
@@ -93,6 +96,10 @@ function readSegments(root: HTMLElement): Segment[] {
       return;
     }
     if (node.tagName === 'BR') return pushText('\n');
+    // Chrome wraps each new line in a <div> rather than emitting a <br>.
+    // Descending into one without marking the boundary serialized "a⏎b" as
+    // "ab" — and the serialized readout is the whole point of this demo.
+    if (BLOCK_TAGS.has(node.tagName) && segments.length > 0) pushText('\n');
     node.childNodes.forEach(walk);
   };
   root.childNodes.forEach(walk);
@@ -116,11 +123,6 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
   const sync = () => {
     if (editorRef.current) setSegments(readSegments(editorRef.current));
   };
-
-  // Latest-value refs so the native listeners registered once below always
-  // call through to the current render's closures.
-  const openRef = useRef(open);
-  openRef.current = open;
 
   const getMarker = () => editorRef.current?.querySelector<HTMLElement>(`[${MARKER_ATTR}]`) ?? null;
 
@@ -312,12 +314,13 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
     if (e.key === 'Delete' && removeAdjacentChip('forward')) e.preventDefault();
   };
 
-  const closePaletteRef = useRef(closePalette);
-  closePaletteRef.current = closePalette;
-  const openPaletteRef = useRef(openPalette);
-  openPaletteRef.current = openPalette;
-  const readQueryRef = useRef(readQuery);
-  readQueryRef.current = readQuery;
+
+  // The listeners below are registered once, against document and the editor
+  // node, but must call into the *current* render's closures. One ref
+  // reassigned every render does that. Declared here, after the functions it
+  // captures, so nothing is read before it exists.
+  const latest = useRef({ open, openPalette, closePalette, readQuery });
+  latest.current = { open, openPalette, closePalette, readQuery };
 
   // The @ trigger listens for the NATIVE beforeinput, not React's onBeforeInput.
   // React synthesises that one from textInput/keypress/composition events, so
@@ -330,10 +333,10 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
     const el = editorRef.current;
     if (!el) return;
     const handler = (e: InputEvent) => {
-      if (openRef.current || e.isComposing) return;
+      if (latest.current.open || e.isComposing) return;
       if (e.inputType === 'insertText' && e.data === '@') {
         e.preventDefault();
-        openPaletteRef.current();
+        latest.current.openPalette();
       }
     };
     el.addEventListener('beforeinput', handler);
@@ -351,12 +354,12 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
       // place the query can be re-read. null means the caret has left the
       // query entirely — dismiss; otherwise track it, since moving the caret
       // back through the text narrows what was typed.
-      const q = readQueryRef.current();
-      if (q === null) closePaletteRef.current();
+      const q = latest.current.readQuery();
+      if (q === null) latest.current.closePalette();
       else setQuery(q);
     };
     const onPointerDown = (e: PointerEvent) => {
-      if (!shellRef.current?.contains(e.target as Node)) closePaletteRef.current();
+      if (!shellRef.current?.contains(e.target as Node)) latest.current.closePalette();
     };
 
     document.addEventListener('selectionchange', onSelectionChange);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 /**
@@ -143,7 +143,10 @@ function ScrollColumn({
               type="button"
               tabIndex={-1}
               onClick={() => !disabled && onSelect(v)}
-              className={`w-full cursor-pointer text-center text-sm tabular-nums transition-colors disabled:cursor-not-allowed disabled:opacity-30 ${
+              // aria-disabled:, not disabled:, to match the attribute above —
+              // the disabled: variants stopped applying the moment the real
+              // attribute came off, leaving blocked slots looking available.
+              className={`w-full cursor-pointer text-center text-sm tabular-nums transition-colors aria-disabled:cursor-not-allowed aria-disabled:opacity-30 ${
                 active && !disabled ? 'font-semibold' : ''
               }`}
               style={{
@@ -172,16 +175,12 @@ export function TimePicker({
 }: TimePickerProps) {
   const uid = useId();
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
 
-  const parsed = useMemo(() => parseHHmm(value), [value]);
-  const [localHour, setLocalHour] = useState(parsed?.h ?? 12);
-  const [localMinute, setLocalMinute] = useState(parsed?.m ?? 0);
-
-  useEffect(() => setMounted(true), []);
+  const [localHour, setLocalHour] = useState(() => parseHHmm(value)?.h ?? 12);
+  const [localMinute, setLocalMinute] = useState(() => parseHHmm(value)?.m ?? 0);
 
   // Re-sync staged state when opening or when the value changes externally
   useEffect(() => {
@@ -320,14 +319,12 @@ export function TimePicker({
         </svg>
       </div>
 
-      {mounted &&
-        open &&
+      {open &&
         position &&
         createPortal(
           <div
             ref={popoverRef}
             role="dialog"
-            aria-modal="false"
             tabIndex={-1}
             aria-label={`${labels.hours} / ${labels.minutes}`}
             className="fixed z-50 flex flex-col border shadow-2xl"
