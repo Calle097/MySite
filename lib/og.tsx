@@ -13,7 +13,23 @@ import { DICTS, type Lang } from './i18n';
  * `display: flex` spelled out on anything with more than one child, and no
  * Tailwind — hence the literal hex values instead of var(--color-*).
  */
-export const size = { width: 1200, height: 630 };
+/**
+ * Drawn at 2x the 1200x630 the platforms ask for. They all downscale and
+ * re-encode to JPEG, and the card is displayed around 600 CSS px wide — which
+ * is 1200+ device pixels on any modern screen, leaving a 1200px asset with no
+ * headroom at all and turning the small type to mush. Rendering at 2400x1260
+ * gives their pipeline something to throw away. Facebook's own guidance says
+ * to exceed 1200x630 for high-resolution devices; 2400x1260 is inside
+ * LinkedIn's and Twitter's limits, and this is flat colour, so the PNG stays
+ * small despite the pixel count.
+ *
+ * Every dimension below is written at 1x and passed through `px()`, so the
+ * layout stays legible and the scale is one number to change.
+ */
+const SCALE = 2;
+const px = (n: number) => n * SCALE;
+
+export const size = { width: px(1200), height: px(630) };
 export const contentType = 'image/png';
 
 const BACKGROUND = '#182454';
@@ -37,21 +53,21 @@ export function ogImage(lang: Lang) {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: '72px 80px',
+          padding: `${px(72)}px ${px(80)}px`,
           backgroundColor: BACKGROUND,
           backgroundImage: `linear-gradient(180deg, ${BACKGROUND} 0%, ${BACKGROUND_EDGE} 100%)`,
           color: FOREGROUND,
         }}
       >
-        <div style={{ display: 'flex', fontSize: 30, fontWeight: 600, letterSpacing: '-0.02em' }}>
+        <div style={{ display: 'flex', fontSize: px(30), fontWeight: 600, letterSpacing: '-0.02em' }}>
           Mattia Callegher
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', fontSize: 82, fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.05 }}>
+          <div style={{ display: 'flex', fontSize: px(82), fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.05 }}>
             {dict.hero.line1}
           </div>
-          <div style={{ display: 'flex', fontSize: 82, fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.05 }}>
+          <div style={{ display: 'flex', fontSize: px(82), fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.05 }}>
             {dict.hero.line2}
             <span style={{ color: ACCENT }}>.</span>
           </div>
@@ -59,12 +75,12 @@ export function ogImage(lang: Lang) {
 
         {/* The hairline rule the site opens every section with. */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', height: 1, backgroundColor: '#3d476f' }} />
+          <div style={{ display: 'flex', height: px(1), backgroundColor: '#3d476f' }} />
           <div
             style={{
               display: 'flex',
-              marginTop: 24,
-              fontSize: 24,
+              marginTop: px(24),
+              fontSize: px(24),
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: MUTED,
