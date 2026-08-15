@@ -182,6 +182,7 @@ export const en: Dict = {
     ],
     aiLine: 'Built with help from Claude Code, reviewed line by line',
   },
+  notFound: { text: 'Page not found —', back: 'Back home' },
   footer: { location: 'Mattia Callegher — Italy', email: 'Email', github: 'GitHub', source: 'Source' },
   skipToContent: 'Skip to content',
 };

@@ -9,12 +9,18 @@ import { DICTS, type Lang } from '@/lib/i18n';
 // the readout below can echo it. Chrome hides itself when embedded (the
 // iframe src carries #embed).
 export function TimePickerDemoPage({ lang }: { lang: Lang }) {
-  const dict = DICTS[lang].demos.timePicker;
+  const demos = DICTS[lang].demos;
+  const dict = demos.timePicker;
   const [time, setTime] = useState<string | null>(null);
 
   return (
     <div className="px-6">
       <EmbedMarker />
+      <noscript>
+        <p className="mx-auto mt-10 max-w-md text-center text-sm leading-relaxed text-muted-foreground">
+          {demos.noscript}
+        </p>
+      </noscript>
       <div className="flex flex-col items-center gap-6 pt-14">
         <TimePicker value={time} onChange={setTime} labels={dict.labels} />
         <p className="label text-muted-foreground">{time ? `${dict.picked} ${time}` : dict.hint}</p>

@@ -23,11 +23,17 @@ export const metadata: Metadata = {
 // First visit with an Italian browser (and no saved choice) → /it mirror.
 // A saved 'it' preference from the switcher also redirects. Demos stay
 // language-neutral and shared.
+//
+// The `/it` guard is load-bearing, not defensive: this layout also renders the
+// 404 page, which Caddy serves under the path the visitor actually asked for.
+// Without it, an Italian visitor hitting /it/typo/ would be sent to
+// /it/it/typo/ — another 404, another redirect, forever.
 const LOCALE_SCRIPT = `(function(){try{
-if(location.pathname.indexOf('/demos')===0)return;
+var path=location.pathname;
+if(path.indexOf('/demos')===0||path==='/it'||path.indexOf('/it/')===0)return;
 var p=localStorage.getItem('site-lang');
 if(p==='it'||(!p&&(navigator.language||'').toLowerCase().indexOf('it')===0)){
-location.replace('/it'+(location.pathname==='/'?'/':location.pathname)+location.search);}
+location.replace('/it'+(path==='/'?'/':path)+location.search);}
 }catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

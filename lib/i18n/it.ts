@@ -182,6 +182,7 @@ export const it: Dict = {
     ],
     aiLine: 'Costruito con l’aiuto di Claude Code, rivisto riga per riga',
   },
+  notFound: { text: 'Pagina non trovata —', back: 'Torna alla home' },
   footer: { location: 'Mattia Callegher — Italia', email: 'Email', github: 'GitHub', source: 'Codice' },
   skipToContent: 'Vai al contenuto',
 };

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { HomePage } from '@/components/pages/HomePage';
 
 export const metadata: Metadata = {
-  alternates: { canonical: '/it/', languages: { en: '/', it: '/it/' } },
+  alternates: { canonical: '/it/', languages: { en: '/', it: '/it/', 'x-default': '/' } },
 };
 
 export default function Home() {

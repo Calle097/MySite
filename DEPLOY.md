@@ -117,6 +117,32 @@ git push origin main
 Watch the repo's **Actions** tab. When it's green, the site is live.
 Rollback = revert the commit and push; CI redeploys the previous state.
 
+## Updating the Caddyfile
+
+CI only rsyncs `out/` into `/srv/mysite/site/`. The Caddyfile lives one level
+up at `/srv/mysite/Caddyfile` and no deploy ever touches it — the `deploy` user
+has no write access outside the site directory, precisely so a leaked CI key
+cannot rewrite the server config. `deploy/Caddyfile` in the repo is the
+reference copy; changes to it are carried over by hand.
+
+Push the site first, so anything the new config points at is already on disk.
+Then, from the repo root:
+
+```bash
+scp deploy/Caddyfile admin@YOUR_VPS_IP:/tmp/Caddyfile
+ssh admin@YOUR_VPS_IP "sudo mv /tmp/Caddyfile /srv/mysite/Caddyfile && sudo chown root:root /srv/mysite/Caddyfile"
+ssh admin@YOUR_VPS_IP "cd /srv/mysite && docker compose exec -T caddy caddy validate --adapter caddyfile --config /etc/caddy/Caddyfile"
+ssh admin@YOUR_VPS_IP "cd /srv/mysite && docker compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile"
+```
+
+Staged through `/tmp` because `/srv/mysite/` is root-owned — only `site/`
+belongs to `deploy`. `-T` skips the TTY a non-interactive SSH cannot allocate.
+
+`reload` re-validates before swapping and refuses a broken config, leaving the
+running one untouched, so a mistake costs a failed command rather than
+downtime. Run `validate` first anyway: it explains *why* a config was
+rejected, which `reload` does not always make obvious.
+
 ## Bots & abuse
 
 - Cloudflare proxy: hides the origin IP, absorbs basic floods; Bot Fight Mode

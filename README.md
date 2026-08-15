@@ -23,6 +23,10 @@ pnpm type-check
 - `components/demos/` — the playground's showcase components
 - `lib/i18n/` — `en.ts`, `it.ts`, and the `Dict` type they both satisfy
 - `lib/demos.ts` — the demo registry (slugs, frame heights, source links)
+- `app/(en)/not-found/` — the 404 page, a real route rather than Next's
+  `not-found.tsx`: with one root layout per language there is no `app/layout.tsx`
+  for Next to wrap `/_not-found` in, so its own export is unstyled. Caddy
+  rewrites unmatched paths to this one (`/it/not-found/` for the Italian tree)
 - `deploy/` — Caddyfile + docker-compose for the server
 - `.github/workflows/deploy.yml` — build + rsync on push to main
 

@@ -85,6 +85,7 @@ export interface Dict {
     sections: { title: string; items: string[] }[];
     aiLine: string;
   };
+  notFound: { text: string; back: string };
   footer: { location: string; email: string; github: string; source: string };
   skipToContent: string;
 }

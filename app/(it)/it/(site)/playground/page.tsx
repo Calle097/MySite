@@ -4,7 +4,7 @@ import { PlaygroundPage } from '@/components/pages/PlaygroundPage';
 export const metadata: Metadata = {
   title: 'Playground',
   description: 'Esperimenti con i componenti.',
-  alternates: { canonical: '/it/playground/', languages: { en: '/playground/', it: '/it/playground/' } },
+  alternates: { canonical: '/it/playground/', languages: { en: '/playground/', it: '/it/playground/', 'x-default': '/playground/' } },
 };
 
 export default function Playground() {
