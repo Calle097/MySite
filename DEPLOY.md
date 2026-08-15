@@ -129,19 +129,27 @@ Push the site first, so anything the new config points at is already on disk.
 Then, from the repo root:
 
 ```bash
-scp deploy/Caddyfile admin@YOUR_VPS_IP:/tmp/Caddyfile
-ssh admin@YOUR_VPS_IP "sudo mv /tmp/Caddyfile /srv/mysite/Caddyfile && sudo chown root:root /srv/mysite/Caddyfile"
+scp deploy/Caddyfile admin@YOUR_VPS_IP:/srv/mysite/Caddyfile
 ssh admin@YOUR_VPS_IP "cd /srv/mysite && docker compose exec -T caddy caddy validate --adapter caddyfile --config /etc/caddy/Caddyfile"
 ssh admin@YOUR_VPS_IP "cd /srv/mysite && docker compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile"
 ```
 
-Staged through `/tmp` because `/srv/mysite/` is root-owned — only `site/`
-belongs to `deploy`. `-T` skips the TTY a non-interactive SSH cannot allocate.
+No `sudo`, even though `/srv/mysite/` is root-owned: directory ownership
+governs creating, renaming and deleting entries, while overwriting an existing
+file's *contents* only needs write permission on the file itself. The Caddyfile
+is owned by the admin user from step 4, and `scp` truncates in place rather
+than replacing the entry. (`sudo mv` would fail here — it renames into the
+directory. And `sudo` over a non-interactive `ssh` cannot prompt for a password
+at all without `ssh -t`.)
 
-`reload` re-validates before swapping and refuses a broken config, leaving the
-running one untouched, so a mistake costs a failed command rather than
-downtime. Run `validate` first anyway: it explains *why* a config was
-rejected, which `reload` does not always make obvious.
+`-T` skips the TTY a non-interactive SSH cannot allocate. `reload` re-validates
+before swapping and refuses a broken config, leaving the running one untouched,
+so a mistake costs a failed command rather than downtime. Run `validate` first
+anyway: it explains *why* a config was rejected, which `reload` does not always
+make obvious.
+
+Caddy carries the original status through `handle_errors`, so the rewritten
+404 page is served as a real `404` — confirm with `curl -I https://YOUR_DOMAIN/nope/`.
 
 ## Bots & abuse
 
