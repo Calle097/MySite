@@ -138,7 +138,7 @@ export const en: Dict = {
       },
       {
         title: 'Camper-van rental site',
-        text: 'Marketing and booking site for a camper-van rental service. The playground vans started here, though the project never went through.',
+        text: 'Marketing and booking site for a camper-van rental service. The playground vans started here, though they did not end up in the result.',
         stack: 'Stack: Next.js · Tailwind · Framer Motion',
       },
     ],
