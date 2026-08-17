@@ -1,11 +1,56 @@
-import { DICTS, type Lang } from '@/lib/i18n';
+import { DICTS, prefix, type Lang } from '@/lib/i18n';
+import { SITE_URL } from '@/lib/site';
 import { SectionHeader } from '@/components/SectionHeader';
+
+/**
+ * The same facts the page already states, in the form search engines read:
+ * who the site is about, and that it is this person's site. Every value is
+ * derived from the dictionary rather than retyped, so the two languages
+ * cannot drift from the copy above them.
+ *
+ * The email is deliberately absent. Cloudflare obfuscates the address in the
+ * markup at the edge; repeating it here in plain text would hand it back to
+ * the scrapers that obfuscation exists to stop.
+ */
+function structuredData(lang: Lang) {
+  const dict = DICTS[lang];
+  const home = `${SITE_URL}${prefix(lang)}/`;
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Person',
+        // Stable across both language trees — one person, described twice.
+        '@id': `${SITE_URL}/#person`,
+        name: 'Mattia Callegher',
+        url: home,
+        jobTitle: `${dict.hero.line1} ${dict.hero.line2}`,
+        description: dict.description,
+        address: { '@type': 'PostalAddress', addressCountry: 'IT' },
+        sameAs: ['https://github.com/Calle097'],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
+        url: home,
+        name: 'Mattia Callegher',
+        inLanguage: lang,
+        publisher: { '@id': `${SITE_URL}/#person` },
+      },
+    ],
+  };
+}
 
 export function HomePage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(lang)) }}
+      />
       <section className="gutter rise pt-8 sm:pt-12">
         <h1
           className="font-semibold leading-[1.04] tracking-tight"

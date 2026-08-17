@@ -41,13 +41,34 @@ calleghermattia.com {
 		# script-src needs 'unsafe-inline': Next.js static export bootstraps
 		# hydration via inline scripts (and our locale redirect is inline).
 		# Nonces are impossible on prebuilt HTML; per-build hashes unmaintainable.
+		# style-src likewise: React renders style={{…}} attributes, several of
+		# them carrying values computed per render, so they cannot become CSS.
+		# base-uri/form-action 'none': the site has no <base> tag and no form,
+		# so nothing legitimate is lost and both injection routes close.
 		# frame-ancestors/frame-src 'self': the playground embeds its own demos.
-		Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; frame-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
+		Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'"
+
+		# Applies to everything the matchers below do not override — in
+		# practice every HTML page. Caddy's file_server sends ETag and
+		# Last-Modified but no Cache-Control at all, and with no directive
+		# browsers fall back to heuristic freshness: they invent a lifetime
+		# from the file's age and may serve a page for hours without asking.
+		# A stale page referencing hashed chunks a later deploy deleted is a
+		# broken site until a hard reload, so pages revalidate every visit —
+		# the ETag makes that a 304 and costs one round trip.
+		Cache-Control "public, max-age=0, must-revalidate"
 	}
 
-	# Hashed Next.js assets are immutable — cache hard
+	# Hashed Next.js assets are immutable — cache hard. Caddy applies repeated
+	# directives in file order and `header` replaces rather than appends, so
+	# these two matchers override the site-wide default set above.
 	@immutable path /_next/*
 	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	# Unhashed, so they cannot be immutable, but they only change on a rebuild:
+	# a day's cache rather than a revalidation on every single page view.
+	@assets path /cv.pdf /icon.svg /opengraph-image-*
+	header @assets Cache-Control "public, max-age=86400"
 
 	# Browsers blindly request /favicon.ico; the real icon is the SVG
 	redir /favicon.ico /icon.svg 301

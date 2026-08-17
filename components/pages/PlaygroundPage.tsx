@@ -22,7 +22,9 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
 
         return (
           <section key={slug} className="mt-20 sm:mt-24">
-            <SectionHeader index={i + 1} title={title} />
+            {/* The demo's own <h2> is below, in the body column — the rule
+                stays presentational here so the title is not a heading twice. */}
+            <SectionHeader index={i + 1} title={title} as="span" />
 
             <div className="gutter grid gap-x-14 gap-y-8 pt-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
               <div>
