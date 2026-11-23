@@ -39,7 +39,7 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
         {/* Desktop nav. The CV is a file, not a route — a Next <Link> would
             prefetch it as an RSC payload (cv.pdf.txt → 404), so it gets a
             plain <a>. */}
-        <nav className="hidden items-baseline gap-6 font-mono text-sm sm:flex text-muted-foreground">
+        <nav className="hidden items-baseline gap-6 font-mono text-sm nav:flex text-muted-foreground">
           {links.map((l) =>
             l.href.endsWith('.pdf') ? (
               <a key={l.href} href={l.href} className="transition-colors hover:text-brand-accent">

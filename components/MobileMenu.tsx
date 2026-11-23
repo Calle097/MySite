@@ -23,7 +23,7 @@ export function MobileMenu({ label, children }: { label: string; children: React
   }, []);
 
   return (
-    <details ref={ref} suppressHydrationWarning className="sm:hidden">
+    <details ref={ref} suppressHydrationWarning className="nav:hidden">
       <summary
         className="cursor-pointer list-none font-mono text-sm select-none [&::-webkit-details-marker]:hidden text-muted-foreground">
         {label}
