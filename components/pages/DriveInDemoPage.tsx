@@ -25,7 +25,7 @@ export function DriveInDemoPage({ lang }: { lang: Lang }) {
       <div className="h-screen" aria-hidden />
 
       <div className="mx-auto max-w-4xl">
-        <DemoCards lang={lang} />
+        <DemoCards items={dict.items} />
       </div>
 
       <p className="mt-10 text-center label text-muted-foreground">

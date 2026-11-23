@@ -1,30 +1,21 @@
-'use client';
-
-import { useState } from 'react';
-import { TimePicker } from '@/components/demos/TimePicker';
-import { EmbedMarker } from '@/components/EmbedMarker';
 import { DICTS, type Lang } from '@/lib/i18n';
+import { TimePickerDemo } from '@/components/demos/TimePickerDemo';
+import { EmbedMarker } from '@/components/EmbedMarker';
 
-// The only demo page that needs client state — it owns the picked value so
-// the readout below can echo it. Chrome hides itself when embedded (the
-// iframe src carries #embed).
+// Chrome hides itself when embedded (iframe src carries #embed); a
+// standalone visit keeps the header and footer.
 export function TimePickerDemoPage({ lang }: { lang: Lang }) {
-  const demos = DICTS[lang].demos;
-  const dict = demos.timePicker;
-  const [time, setTime] = useState<string | null>(null);
+  const dict = DICTS[lang].demos;
 
   return (
     <div className="px-6">
       <EmbedMarker />
       <noscript>
         <p className="mx-auto mt-10 max-w-md text-center text-sm leading-relaxed text-muted-foreground">
-          {demos.noscript}
+          {dict.noscript}
         </p>
       </noscript>
-      <div className="flex flex-col items-center gap-6 pt-14">
-        <TimePicker value={time} onChange={setTime} labels={dict.labels} />
-        <p className="label text-muted-foreground">{time ? `${dict.picked} ${time}` : dict.hint}</p>
-      </div>
+      <TimePickerDemo strings={dict.timePicker} />
     </div>
   );
 }

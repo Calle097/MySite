@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { ChevronDown, ChevronUp, GripVertical, TrainFront } from 'lucide-react';
-import { DICTS, type Lang } from '@/lib/i18n';
+import type { Dict } from '@/lib/i18n';
 
 /**
  * A day of activities split by a train. Move the train — by dragging it or
@@ -60,8 +60,9 @@ function ActivityRow({ activity }: { activity: Timed }) {
   );
 }
 
-export function TransitDragDemo({ lang }: { lang: Lang }) {
-  const dict = DICTS[lang].demos.transit;
+// Strings arrive as a prop from the server page, like ChipComposer's, so the
+// dictionaries stay out of the client bundle.
+export function TransitDragDemo({ strings: dict }: { strings: Dict['demos']['transit'] }) {
   const [trainPosition, setTrainPosition] = useState(3);
   const [dropTarget, setDropTarget] = useState<number | null>(null);
   const [dragging, setDragging] = useState(false);
