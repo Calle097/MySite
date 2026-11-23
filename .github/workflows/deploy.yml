@@ -18,13 +18,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # Actions are pinned to commit hashes, not tags. Whoever controls an
+      # action's repo can move a tag like v4 to different code at any time,
+      # and the next run would execute it; a commit hash always means the same
+      # code. The comment is the release each hash corresponds to. Dependabot
+      # proposes updates as pull requests (see .github/dependabot.yml).
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # version comes from package.json's "packageManager" field — setting it
       # here too makes pnpm/action-setup error out ("multiple versions").
-      - uses: pnpm/action-setup@v4
+      # Deliberately v4: v4.4.0 is v4.3.0 moved to the Node 24 runtime and
+      # nothing else. v6 adds a bootstrap pnpm 11 that then switches to the
+      # pinned version, which only pays off once the project is on pnpm 11+.
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
           cache: pnpm
@@ -40,6 +48,19 @@ jobs:
         env:
           NEXT_PUBLIC_SITE_URL: ${{ vars.SITE_URL }}
 
+      # Two passes, so a page never points at a file that isn't there yet.
+      # Pass 1 uploads the new build's JS/CSS and deletes nothing. Their names
+      # carry a content hash, so they land next to the old files, and no live
+      # page uses them yet: visitors see no change. Pass 2 swaps in the pages,
+      # and only after everything is uploaded (--delete-after) removes the
+      # files the new build no longer uses.
+      #
+      # Why it matters: Caddy sends its one-year immutable Cache-Control on a
+      # 404 under /_next/ too, and Cloudflare caches it. With a single pass, a
+      # file requested before it had been uploaded could stay a 404 at that
+      # Cloudflare location until the cache was purged by hand. The quirk is
+      # in the Caddyfile; this order keeps deploys from ever triggering it,
+      # with no change on the server.
       - name: Upload to VPS
         env:
           SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
@@ -50,4 +71,5 @@ jobs:
           printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
-          rsync -az --delete -e "ssh -i ~/.ssh/deploy_key" out/ "$USER@$HOST:/srv/mysite/site/"
+          rsync -az -e "ssh -i ~/.ssh/deploy_key" out/_next/ "$USER@$HOST:/srv/mysite/site/_next/"
+          rsync -az --delete --delete-after -e "ssh -i ~/.ssh/deploy_key" out/ "$USER@$HOST:/srv/mysite/site/"

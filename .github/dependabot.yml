@@ -1,0 +1,36 @@
+# Dependabot keeps the GitHub Actions in .github/workflows/ up to date.
+#
+# It only opens pull requests: nothing changes until one is merged by hand,
+# and no workflow runs on those pull requests (deploys run on pushes to main).
+#
+# Dependabot reads this file from the repository's DEFAULT branch only, so it
+# must live there. target-branch makes its pull requests go to main, where the
+# deploy workflow lives.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: main
+    schedule:
+      interval: monthly
+    # A new release is proposed only once it has been public for 14 days.
+    # Hijacked or malicious releases are usually caught and pulled within
+    # days, so they should never reach a pull request here.
+    cooldown:
+      default-days: 14
+    # Minor and patch updates arrive together in one pull request. A major
+    # version gets its own, since that is where behaviour changes: read its
+    # release notes before merging.
+    groups:
+      minor-and-patch:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # v6 only matters once the project moves to pnpm 11+ (see the note in
+      # deploy.yml). Remove this entry when that happens.
+      - dependency-name: pnpm/action-setup
+        update-types:
+          - version-update:semver-major
