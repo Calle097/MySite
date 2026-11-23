@@ -16,7 +16,7 @@ export const it: Dict = {
       {
         title: 'Sviluppatore frontend e consulente IT',
         where: '2020 — 2024',
-        text: 'Dipendente di un’azienda informatica. Web app in React + TypeScript, tra cui un gestionale per una catena di palestre usato da più di 500 persone.',
+        text: "Dipendente di un'azienda informatica. Web app in React + TypeScript, tra cui un gestionale per una catena di palestre usato da più di 500 persone.",
       },
       {
         title: 'QA engineer, in distacco',
@@ -49,7 +49,7 @@ export const it: Dict = {
       spiral: {
         title: 'Spirale aurea',
         caption:
-          '500 punti disposti secondo l’angolo aureo, lo stesso schema dei semi di girasole. Un impulso si propaga verso l’esterno all’infinito. Nessuna libreria, solo SVG.',
+          "500 punti disposti secondo l'angolo aureo, lo stesso schema dei semi di girasole. Un impulso si propaga verso l'esterno all'infinito. Nessuna libreria, solo SVG.",
       },
       'css-effects': {
         title: 'Effetti solo CSS',
@@ -64,7 +64,7 @@ export const it: Dict = {
       'time-picker': {
         title: 'Time picker',
         caption:
-          'Fatto per un progetto cliente dopo che tutti i time picker gratuiti che ho provato avevano qualche problema: valori controllati, scroll su mobile, popover tagliati. Era più veloce scriverne uno: selezione confermata con OK, scorciatoia “adesso”, fasce orarie disabilitabili.',
+          'Fatto per un progetto cliente dopo che tutti i time picker gratuiti che ho provato avevano qualche problema: valori controllati, scroll su mobile, popover tagliati. Era più veloce scriverne uno: selezione confermata con OK, scorciatoia "adesso", fasce orarie disabilitabili.',
       },
       'chip-composer': {
         title: 'Composer con chip',
@@ -74,7 +74,7 @@ export const it: Dict = {
       'transit-drag': {
         title: 'Transit drag',
         caption:
-          'Una giornata di attività con un treno in mezzo. Trascina il treno (o usa le frecce) e tutti gli orari successivi si ricalcolano: trasferimenti, partenza, l’intero pomeriggio.',
+          "Una giornata di attività con un treno in mezzo. Trascina il treno (o usa le frecce) e tutti gli orari successivi si ricalcolano: trasferimenti, partenza, l'intero pomeriggio.",
       },
     },
   },
@@ -84,7 +84,7 @@ export const it: Dict = {
       hover: 'Passa il mouse su una card',
       noscript: 'Questa demo ha bisogno di JavaScript: anima i path SVG mentre scorri.',
       items: [
-        { title: 'Guidato dallo scroll', text: 'L’entrata segue lo scroll di questo riquadro.' },
+        { title: 'Guidato dallo scroll', text: "L'entrata segue lo scroll di questo riquadro." },
         { title: 'Morphing di path', text: 'Un unico scheletro SVG passa da furgoncino a card.' },
       ],
     },
@@ -133,7 +133,7 @@ export const it: Dict = {
     items: [
       {
         title: 'Piattaforma per pianificare viaggi',
-        text: 'Frontend e un po’ di backend su una grande app Next.js 15: chat AI in streaming via SSE, una mappa MapLibre persistente in una parallel route che sopravvive alla navigazione, modali con URL reali tramite intercepting routes, pagamenti con Stripe, integrazioni REST per trasporti e hotel, sei lingue, cache delle query persistita su IndexedDB.',
+        text: "Frontend e un po' di backend su una grande app Next.js 15: chat AI in streaming via SSE, una mappa MapLibre persistente in una parallel route che sopravvive alla navigazione, modali con URL reali tramite intercepting routes, pagamenti con Stripe, integrazioni REST per trasporti e hotel, sei lingue, cache delle query persistita su IndexedDB.",
         stack: 'Stack: TypeScript · Tailwind · Zustand · TanStack Query · react-map-gl · autenticazione Firebase · Playwright',
       },
       {
@@ -146,9 +146,9 @@ export const it: Dict = {
   about: {
     title: 'Chi sono',
     paragraphs: [
-      'All’università ho studiato cinema e media. Poi ho imparato a programmare da autodidatta, e non ho più smesso.',
-      'Il mio primo lavoro tech è stato in un’azienda informatica: sviluppo frontend con React e, in parallelo, il distacco come QA su un grande sistema di smart metering: prima test manuali, poi automazione con Playwright, fino a coordinare la parte QA.',
-      'Oggi lavoro come freelance dall’Italia e mi piacerebbe trasferirmi in Giappone per lavoro.',
+      "All'università ho studiato cinema e media. Poi ho imparato a programmare da autodidatta, e non ho più smesso.",
+      "Il mio primo lavoro tech è stato in un'azienda informatica: sviluppo frontend con React e, in parallelo, il distacco come QA su un grande sistema di smart metering, dove sono passato dai test manuali all'automazione con Playwright, fino a coordinare la parte QA.",
+      "Oggi lavoro come freelance dall'Italia e mi piacerebbe trasferirmi in Giappone per lavoro.",
     ],
   },
   stack: {
@@ -180,7 +180,7 @@ export const it: Dict = {
         ],
       },
     ],
-    aiLine: 'Costruito con l’aiuto di Claude Code, rivisto riga per riga',
+    aiLine: "Costruito con l'aiuto di Claude Code, rivisto riga per riga",
   },
   notFound: { text: 'Pagina non trovata —', back: 'Torna alla home' },
   footer: { location: 'Mattia Callegher — Italia', email: 'Email', github: 'GitHub', source: 'Codice' },

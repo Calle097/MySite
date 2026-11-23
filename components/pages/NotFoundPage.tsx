@@ -1,7 +1,7 @@
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
 
 /**
- * Rendered by the real routes at /404/ and /it/404/, which Caddy serves for
+ * Rendered by the real routes at /not-found/ and /it/not-found/, which Caddy serves for
  * any unmatched path (see deploy/Caddyfile). It is NOT Next's `not-found.tsx`:
  * with a root layout per language and no `app/layout.tsx`, Next has nothing to
  * wrap `/_not-found` in, so it falls back to its own unstyled page — the

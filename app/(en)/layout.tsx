@@ -21,8 +21,9 @@ export const metadata: Metadata = {
 };
 
 // First visit with an Italian browser (and no saved choice) → /it mirror.
-// A saved 'it' preference from the switcher also redirects. Demos stay
-// language-neutral and shared.
+// A saved 'it' preference from the switcher also redirects. /demos/ is left
+// alone: each playground already embeds its own language's demos, and a
+// redirect here would drop the #embed fragment those iframes rely on.
 //
 // The `/it` guard is load-bearing, not defensive: this layout also renders the
 // 404 page, which Caddy serves under the path the visitor actually asked for.

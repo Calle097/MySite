@@ -7,10 +7,6 @@ import { SectionHeader } from '@/components/SectionHeader';
  * who the site is about, and that it is this person's site. Every value is
  * derived from the dictionary rather than retyped, so the two languages
  * cannot drift from the copy above them.
- *
- * The email is deliberately absent. Cloudflare obfuscates the address in the
- * markup at the edge; repeating it here in plain text would hand it back to
- * the scrapers that obfuscation exists to stop.
  */
 function structuredData(lang: Lang) {
   const dict = DICTS[lang];

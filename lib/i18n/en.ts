@@ -8,7 +8,7 @@ export const en: Dict = {
     line2: '& QA engineer',
     metaRow: ['Based in Italy', 'Interested in working in Japan', 'React · Next.js · TypeScript · Tailwind · Playwright'],
     blurb:
-      'I build web apps with React, Next.js and TypeScript. I started in QA, so I also test what I build. I dabble in backend too — TypeScript, Python, SQL.',
+      'I build web apps with React, Next.js and TypeScript. I started in QA, so I also test what I build. I dabble in backend too: TypeScript, Python, SQL.',
   },
   work: {
     header: 'Work',
@@ -64,12 +64,12 @@ export const en: Dict = {
       'time-picker': {
         title: 'Time picker',
         caption:
-          'Built for a client project after every free time picker I looked into misbehaved somewhere — controlled values, mobile scrolling, popover clipping. Writing one was faster: staged selection, a “now” shortcut, per-slot disabling.',
+          'Built for a client project after every free time picker I looked into misbehaved somewhere: controlled values, mobile scrolling, popover clipping. Writing one was faster: staged selection, a "now" shortcut, per-slot disabling.',
       },
       'chip-composer': {
         title: 'Entity-chip composer',
         caption:
-          'Type @ and pick a destination: it becomes a chip the caret can’t split. Built on raw DOM Ranges and Selection, no editor library. The palette anchors to the caret and the panel below shows how the message serializes.',
+          "Type @ and pick a destination: it becomes a chip the caret can't split. Built on raw DOM Ranges and Selection, no editor library. The palette anchors to the caret and the panel below shows how the message serializes.",
       },
       'transit-drag': {
         title: 'Transit drag',
@@ -147,7 +147,7 @@ export const en: Dict = {
     title: 'About',
     paragraphs: [
       'I studied film and media at university. Then I taught myself how to program, and it stuck.',
-      'My first tech job was at an IT company: frontend work with React, while also being dispatched as QA on a large smart metering system: manual testing first, then Playwright automation, eventually coordinating the QA side.',
+      'My first tech job was at an IT company: frontend work with React, while also being dispatched as QA on a large smart metering system, where I went from manual testing to Playwright automation and eventually coordinated the QA side.',
       'Now I freelance from Italy, and I would like to move to Japan for work.',
     ],
   },
@@ -159,7 +159,7 @@ export const en: Dict = {
       {
         title: 'Stack',
         items: [
-          'Next.js 15, static export — served as plain files',
+          'Next.js 15, static export, served as plain files',
           'React 19, TypeScript, Tailwind CSS 4',
           'Framer Motion, playground only',
           'English and Italian without an i18n library: one static route tree per language, TypeScript dictionaries, a tiny script for detection and saved preference',
