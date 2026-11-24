@@ -99,14 +99,20 @@
         text-transform: uppercase;
       }
 
-      /* The labels: date, stack, what a demo is built with. */
-      :is([data-part='when'], [data-part='stack'], [data-part='tech']) {
+      /* Text and labels change colour on hover (below). */
+      :is(p, a, [data-part='when'], [data-part='tech'], .fc-teaser-text) {
         transition: color 0.5s ease;
       }
     }
 
     @media (hover: hover) {
+      /* The light gathers behind a hovered entry, too bright for muted
+         text: the text turns white, and the labels (date, stack, what a
+         demo is built with) and the arrow line take the line's colour. */
       [data-entry]:hover {
+        --fc-muted: var(--fc-fg);
+        --color-muted-foreground: var(--fc-fg);
+
         &::after {
           transform: scaleX(1);
         }
@@ -115,9 +121,7 @@
           transform: translateX(0.4rem);
         }
 
-        /* The light gathers behind a hovered entry, too bright for muted
-           labels: they take the line's colour. */
-        :is([data-part='when'], [data-part='stack'], [data-part='tech']) {
+        :is([data-part='when'], [data-part='stack'], [data-part='tech'], .fc-teaser-link) {
           color: var(--fc-accent);
         }
       }

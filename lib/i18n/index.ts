@@ -119,7 +119,8 @@ export interface Dict {
   projects: { header: string; items: { title: string; text: string; stack?: string }[] };
   /** Plain shows the parts' text as one block; the fancier version gives
       each part its own section, under its title. */
-  about: { title: string; parts: { title: string; text: string }[] };
+  /** open: the fancier home's way to the About page, "{open} →". */
+  about: { title: string; open: string; parts: { title: string; text: string }[] };
   stack: {
     title: string;
     sourcePre: string;

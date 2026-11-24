@@ -28,10 +28,19 @@
       display: block;
     }
 
+    /* The arrow line of the playground and About teasers is their link,
+       stretched over the whole entry (which is position: relative): all of
+       it clicks, and a screen reader hears only the line. */
     .fc-teaser-link {
-      display: block;
+      display: inline-block;
       margin-top: 1rem;
       color: var(--fc-fg);
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+      }
     }
 
     .fc-teaser-spiral {

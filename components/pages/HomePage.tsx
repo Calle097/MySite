@@ -182,23 +182,25 @@ export function HomePage({ lang }: { lang: Lang }) {
         </ul>
       </section>
 
-      {/* Fancier only: a way into the playground, with the spiral beside it. */}
+      {/* Fancier only: two ways on, each a whole entry that links (its arrow
+          line is the link, stretched over the entry). The playground, with
+          the spiral beside it; */}
       <section id="playground" data-section data-part="playground" className="only-fancy">
         <SectionHeader index={3} title={dict.playground.title} />
-        <a href={pageHref(lang, 'playground')} data-entry data-part="teaser" data-reveal="rise">
+        <div data-entry data-part="teaser" data-reveal="rise">
           <span data-part="text">
             <span className="fc-teaser-text">{dict.playground.intro}</span>
-            <span className="fc-mono fc-teaser-link">
+            <a href={pageHref(lang, 'playground')} className="fc-mono fc-teaser-link">
               {dict.playground.open} · {twoDigits(DEMO_SLUGS.length)} →
-            </span>
+            </a>
           </span>
           <span data-part="spiral" aria-hidden>
             <SpiralDots totalDots={150} size={150} dotRadius={1.8} className="fc-teaser-spiral" />
           </span>
-        </a>
+        </div>
       </section>
 
-      {/* Fancier only: the about page's text, in short. */}
+      {/* and the About page, in short. */}
       <section id="about" data-section data-part="about" className="only-fancy">
         <SectionHeader index={4} title={dict.about.title} />
         <div data-entry data-reveal="rise">
@@ -207,6 +209,9 @@ export function HomePage({ lang }: { lang: Lang }) {
               {part.text}
             </p>
           ))}
+          <a href={pageHref(lang, 'about')} className="fc-mono fc-teaser-link">
+            {dict.about.open} →
+          </a>
         </div>
       </section>
 

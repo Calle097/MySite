@@ -158,6 +158,7 @@ export const it: Dict = {
   },
   about: {
     title: 'Chi sono',
+    open: 'La storia per intero',
     parts: [
       {
         title: 'Cinema, poi codice',
