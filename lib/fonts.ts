@@ -14,11 +14,13 @@ const mono = IBM_Plex_Mono({
   variable: '--font-plex-mono',
 });
 
-// The fancier version's typeface: light for display, regular and medium for text.
-// Open Font License, so it can be self-hosted from the repo (Satoshi, the
-// first choice, may not sit in a public repository). preload: false — the
-// @font-face is on every page, but a browser fetches a font only once some
-// visible text uses it, so plain visitors never download it.
+// The fancier version's typeface: light for display, regular and medium for
+// text. Open Font License; like the others, next/font downloads it at build
+// time and the site serves it itself, and no font file is in the repository.
+// (Satoshi, the first choice, was dropped: its licence doesn't allow the files
+// in a public repository.) preload: false — the @font-face is on every page,
+// but a browser fetches a font only once some visible text uses it, so plain
+// visitors never download it.
 const albert = Albert_Sans({
   subsets: ['latin'],
   display: 'swap',
