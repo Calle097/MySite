@@ -41,7 +41,7 @@ location.replace('/it'+(path==='/'?'/':path)+location.search);}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    // MODE_SCRIPT sets data-mode, data-js and the tuning attributes on <html>
+    // MODE_SCRIPT sets data-mode and data-js on <html>
     // before React loads, on purpose, so the page never paints in the wrong
     // mode. suppressHydrationWarning tells React those extra attributes are
     // expected; it covers this element's own attributes only, nothing inside.

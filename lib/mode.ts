@@ -1,5 +1,5 @@
 /**
- * Plain / lively mode.
+ * Plain / lively mode ("lively" is a working name).
  *
  * The mode is one attribute on <html>: data-mode="lively" when on, absent
  * when plain. app/lively.css keys every lively style off it, so plain mode
@@ -12,45 +12,26 @@
  * other document of the site when the choice changes, so other tabs and the
  * playground's iframes follow the switch live.
  *
- * Components that care (the reveal observer, the light band) listen for
- * MODE_EVENT on window, fired whenever the mode changes in this document.
- *
- * TUNE_* is branch-only scaffolding for choosing the lively design. Remove
- * it together with components/lab/TuneBar.tsx once the design is decided.
+ * Components that care (the reveal observer) listen for MODE_EVENT on
+ * window, fired whenever the mode changes in this document.
  */
 
 export const MODE_KEY = 'site-mode';
-export const TUNE_KEY = 'lively-tune';
 export const MODE_EVENT = 'site:mode';
-
-export const TUNE_OPTIONS = {
-  palette: ['indigo', 'ink', 'forest', 'plum', 'petrol', 'oxblood', 'slate'],
-  hero: ['moderate', 'large'],
-  grid: ['always', 'switch'],
-} as const;
-
-export type TuneKey = keyof typeof TUNE_OPTIONS;
-export type Tune = { [K in TuneKey]: (typeof TUNE_OPTIONS)[K][number] };
-
-export const TUNE_DEFAULTS: Tune = { palette: 'indigo', hero: 'moderate', grid: 'always' };
-
-const TUNE_KEYS = Object.keys(TUNE_OPTIONS) as TuneKey[];
 
 export const MODE_SCRIPT = `(function(){try{
 var d=document.documentElement;
 d.setAttribute('data-js','');
-function apply(){var m=null,t={};
-try{m=localStorage.getItem('${MODE_KEY}');t=JSON.parse(localStorage.getItem('${TUNE_KEY}')||'{}')||{};}catch(e){}
-if(m==='lively')d.setAttribute('data-mode','lively');else d.removeAttribute('data-mode');
-${TUNE_KEYS.map((k) => `d.setAttribute('data-${k}',t.${k}||'${TUNE_DEFAULTS[k]}');`).join('\n')}}
+function apply(){var m=null;
+try{m=localStorage.getItem('${MODE_KEY}');}catch(e){}
+if(m==='lively')d.setAttribute('data-mode','lively');else d.removeAttribute('data-mode');}
 apply();
-addEventListener('storage',function(e){if(e.key==='${MODE_KEY}'||e.key==='${TUNE_KEY}'){apply();dispatchEvent(new Event('${MODE_EVENT}'));}});
+addEventListener('storage',function(e){if(e.key==='${MODE_KEY}'){apply();dispatchEvent(new Event('${MODE_EVENT}'));}});
 }catch(e){}})();`;
 
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
 /** How long the entrance choreography runs after switching to lively;
-    app/lively.css keys the grid lines' draw and the reveal delays off
-    data-entering while it lasts. */
+    app/lively.css can key entrance delays off data-entering while it lasts. */
 const ENTERING_MS = 1800;
 let switching = false;
 

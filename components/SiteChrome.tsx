@@ -2,12 +2,10 @@ import Link from 'next/link';
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
 import { EMAIL } from '@/lib/site';
 import { LangSwitcher } from './LangSwitcher';
-import { LightBand } from './LightBand';
 import { MobileMenu } from './MobileMenu';
 import { ModeSwitch } from './ModeSwitch';
 import { NavLink } from './NavLink';
 import { RevealObserver } from './RevealObserver';
-import { TuneBar } from './lab/TuneBar';
 
 export function SiteChrome({ lang, children }: { lang: Lang; children: React.ReactNode }) {
   const dict = DICTS[lang];
@@ -135,8 +133,6 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
       </footer>
 
       <RevealObserver />
-      <LightBand />
-      <TuneBar />
     </div>
   );
 }

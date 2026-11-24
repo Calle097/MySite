@@ -2,7 +2,6 @@ import { DICTS, prefix, type Lang } from '@/lib/i18n';
 import { revealOrder } from '@/lib/reveal';
 import { EMAIL, SITE_URL } from '@/lib/site';
 import { CopyEmail } from '@/components/CopyEmail';
-import { GridLines } from '@/components/GridLines';
 import { ModeSwitch } from '@/components/ModeSwitch';
 import { SectionHeader } from '@/components/SectionHeader';
 
@@ -46,7 +45,7 @@ function structuredData(lang: Lang) {
  * Plain mode renders this as it always has. The data-* attributes are hooks
  * for lively mode only (app/lively.css): data-part names a piece of the
  * layout, data-reveal / revealOrder set up the scroll reveals
- * (lib/reveal.ts), data-band-row marks rows the light band glides to.
+ * (lib/reveal.ts).
  */
 export function HomePage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];
@@ -57,7 +56,6 @@ export function HomePage({ lang }: { lang: Lang }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(lang)) }}
       />
-      <GridLines />
 
       <section data-part="hero" className="gutter rise pt-8 sm:pt-12">
         {/* One block per line (same layout as a <br>) so lively mode can
@@ -111,7 +109,6 @@ export function HomePage({ lang }: { lang: Lang }) {
           {dict.work.items.map((w, i) => (
             <li
               key={w.title}
-              data-band-row
               data-reveal="rise"
               style={revealOrder(i)}
               className="gutter group row-hover grid gap-x-10 gap-y-2 border-b py-7 sm:py-8 lg:grid-cols-[10rem_minmax(0,1fr)_minmax(0,1.3fr)] border-secondary-darker"
@@ -145,7 +142,6 @@ export function HomePage({ lang }: { lang: Lang }) {
           {dict.projects.items.map((project, i) => (
             <li
               key={project.title}
-              data-band-row
               data-reveal="rise"
               style={revealOrder(i)}
               className="gutter group row-hover grid gap-x-10 gap-y-2 border-b py-7 sm:py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] border-secondary-darker"
