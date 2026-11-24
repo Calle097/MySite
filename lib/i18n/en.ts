@@ -221,6 +221,7 @@ export const en: Dict = {
     pages: 'Pages',
     onThisPage: 'On this page',
     index: 'Index',
+    demos: 'Demos',
     language: 'Language',
   },
   mode: {

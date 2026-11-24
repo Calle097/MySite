@@ -32,7 +32,7 @@ interface Demo {
   height: string;
   /** File the "Source ↗" link opens. */
   source: string;
-  /** What it is built with, for the label under lively mode's display case. */
+  /** What it is built with, shown under the demo in the fancier version. */
   tech: string;
 }
 

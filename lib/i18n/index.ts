@@ -147,6 +147,8 @@ export interface Dict {
     pages: string;
     onThisPage: string;
     index: string;
+    /** The index's label on a demo page, which lists every demo. */
+    demos: string;
     language: string;
   };
   /** The two versions: plain, and the fancier one (called "lively" in the code). */
