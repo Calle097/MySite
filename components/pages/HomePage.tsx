@@ -1,8 +1,8 @@
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
+import { stagger } from '@/lib/motion';
 import { pageHref } from '@/lib/pages';
 import { DEMO_SLUGS } from '@/lib/demos';
 import { twoDigits } from '@/lib/format';
-import { revealOrder } from '@/lib/reveal';
 import { CV_PATH, EMAIL, GITHUB_URL, NAME, SITE_URL } from '@/lib/site';
 import { CopyEmail } from '@/components/CopyEmail';
 import { ModeSwitch } from '@/components/ModeSwitch';
@@ -49,8 +49,8 @@ function structuredData(lang: Lang) {
 /**
  * Plain mode renders this as it always has. The fancier version lays it out
  * through PageLayout and app/fancy.css, using the hooks here: data-part
- * names a piece, data-entry marks an entry, data-reveal / revealOrder set up
- * the scroll reveals (lib/reveal.ts). Two sections are fancier only: the
+ * names a piece, data-entry marks an entry, data-reveal and stagger() set
+ * up the scroll reveals (components/RevealObserver.tsx). Two sections are fancier only: the
  * playground teaser and About.
  */
 export function HomePage({ lang }: { lang: Lang }) {
@@ -87,7 +87,7 @@ export function HomePage({ lang }: { lang: Lang }) {
       <div
         data-part="meta"
         data-reveal="rise"
-        style={revealOrder(3)}
+        style={stagger(3)}
         className="only-plain mt-9 flex flex-wrap gap-x-10 gap-y-2 label text-muted-foreground"
       >
         {dict.hero.metaRow.map((m) => (
@@ -98,14 +98,14 @@ export function HomePage({ lang }: { lang: Lang }) {
       <p
         data-part="blurb"
         data-reveal="rise"
-        style={revealOrder(4)}
+        style={stagger(4)}
         className="rise-late mt-10 max-w-[52ch] leading-relaxed sm:text-lg text-muted-foreground"
       >
         {dict.hero.blurb}
       </p>
 
       {/* Fancier: where, under the blurb (the meta row's first two facts). */}
-      <p data-part="place" data-reveal="rise" style={revealOrder(5)} className="only-fancy fc-mono">
+      <p data-part="place" data-reveal="rise" style={stagger(5)} className="only-fancy fc-mono">
         {place} · {wish}
       </p>
 
@@ -134,7 +134,7 @@ export function HomePage({ lang }: { lang: Lang }) {
               key={w.title}
               data-entry
               data-reveal="rise"
-              style={revealOrder(i)}
+              style={stagger(i)}
               className="gutter group row-hover grid gap-x-10 gap-y-2 border-b py-7 sm:py-8 lg:grid-cols-[10rem_minmax(0,1fr)_minmax(0,1.3fr)] border-secondary-darker"
             >
               <span data-part="when" className="label lg:pt-1.5 text-muted-foreground">
@@ -168,7 +168,7 @@ export function HomePage({ lang }: { lang: Lang }) {
               key={project.title}
               data-entry
               data-reveal="rise"
-              style={revealOrder(i)}
+              style={stagger(i)}
               className="gutter group row-hover grid gap-x-10 gap-y-2 border-b py-7 sm:py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] border-secondary-darker"
             >
               <h3

@@ -13,12 +13,6 @@ export function DriveInDemoPage({ lang }: { lang: Lang }) {
           {dict.scroll}
         </p>
 
-        <noscript>
-          <p className="mx-auto mt-10 max-w-md text-center text-sm leading-relaxed text-muted-foreground">
-            {dict.noscript}
-          </p>
-        </noscript>
-
         {/* Scroll runway: a full viewport tall, so with the hint above it the
             cards always start beyond the fold — nothing leaks in half-clipped. */}
         <div className="h-screen" aria-hidden />

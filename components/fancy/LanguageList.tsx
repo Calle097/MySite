@@ -1,8 +1,9 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import type { CSSProperties, Ref } from 'react';
+import type { Ref } from 'react';
 import { LANGUAGES, pathIn, rememberLang, type Lang } from '@/lib/i18n';
+import { stagger } from '@/lib/motion';
 import type { ChromeLabels } from './types';
 
 /**
@@ -16,7 +17,7 @@ export function LanguageList({ lang, onPick }: { lang: Lang; onPick?: () => void
   return (
     <ul className="fc-langs">
       {LANGUAGES.map(({ lang: l, name }, i) => (
-        <li key={l} style={{ '--i': i } as CSSProperties}>
+        <li key={l} style={stagger(i)}>
           <a
             href={pathIn(l, pathname)}
             lang={l}

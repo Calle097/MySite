@@ -1,6 +1,7 @@
 import type { Dict } from './index';
 
 export const it: Dict = {
+  role: 'Sviluppatore Frontend & QA Engineer',
   description:
     'Sviluppatore frontend e QA engineer. React, Next.js, TypeScript, Playwright. Vivo in Italia e mi piacerebbe lavorare in Giappone.',
   hero: {
@@ -84,7 +85,6 @@ export const it: Dict = {
     driveIn: {
       scroll: 'Scorri ↓',
       hover: 'Passa il mouse su una card',
-      noscript: 'Questa demo ha bisogno di JavaScript: anima i path SVG mentre scorri.',
       items: [
         { title: 'Guidato dallo scroll', text: "L'entrata segue lo scroll di questo riquadro." },
         { title: 'Morphing di path', text: 'Un unico scheletro SVG passa da furgoncino a card.' },
@@ -227,7 +227,7 @@ export const it: Dict = {
   },
   mode: {
     plainNote: 'Questa è la versione semplice.',
-    showFancier: 'Mostra quella più elaborata →',
+    showFancier: 'Prova quella più elaborata →',
     getFancy: 'elaborata',
     version: 'Versione',
     plain: 'Semplice',

@@ -74,18 +74,6 @@
       }
     }
 
-    /* Lines that rise from behind a clean edge. */
-    .fc-mask {
-      display: block;
-      overflow: clip;
-      padding-bottom: 0.1em;
-      margin-bottom: -0.1em;
-
-      > span {
-        display: inline-block;
-      }
-    }
-
     /* The index and the languages share one slot, all the free space
        between the pages and the bottom row: EN swaps one for the other, so
        the menu never grows. Whichever shows fills it and scrolls inside it

@@ -8,11 +8,6 @@ export function TransitDemoPage({ lang }: { lang: Lang }) {
   return (
     <DemoLayout lang={lang} slug="transit-drag">
       <div className="px-6 py-8">
-        <noscript>
-          <p className="mx-auto mb-8 max-w-md text-center text-sm leading-relaxed text-muted-foreground">
-            {dict.noscript}
-          </p>
-        </noscript>
         <TransitDragDemo strings={dict.transit} />
       </div>
     </DemoLayout>

@@ -1,6 +1,7 @@
 import type { Dict } from './index';
 
 export const en: Dict = {
+  role: 'Frontend Developer & QA Engineer',
   description:
     'Frontend developer & QA engineer. React, Next.js, TypeScript, Playwright. Based in Italy, interested in working in Japan.',
   hero: {
@@ -36,7 +37,7 @@ export const en: Dict = {
   playground: {
     title: 'Playground',
     intro:
-      'Simple things I built and found too interesting, or too silly, to throw away. Some shipped, some never left the sketchbook.',
+      'Simple things I built and wanted to show, just because. Some shipped, some never left the sketchbook.',
     openLabel: 'Open ↗',
     sourceLabel: 'Source ↗',
     loading: 'loading',
@@ -84,7 +85,6 @@ export const en: Dict = {
     driveIn: {
       scroll: 'Scroll ↓',
       hover: 'Hover a parked card',
-      noscript: 'This demo needs JavaScript. It animates SVG paths as you scroll.',
       items: [
         { title: 'Scroll-scrubbed', text: 'Entry follows the scroll position of this frame.' },
         { title: 'Path morphing', text: 'One SVG skeleton tweens between van and card.' },
@@ -189,9 +189,9 @@ export const en: Dict = {
           'No analytics, cookies, or tracking scripts on my side. Traffic passes through Cloudflare, which keeps its own basic logs',
           {
             plain:
-              'This version works without JavaScript, except the playground. The fancier one needs it for the light, the menu and the motion.',
+              'This version works without JavaScript, except for the playground. The fancier one needs it for the light, the menu and the motion.',
             fancier:
-              'The plain version works without JavaScript, except the playground. This one needs it for the light, the menu and the motion.',
+              'The plain version works without JavaScript, except for the playground. This one needs it for the light, the menu and the motion.',
           },
         ],
       },
@@ -227,7 +227,7 @@ export const en: Dict = {
   },
   mode: {
     plainNote: 'This is the plain version.',
-    showFancier: 'Show the fancier one →',
+    showFancier: 'Try the fancier one →',
     getFancy: 'get fancy',
     version: 'Version',
     plain: 'Plain',

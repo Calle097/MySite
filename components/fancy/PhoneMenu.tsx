@@ -1,11 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import type { Lang } from '@/lib/i18n';
 import { useCurrentSection } from '@/lib/fancy/current-section';
 import { MODE_EVENT } from '@/lib/mode';
-import { EASE, circleFrames, reducedMotion } from '@/lib/motion';
+import { EASE, circleFrames, reducedMotion, stagger } from '@/lib/motion';
 import { NAME } from '@/lib/site';
 import { LanguageList, LanguageToggle } from './LanguageList';
 import { NavLink } from './NavLink';
@@ -213,7 +213,7 @@ export function PhoneMenu({
             {pages.map((page, i) => {
               const text = (
                 <span className="fc-mask">
-                  <span style={{ '--i': i } as CSSProperties}>
+                  <span style={stagger(i)}>
                     {page.label}
                     {page.file && ' ↓'}
                   </span>
@@ -245,7 +245,7 @@ export function PhoneMenu({
         </div>
 
         {/* Enters a beat after the last page. */}
-        <div className="fc-menu-foot" style={{ '--i': pages.length + 1 } as CSSProperties}>
+        <div className="fc-menu-foot" style={stagger(pages.length + 1)}>
           <LanguageToggle
             lang={lang}
             controls="fc-menu-langs"

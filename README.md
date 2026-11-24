@@ -77,7 +77,8 @@ in the page components.
    `<DemoLayout>` (the frame both looks use, and the `#embed` marker the
    playground's iframes rely on)
 3. Route files under `app/(en)/demos/<slug>/` and `app/(it)/it/demos/<slug>/`
-4. Add the slug to `DEMO_SLUGS` and `DEMOS` in `lib/demos.ts`
+4. Add the slug to `DEMO_SLUGS` and `DEMOS` in `lib/demos.ts` (with `needsJs`:
+   the demo frame shows a note when JavaScript is off)
 5. Add `playground.items.<slug>` and any in-demo strings to both dictionaries
 
 Steps 4 and 5 are enforced by the type checker — miss one and `pnpm

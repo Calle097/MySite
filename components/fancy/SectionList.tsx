@@ -1,7 +1,8 @@
 'use client';
 
-import type { CSSProperties, MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 import { twoDigits } from '@/lib/format';
+import { stagger } from '@/lib/motion';
 
 export type IndexItem = { href: string; title: string };
 
@@ -22,7 +23,7 @@ export function SectionList({
   return (
     <ol className="fc-sections">
       {items.map((item, i) => (
-        <li key={item.href} style={{ '--i': i } as CSSProperties}>
+        <li key={item.href} style={stagger(i)}>
           <a
             href={item.href}
             aria-current={i === current ? 'true' : undefined}

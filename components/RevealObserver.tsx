@@ -5,10 +5,14 @@ import { usePathname } from 'next/navigation';
 import { MODE_EVENT } from '@/lib/mode';
 
 /**
- * The fancier version's scroll reveals (see lib/reveal.ts for the markup side).
- * Watches every [data-reveal] element on the page and marks it data-shown
- * once it scrolls into view; app/fancy.css animates that change. Each
- * element reveals once.
+ * The fancier version's scroll reveals. The markup opts in with
+ * data-reveal="rise" (fades up), "mask" (a heading's [data-line] children
+ * rise from behind a clean edge), "rule" (a section title rises out of its
+ * own edge) or "frame" (a demo frame's crop marks draw in from the
+ * corners); elements that reveal together carry stagger() (lib/motion.ts).
+ * This watches every [data-reveal] element on the page and marks it
+ * data-shown once it scrolls into view; app/fancy/motion.css animates that
+ * change. Each element reveals once. Plain mode ignores all of it.
  *
  * Active only in the fancier version. While active it sets data-observing on <html>:
  * the stylesheet's failsafe shows everything after a moment if that never

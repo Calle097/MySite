@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Lang } from '@/lib/i18n';
 import { NAME } from '@/lib/site';
 import { MODE_EVENT } from '@/lib/mode';
+import { stagger } from '@/lib/motion';
 import { LanguageList, LanguageToggle } from './LanguageList';
 import { NavLink } from './NavLink';
 import type { ChromeLabels, PageLink } from './types';
@@ -84,13 +85,13 @@ export function FancyHeader({
     };
   }, [extended, langsOpen]);
 
-  const pageLinks = (stagger: boolean, onClick?: () => void) =>
+  const pageLinks = (staggered: boolean, onClick?: () => void) =>
     links.map((l, i) => (
       <NavLink
         key={l.href}
         href={l.href}
         file={l.file}
-        style={stagger ? ({ '--i': i } as CSSProperties) : undefined}
+        style={staggered ? stagger(i) : undefined}
         onClick={onClick}
       >
         {l.label}

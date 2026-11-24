@@ -28,18 +28,23 @@ export function pathIn(lang: Lang, pathname: string) {
   return enPath === '/' ? '/it/' : `/it${enPath}`;
 }
 
+/** Where the chosen language is kept (read back by ./locale-script.ts). */
+export const LANG_KEY = 'site-lang';
+
 /** Remembers a chosen language, so the root layouts' locale script keeps
     future visits on it. Private mode etc.: switching still works, it just
     isn't remembered. */
 export function rememberLang(lang: Lang) {
   try {
-    localStorage.setItem('site-lang', lang);
+    localStorage.setItem(LANG_KEY, lang);
   } catch {
     /* not remembered, that's all */
   }
 }
 
 export interface Dict {
+  /** After the name in the page title: "Mattia Callegher — {role}". */
+  role: string;
   description: string;
   hero: {
     line1: string;
@@ -78,9 +83,9 @@ export interface Dict {
     driveIn: {
       scroll: string;
       hover: string;
-      noscript: string;
       items: { title: string; text: string }[];
     };
+    /** Shown by every demo that needs JavaScript (lib/demos.ts) when it is off. */
     noscript: string;
     css: { hint: string; button: string; card: string };
     sakura: { label: string };

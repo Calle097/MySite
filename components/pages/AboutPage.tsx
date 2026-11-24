@@ -1,5 +1,6 @@
 import { DICTS, type Lang } from '@/lib/i18n';
 import { sectionId } from '@/lib/format';
+import { PageHero } from '@/components/PageHero';
 import { SectionHeader } from '@/components/SectionHeader';
 import { PageLayout } from '@/components/fancy/PageLayout';
 
@@ -13,15 +14,7 @@ export function AboutPage({ lang }: { lang: Lang }) {
   const parts = dict.about.parts;
   const sections = parts.map((part, i) => ({ id: sectionId(DICTS.en.about.parts[i].title), title: part.title }));
   const [place, wish] = dict.hero.metaRow;
-
-  const hero = (
-    <section data-part="hero" className="gutter rise pt-8 sm:pt-12">
-      <h1 className="page-title font-semibold tracking-tight">{dict.about.title}</h1>
-      <p data-part="place" className="only-fancy fc-mono">
-        {place} · {wish}
-      </p>
-    </section>
-  );
+  const hero = <PageHero title={dict.about.title} place={`${place} · ${wish}`} />;
 
   return (
     <PageLayout lang={lang} hero={hero} sections={sections}>

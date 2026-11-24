@@ -92,6 +92,20 @@
       color: var(--fc-muted);
     }
 
+    /* Lines that rise from behind a clean edge (the phone menu's pages, the
+       home title's lines): the line clips, its span moves. */
+    .fc-mask,
+    [data-reveal='mask'] [data-line] {
+      display: block;
+      overflow: clip;
+      padding-bottom: 0.1em;
+      margin-bottom: -0.1em;
+
+      > span {
+        display: inline-block;
+      }
+    }
+
     /* Links with a dash in front (the index, the languages, the phone
        menu's pages): the dash grows in for the current one; each list sets
        how long, and its own spacing. */

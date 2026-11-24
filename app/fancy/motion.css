@@ -25,13 +25,9 @@
       }
 
       /* Scroll reveals. */
+      /* The edge itself is in base.css. */
       [data-reveal='mask'] [data-line] {
-        overflow: clip;
-        padding-bottom: 0.1em;
-        margin-bottom: -0.1em;
-
         > span {
-          display: inline-block;
           transition: transform 1.2s var(--fc-ease);
         }
 

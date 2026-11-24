@@ -37,7 +37,7 @@ export function SectionHeader({
 }) {
   return (
     // data-rule: a styling hook for the fancier version (app/fancy.css),
-    // where the label also reveals as a "rule" (lib/reveal.ts).
+    // where the label also reveals as a "rule" (components/RevealObserver.tsx).
     <div
       data-rule
       data-reveal="rule"

@@ -19,7 +19,7 @@ import { PageLayout } from './PageLayout';
 export function DemoLayout({ lang, slug, children }: { lang: Lang; slug: DemoSlug; children: ReactNode }) {
   const dict = DICTS[lang];
   const { title, caption } = dict.playground.items[slug];
-  const { tech, source } = DEMOS[slug];
+  const { tech, source, needsJs } = DEMOS[slug];
 
   const hero = (
     <div data-part="hero" className="only-fancy">
@@ -51,7 +51,16 @@ export function DemoLayout({ lang, slug, children }: { lang: Lang; slug: DemoSlu
       {/* Plain shows no column, so the page's heading is for screen readers. */}
       <h1 className="only-plain sr-only">{title}</h1>
       <div data-frame data-reveal="frame" data-part="demo">
-        <div data-frame-view>{children}</div>
+        <div data-frame-view>
+          {needsJs && (
+            <noscript>
+              <p className="mx-auto max-w-md px-6 pt-10 text-center text-sm leading-relaxed text-muted-foreground">
+                {dict.demos.noscript}
+              </p>
+            </noscript>
+          )}
+          {children}
+        </div>
       </div>
     </PageLayout>
   );

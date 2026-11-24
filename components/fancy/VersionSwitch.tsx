@@ -2,8 +2,8 @@ import { ModeSwitch } from '../ModeSwitch';
 import type { ChromeLabels } from './types';
 
 /**
- * "Plain · Fancier" with the current one lit (a placeholder design, to be
- * revisited). Only the fancier version shows it, so Plain is the one to press.
+ * "Plain · Fancier" with the current one lit. Only the fancier version shows
+ * it, so Plain is the one to press.
  */
 export function VersionSwitch({ labels }: { labels: Pick<ChromeLabels, 'version' | 'plain' | 'fancier'> }) {
   return (

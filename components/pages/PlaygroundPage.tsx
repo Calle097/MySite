@@ -1,6 +1,7 @@
 import { DICTS, type Lang } from '@/lib/i18n';
 import { DEMOS, DEMO_SLUGS } from '@/lib/demos';
 import { demoHref } from '@/lib/pages';
+import { PageHero } from '@/components/PageHero';
 import { SectionHeader } from '@/components/SectionHeader';
 import { PageLayout } from '@/components/fancy/PageLayout';
 
@@ -14,17 +15,7 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];
   const sections = DEMO_SLUGS.map((slug) => ({ id: slug, title: dict.playground.items[slug].title }));
 
-  const hero = (
-    <section data-part="hero" className="gutter rise pt-8 sm:pt-12">
-      <h1 className="page-title font-semibold tracking-tight">{dict.playground.title}</h1>
-      <p data-part="blurb" className="mt-6 max-w-[52ch] leading-relaxed text-muted-foreground">
-        {dict.playground.intro}
-      </p>
-      <p data-part="place" className="only-fancy fc-mono">
-        {dict.playground.summary}
-      </p>
-    </section>
-  );
+  const hero = <PageHero title={dict.playground.title} blurb={dict.playground.intro} place={dict.playground.summary} />;
 
   return (
     <PageLayout lang={lang} hero={hero} sections={sections}>
