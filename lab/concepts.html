@@ -39,10 +39,12 @@
         --ease: cubic-bezier(0.22, 1, 0.36, 1);
         --mono: 'IBM Plex Mono', ui-monospace, monospace;
         --line: color-mix(in srgb, var(--fg) 13%, transparent);
-        /* The phone bar and menu: a step lighter than the page, toward the
-           light, so they don't read as a dark slab. (Forest: secondary text
-           on it stays above 6:1, and about 5:1 inside the menu's glow.) */
-        --surface: color-mix(in srgb, var(--bg), var(--light) 40%);
+        /* The bars and the menu: a step lighter than the page, so they don't
+           read as a dark slab, and leaning grey-green rather than green, so
+           less of the screen is one hue. The menu's still glow likewise.
+           Tuned for forest: secondary text ~6.7:1 on it, ~5:1 in the glow. */
+        --surface: color-mix(in oklab, var(--bg) 55%, #343a38);
+        --glow: color-mix(in oklab, var(--light) 50%, #404543);
       }
       [data-palette='forest'] { --bg: #0f2a22; --fg: #e9f1ea; --muted: #a3bcae; --accent: #cfe57c; --light: #1f4a3b; }
       [data-palette='indigo'] { --bg: #121a40; --fg: #eef2fb; --muted: #a7b4d0; --accent: #6fd3bd; --light: #2b3c8a; }
@@ -439,7 +441,7 @@
         /* Solid, so nothing moves behind it; one still glow from where the
            circle opened (--ox/--oy, set when it opens). */
         background:
-          radial-gradient(110vmax 90vmax at var(--ox, 100%) var(--oy, 0%), var(--light), transparent 70%),
+          radial-gradient(110vmax 90vmax at var(--ox, 100%) var(--oy, 0%), var(--glow), transparent 70%),
           var(--surface);
       }
       .menu[hidden] { display: none; }
