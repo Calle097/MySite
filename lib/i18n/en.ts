@@ -240,7 +240,6 @@ export const en: Dict = {
   mode: {
     plainNote: 'This is the plain version.',
     showFancier: 'Try the fancier one →',
-    getFancy: 'get fancy',
     version: 'Version',
     plain: 'Plain',
     fancier: 'Fancier',

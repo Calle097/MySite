@@ -163,9 +163,8 @@ export interface Dict {
     /** Hero line in plain mode: "{plainNote} {showFancier}". */
     plainNote: string;
     showFancier: string;
-    /** The switch in the plain header, next to the name. */
-    getFancy: string;
-    /** The fancier one's version switch: "{version}  {plain} · {fancier}". */
+    /** The version switch, in both: "{plain} / {fancier}" in plain's header,
+        "{version}  {plain} · {fancier}" in the fancier one; {version} names it. */
     version: string;
     plain: string;
     fancier: string;

@@ -4,7 +4,7 @@ import { PAGES, isFile, pageHref } from '@/lib/pages';
 import { EMAIL, GITHUB_URL, NAME, SOURCE_URL } from '@/lib/site';
 import { LangSwitcher } from './LangSwitcher';
 import { MobileMenu } from './MobileMenu';
-import { ModeSwitch } from './ModeSwitch';
+import { PlainVersionSwitch } from './PlainVersionSwitch';
 import { RevealObserver } from './RevealObserver';
 import { SkipLink } from './SkipLink';
 import { LiquidBackground } from './fancy/LiquidBackground';
@@ -16,12 +16,18 @@ import { LiquidBackground } from './fancy/LiquidBackground';
 export function SiteChrome({ lang, children }: { lang: Lang; children: React.ReactNode }) {
   const dict = DICTS[lang];
 
-  // Plain labels its pages as paths.
-  const pathLinks = PAGES.map((page) => ({
+  // Plain labels its pages as paths. The name is the way home.
+  const pathLinks = PAGES.filter((page) => page !== 'home').map((page) => ({
     href: pageHref(lang, page),
     label: `/${page}${isFile(page) ? ' ↓' : ''}`,
     file: isFile(page),
   }));
+  const settings = (
+    <>
+      <LangSwitcher lang={lang} />
+      <PlainVersionSwitch label={dict.mode.version} plain={dict.mode.plain} fancier={dict.mode.fancier} />
+    </>
+  );
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -29,18 +35,12 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
       <SkipLink label={dict.skipToContent} />
 
       <header className="site-chrome site-header only-plain gutter sticky top-0 z-40 flex items-baseline justify-between gap-x-6 border-b py-5 backdrop-blur-md">
-        {/* The way into the fancier version, by the name. Below 360px it
-            would wrap the header; the hero's line still offers it there. */}
-        <span className="flex items-baseline gap-4">
-          <Link href={pageHref(lang, 'home')} className="font-display text-lg font-semibold tracking-tight">
-            {NAME}
-          </Link>
-          <ModeSwitch className="needs-js label whitespace-nowrap text-muted-foreground transition-colors hover:text-brand-accent max-[22.5rem]:hidden">
-            {dict.mode.getFancy}
-          </ModeSwitch>
-        </span>
+        <Link href={pageHref(lang, 'home')} className="font-display text-lg font-semibold tracking-tight">
+          {NAME}
+        </Link>
 
-        {/* The CV is a file: a plain <a> (see CV_PATH). */}
+        {/* Where to go, a divider, then how to see it: language and version.
+            The CV is a file: a plain <a> (see CV_PATH). */}
         <nav className="hidden items-baseline gap-6 font-mono text-sm nav:flex text-muted-foreground">
           {pathLinks.map((l) =>
             l.file ? (
@@ -53,7 +53,8 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
               </Link>
             ),
           )}
-          <LangSwitcher lang={lang} />
+          <span aria-hidden className="h-[0.9em] w-px self-center bg-secondary-darker" />
+          {settings}
         </nav>
 
         {/* Plain <a>s: a full page load closes the menu. */}
@@ -63,7 +64,7 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
               {l.label}
             </a>
           ))}
-          <LangSwitcher lang={lang} />
+          {settings}
         </MobileMenu>
       </header>
 

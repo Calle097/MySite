@@ -240,7 +240,6 @@ export const it: Dict = {
   mode: {
     plainNote: 'Questa è la versione semplice.',
     showFancier: 'Prova quella animata →',
-    getFancy: 'animata',
     version: 'Versione',
     plain: 'Semplice',
     fancier: 'Animata',
