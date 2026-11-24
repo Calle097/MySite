@@ -18,7 +18,7 @@
   background. Settings can also come from the URL:
   ?palette=forest&font=satoshi&weight=light&bg=liquid
 -->
-<html lang="en" data-palette="forest" data-font="satoshi" data-weight="light" data-bg="liquid" data-langs="2">
+<html lang="en" data-palette="forest" data-font="satoshi" data-weight="light" data-bg="liquid" data-langs="2" data-surface="tinted" data-tone="one">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -43,13 +43,25 @@
            light, so they don't read as a dark slab. (Forest: secondary text
            on it stays above 6:1, and about 5:1 inside the menu's glow.) */
         --surface: color-mix(in srgb, var(--bg), var(--light) 40%);
+        /* The menu's still glow. */
+        --glow: var(--light);
       }
-      [data-palette='forest'] { --bg: #0f2a22; --fg: #e9f1ea; --muted: #a3bcae; --accent: #cfe57c; --light: #1f4a3b; }
-      [data-palette='indigo'] { --bg: #121a40; --fg: #eef2fb; --muted: #a7b4d0; --accent: #6fd3bd; --light: #2b3c8a; }
-      [data-palette='ink'] { --bg: #161514; --fg: #f2eadb; --muted: #b3a998; --accent: #e3a857; --light: #3a2f22; }
-      [data-palette='plum'] { --bg: #23142d; --fg: #f4eaf2; --muted: #c2acbd; --accent: #ff9474; --light: #48264f; }
-      [data-palette='petrol'] { --bg: #0c2a33; --fg: #e3f2f3; --muted: #9fbec3; --accent: #ffd166; --light: #164a57; }
-      [data-palette='slate'] { --bg: #1b1e2a; --fg: #edecff; --muted: #b1b3cc; --accent: #b9a7ff; --light: #353b60; }
+      /* --light-2: a second, cooler tone for the light (lab "tone: two"),
+         about as bright as --light, so only the hue changes. */
+      [data-palette='forest'] { --bg: #0f2a22; --fg: #e9f1ea; --muted: #a3bcae; --accent: #cfe57c; --light: #1f4a3b; --light-2: #20465a; }
+      [data-palette='indigo'] { --bg: #121a40; --fg: #eef2fb; --muted: #a7b4d0; --accent: #6fd3bd; --light: #2b3c8a; --light-2: #3d3484; }
+      [data-palette='ink'] { --bg: #161514; --fg: #f2eadb; --muted: #b3a998; --accent: #e3a857; --light: #3a2f22; --light-2: #2c3236; }
+      [data-palette='plum'] { --bg: #23142d; --fg: #f4eaf2; --muted: #c2acbd; --accent: #ff9474; --light: #48264f; --light-2: #2b2f5e; }
+      [data-palette='petrol'] { --bg: #0c2a33; --fg: #e3f2f3; --muted: #9fbec3; --accent: #ffd166; --light: #164a57; --light-2: #2a4a3a; }
+      [data-palette='slate'] { --bg: #1b1e2a; --fg: #edecff; --muted: #b1b3cc; --accent: #b9a7ff; --light: #353b60; --light-2: #2b4a5c; }
+
+      /* Lab "surface: neutral": the bars and the menu lean grey-green instead
+         of green, so less of the page is the same hue. (Forest: secondary
+         text on the surface ~6.7:1, in the glow ~5:1.) */
+      [data-surface='neutral'] {
+        --surface: color-mix(in oklab, var(--bg) 55%, #343a38);
+        --glow: color-mix(in oklab, var(--light) 50%, #404543);
+      }
 
       [data-font='satoshi'] { --font: 'Satoshi'; }
       [data-font='general'] { --font: 'General Sans'; }
@@ -439,7 +451,7 @@
         /* Solid, so nothing moves behind it; one still glow from where the
            circle opened (--ox/--oy, set when it opens). */
         background:
-          radial-gradient(110vmax 90vmax at var(--ox, 100%) var(--oy, 0%), var(--light), transparent 70%),
+          radial-gradient(110vmax 90vmax at var(--ox, 100%) var(--oy, 0%), var(--glow), transparent 70%),
           var(--surface);
       }
       .menu[hidden] { display: none; }
@@ -987,7 +999,7 @@
         #endif
         uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse; uniform float uMouseOn;
         uniform vec4 uFocus; uniform float uFocusOn; uniform float uIntro;
-        uniform vec3 uBg; uniform vec3 uLight; uniform vec3 uAccent;
+        uniform vec3 uBg; uniform vec3 uLight; uniform vec3 uLight2; uniform float uTwo; uniform vec3 uAccent;
         ${SIMPLEX}
         void main(){
           float aspect = uRes.x / uRes.y;
@@ -1006,10 +1018,16 @@
           vec2 w = vec2(fbm(p * 0.9 + vec2(t, -t)), fbm(p * 0.9 + vec2(-t, t) + 4.3));
           float f = fbm(p * 0.7 + w * 0.85 + vec2(t * 0.5, 0.0)) * 0.5 + 0.5;
 
-          vec3 col = mix(uBg, uLight, smoothstep(0.22, 0.82, f));
-          col = mix(col, uLight * 1.4, smoothstep(0.62, 0.95, f) * 0.45);
+          // Two tones (lab "tone: two"): a second, much slower and broader
+          // field decides where the light leans to its cooler tone, so regions
+          // drift between the two hues instead of everything being one green.
+          float g = fbm(p * 0.32 + vec2(-t * 0.35, t * 0.25) + 9.1) * 0.5 + 0.5;
+          vec3 light = mix(uLight, uLight2, smoothstep(0.38, 0.72, g) * uTwo);
+
+          vec3 col = mix(uBg, light, smoothstep(0.22, 0.82, f));
+          col = mix(col, light * 1.4, smoothstep(0.62, 0.95, f) * 0.45);
           col = mix(col, uAccent, smoothstep(0.75, 1.0, f) * 0.07);
-          col += (uLight * 1.3 - uBg) * (pull * 0.3 + focus * 1.0);
+          col += (light * 1.3 - uBg) * (pull * 0.3 + focus * 1.0);
           col = mix(uBg, col, uIntro);
 
           // Dither by under one step of 8-bit colour: dark gradients no longer band.
@@ -1042,7 +1060,7 @@
         gl.linkProgram(p);
         gl.useProgram(p);
         const u = (n) => gl.getUniformLocation(p, n);
-        prog = { p, a: gl.getAttribLocation(p, 'a'), uRes: u('uRes'), uTime: u('uTime'), uMouse: u('uMouse'), uMouseOn: u('uMouseOn'), uFocus: u('uFocus'), uFocusOn: u('uFocusOn'), uIntro: u('uIntro'), uBg: u('uBg'), uLight: u('uLight'), uAccent: u('uAccent') };
+        prog = { p, a: gl.getAttribLocation(p, 'a'), uRes: u('uRes'), uTime: u('uTime'), uMouse: u('uMouse'), uMouseOn: u('uMouseOn'), uFocus: u('uFocus'), uFocusOn: u('uFocusOn'), uIntro: u('uIntro'), uBg: u('uBg'), uLight: u('uLight'), uLight2: u('uLight2'), uTwo: u('uTwo'), uAccent: u('uAccent') };
         gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
         gl.enableVertexAttribArray(prog.a);
@@ -1055,6 +1073,7 @@
       function readColors() {
         const s = getComputedStyle(html);
         for (const k of ['bg', 'light', 'accent']) S.colors[k] = hex(s.getPropertyValue(`--${k}`));
+        S.colors.light2 = hex(s.getPropertyValue('--light-2') || s.getPropertyValue('--light'));
       }
       function resize() {
         // Full CSS-pixel resolution: smooth gradients need no more, and the
@@ -1089,6 +1108,8 @@
         gl.uniform1f(prog.uIntro, still ? 1 : Math.min(1, age / 1.6));
         gl.uniform3fv(prog.uBg, S.colors.bg);
         gl.uniform3fv(prog.uLight, S.colors.light);
+        gl.uniform3fv(prog.uLight2, S.colors.light2);
+        gl.uniform1f(prog.uTwo, html.dataset.tone === 'two' ? 1 : 0);
         gl.uniform3fv(prog.uAccent, S.colors.accent);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
       }
@@ -1117,6 +1138,8 @@
         weight: ['light', 'regular'],
         bg: ['liquid', 'off'],
         langs: ['2', '8'],
+        surface: ['tinted', 'neutral'],
+        tone: ['one', 'two'],
       };
       const params = new URLSearchParams(location.search);
       let saved = {};
