@@ -41,6 +41,7 @@ export const it: Dict = {
     sourceLabel: 'Codice ↗',
     loading: 'caricamento',
     open: 'Apri il playground',
+    summary: 'Sette demo, tutte interattive',
     items: {
       'drive-in': {
         title: 'Drive-in cards',
@@ -146,10 +147,19 @@ export const it: Dict = {
   },
   about: {
     title: 'Chi sono',
-    paragraphs: [
-      "All'università ho studiato cinema e media. Poi ho imparato a programmare da autodidatta, e non ho più smesso.",
-      "Il mio primo lavoro tech è stato in un'azienda informatica: sviluppo frontend con React e, in parallelo, il distacco come QA su un grande sistema di smart metering, dove sono passato dai test manuali all'automazione con Playwright, fino a coordinare la parte QA.",
-      "Oggi lavoro come freelance dall'Italia e mi piacerebbe trasferirmi in Giappone per lavoro.",
+    parts: [
+      {
+        title: 'Cinema, poi codice',
+        text: "All'università ho studiato cinema e media. Poi ho imparato a programmare da autodidatta, e non ho più smesso.",
+      },
+      {
+        title: 'Il primo lavoro',
+        text: "Il mio primo lavoro tech è stato in un'azienda informatica: sviluppo frontend con React e, in parallelo, il distacco come QA su un grande sistema di smart metering, dove sono passato dai test manuali all'automazione con Playwright, fino a coordinare la parte QA.",
+      },
+      {
+        title: 'Oggi',
+        text: "Oggi lavoro come freelance dall'Italia e mi piacerebbe trasferirmi in Giappone per lavoro.",
+      },
     ],
   },
   stack: {
@@ -177,13 +187,30 @@ export const it: Dict = {
         title: 'Privacy',
         items: [
           'Niente analytics, cookie o script di tracciamento da parte mia. Il traffico passa da Cloudflare, che tiene i suoi log di base',
-          'Funziona anche senza JavaScript, playground escluso',
+          {
+            plain:
+              'Questa versione funziona anche senza JavaScript, playground escluso. Quella più elaborata no: luce, menu e animazioni ne hanno bisogno.',
+            fancier:
+              'La versione semplice funziona anche senza JavaScript, playground escluso. Questa no: luce, menu e animazioni ne hanno bisogno.',
+          },
         ],
       },
     ],
     aiLine: "Costruito con l'aiuto di Claude Code, rivisto riga per riga",
   },
-  notFound: { text: 'Pagina non trovata —', back: 'Torna alla home' },
+  notFound: {
+    text: 'Pagina non trovata —',
+    back: 'Torna alla home',
+    title: 'Pagina non trovata.',
+    where: 'Da dove ripartire',
+    hints: {
+      home: 'Esperienza, progetti, contatti',
+      about: 'La storia per intero',
+      playground: 'Sette demo interattive',
+      stack: 'Come è fatto questo sito',
+      cv: 'Il PDF',
+    },
+  },
   nav: {
     about: 'Chi sono',
     playground: 'Playground',

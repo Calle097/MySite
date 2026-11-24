@@ -103,6 +103,16 @@
     font-size: clamp(2.25rem, 4.5vw, 4.25rem);
   }
 
+  /* The title of the other pages (about, playground, stack). */
+  .page-title {
+    font-size: clamp(2rem, 3.6vw, 3.25rem);
+  }
+
+  /* The 404's "404." */
+  .notfound-title {
+    font-size: clamp(3rem, 7vw, 6rem);
+  }
+
   .contact-email {
     font-size: clamp(1.35rem, 2.8vw, 2.5rem);
     overflow-wrap: anywhere;

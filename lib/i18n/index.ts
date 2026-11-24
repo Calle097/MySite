@@ -61,8 +61,10 @@ export interface Dict {
     openLabel: string;
     sourceLabel: string;
     loading: string;
-    /** Lively home's playground teaser: "{open} · {count} →". */
+    /** The fancier home's playground teaser: "{open} · {count} →". */
     open: string;
+    /** The fancier playground's line under the intro. */
+    summary: string;
     /** How each demo is listed on the playground page. Keyed by slug rather
         than ordered, so EN and IT cannot drift apart — display order comes
         from DEMO_SLUGS. Record<DemoSlug, …> means adding a demo without
@@ -112,15 +114,27 @@ export interface Dict {
     };
   };
   projects: { header: string; items: { title: string; text: string; stack?: string }[] };
-  about: { title: string; paragraphs: string[] };
+  /** Plain shows the parts' text as one block; the fancier version gives
+      each part its own section, under its title. */
+  about: { title: string; parts: { title: string; text: string }[] };
   stack: {
     title: string;
     sourcePre: string;
     sourceLabel: string;
-    sections: { title: string; items: string[] }[];
+    /** An item is the same in both versions, or (the JavaScript line) one
+        text per version. */
+    sections: { title: string; items: (string | { plain: string; fancier: string })[] }[];
     aiLine: string;
   };
-  notFound: { text: string; back: string };
+  /** text/back: plain's line. title/where/hints: the fancier version's
+      column and its "where to go" list, one hint per page. */
+  notFound: {
+    text: string;
+    back: string;
+    title: string;
+    where: string;
+    hints: { home: string; about: string; playground: string; stack: string; cv: string };
+  };
   /** Lively mode's header uses plain words instead of the /path labels; the
       rest names the parts of its menu and index. */
   nav: {

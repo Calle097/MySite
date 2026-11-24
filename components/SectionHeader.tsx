@@ -23,10 +23,13 @@ export function SectionHeader({
   index,
   title,
   as: Title = 'h2',
+  className = '',
 }: {
   index: number;
   title: string;
   as?: 'h2' | 'span';
+  /** Extra classes, e.g. only-lively for a title only the fancier version shows. */
+  className?: string;
 }) {
   return (
     // data-rule: a styling hook for lively mode (app/lively.css), where the
@@ -34,7 +37,7 @@ export function SectionHeader({
     <div
       data-rule
       data-reveal="rule"
-      className="gutter label flex items-baseline justify-between border-b border-secondary-darker pb-3 text-muted-foreground"
+      className={`gutter label flex items-baseline justify-between border-b border-secondary-darker pb-3 text-muted-foreground ${className}`}
     >
       <span>{String(index).padStart(2, '0')}</span>
       <Title>{title}</Title>

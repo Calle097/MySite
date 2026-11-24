@@ -41,6 +41,7 @@ export const en: Dict = {
     sourceLabel: 'Source ↗',
     loading: 'loading',
     open: 'Open the playground',
+    summary: 'Seven demos, all live',
     items: {
       'drive-in': {
         title: 'Drive-in cards',
@@ -146,10 +147,19 @@ export const en: Dict = {
   },
   about: {
     title: 'About',
-    paragraphs: [
-      'I studied film and media at university. Then I taught myself how to program, and it stuck.',
-      'My first tech job was at an IT company: frontend work with React, while also being dispatched as QA on a large smart metering system, where I went from manual testing to Playwright automation and eventually coordinated the QA side.',
-      'Now I freelance from Italy, and I would like to move to Japan for work.',
+    parts: [
+      {
+        title: 'Film, then code',
+        text: 'I studied film and media at university. Then I taught myself how to program, and it stuck.',
+      },
+      {
+        title: 'First job',
+        text: 'My first tech job was at an IT company: frontend work with React, while also being dispatched as QA on a large smart metering system, where I went from manual testing to Playwright automation and eventually coordinated the QA side.',
+      },
+      {
+        title: 'Now',
+        text: 'Now I freelance from Italy, and I would like to move to Japan for work.',
+      },
     ],
   },
   stack: {
@@ -177,13 +187,30 @@ export const en: Dict = {
         title: 'Privacy',
         items: [
           'No analytics, cookies, or tracking scripts on my side. Traffic passes through Cloudflare, which keeps its own basic logs',
-          'Works without JavaScript, except the playground',
+          {
+            plain:
+              'This version works without JavaScript, except the playground. The fancier one needs it for the light, the menu and the motion.',
+            fancier:
+              'The plain version works without JavaScript, except the playground. This one needs it for the light, the menu and the motion.',
+          },
         ],
       },
     ],
     aiLine: 'Built with help from Claude Code, reviewed line by line',
   },
-  notFound: { text: 'Page not found —', back: 'Back home' },
+  notFound: {
+    text: 'Page not found —',
+    back: 'Back home',
+    title: 'Page not found.',
+    where: 'Where to go from here',
+    hints: {
+      home: 'Work, projects, contact',
+      about: 'The longer story',
+      playground: 'Seven live demos',
+      stack: 'How this site is built',
+      cv: 'The PDF',
+    },
+  },
   nav: {
     about: 'About',
     playground: 'Playground',

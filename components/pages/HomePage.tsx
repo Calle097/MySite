@@ -209,9 +209,9 @@ export function HomePage({ lang }: { lang: Lang }) {
       <section id="about" data-section data-part="about" className="only-lively">
         <SectionHeader index={4} title={dict.about.title} />
         <div data-entry data-reveal="rise">
-          {dict.about.paragraphs.map((paragraph, i) => (
-            <p key={paragraph} className={i === 0 ? 'lv-lead' : 'lv-para'}>
-              {paragraph}
+          {dict.about.parts.map((part, i) => (
+            <p key={part.title} className={i === 0 ? 'lv-lead' : 'lv-para'}>
+              {part.text}
             </p>
           ))}
         </div>
