@@ -12,10 +12,12 @@
      data-observing is set, so nothing stays hidden without the script. */
   @media (prefers-reduced-motion: no-preference) {
     [data-mode='fancy'] {
+      /* backwards, not both: a fill that outlasts the fade keeps the header
+         from blurring the page behind its unfolded surface. */
       .fc-header,
       .fc-index,
       .fc-stage-foot {
-        animation: fc-fade-in 1.2s ease 0.5s both;
+        animation: fc-fade-in 1.2s ease 0.5s backwards;
       }
 
       /* Scroll reveals. */

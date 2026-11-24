@@ -98,6 +98,11 @@
         line-height: 1.7;
         text-transform: uppercase;
       }
+
+      /* The labels: date, stack, what a demo is built with. */
+      :is([data-part='when'], [data-part='stack'], [data-part='tech']) {
+        transition: color 0.5s ease;
+      }
     }
 
     @media (hover: hover) {
@@ -108,6 +113,12 @@
 
         [data-part='title'] {
           transform: translateX(0.4rem);
+        }
+
+        /* The light gathers behind a hovered entry, too bright for muted
+           labels: they take the line's colour. */
+        :is([data-part='when'], [data-part='stack'], [data-part='tech']) {
+          color: var(--fc-accent);
         }
       }
 
