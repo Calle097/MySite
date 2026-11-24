@@ -1,0 +1,203 @@
+<!doctype html>
+<!--
+  Lively version: playground. Standalone mockup on the shared shell
+  (shell.css, shell.js); open it directly in a browser. Not part of the
+  site build.
+
+  Split like home: the left column holds the title, the intro and the index
+  of the demos; on the right, each demo is a section: its title, the demo
+  in its frame, the caption, what it is built with and its links.
+
+  The frame: no box, no title bar, only crop marks at the four corners,
+  like a print plate, around a quiet ground the demo sits on. The marks
+  draw in when the demo arrives, step outward and turn to the accent when
+  you point at it, and the light gathers behind it.
+
+  The live site only lets its own pages frame the demos, so here they are
+  stand-ins: the golden spiral and the CSS effects are real, the others
+  are labelled placeholders at each demo's real height. In the real build
+  each frame holds the demo's page, as the playground does today.
+-->
+<html lang="en" data-page="playground" data-palette="forest" data-font="satoshi" data-weight="light" data-bg="liquid" data-langs="2">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lively: playground</title>
+    <link rel="stylesheet" href="shell.css" />
+    <style>
+      /* Demos want more width than reading text. */
+      .flow section { max-width: 56rem; }
+
+      /* ---- the frame: crop marks around a quiet ground ------------------ */
+      /* The marks' length and colour are registered properties, so they can animate. */
+      @property --mark { syntax: '<length>'; inherits: false; initial-value: 0px; }
+      @property --c { syntax: '<color>'; inherits: false; initial-value: transparent; }
+      .frame {
+        --gap: 0.65rem;
+        position: relative;
+        margin: var(--gap) var(--gap) calc(var(--gap) + 1.25rem);
+      }
+      .frame::before {
+        content: '';
+        position: absolute;
+        inset: calc(-1 * var(--gap));
+        pointer-events: none;
+        --c: color-mix(in srgb, var(--fg) 55%, transparent);
+        /* Eight hairlines, two at each corner. */
+        background:
+          linear-gradient(var(--c) 0 0) top left / var(--mark) 1px,
+          linear-gradient(var(--c) 0 0) top left / 1px var(--mark),
+          linear-gradient(var(--c) 0 0) top right / var(--mark) 1px,
+          linear-gradient(var(--c) 0 0) top right / 1px var(--mark),
+          linear-gradient(var(--c) 0 0) bottom left / var(--mark) 1px,
+          linear-gradient(var(--c) 0 0) bottom left / 1px var(--mark),
+          linear-gradient(var(--c) 0 0) bottom right / var(--mark) 1px,
+          linear-gradient(var(--c) 0 0) bottom right / 1px var(--mark);
+        background-repeat: no-repeat;
+      }
+      .entry.in .frame::before { --mark: 1rem; }
+      @media (hover: hover) {
+        .entry:hover .frame::before { inset: calc(-1 * var(--gap) - 0.4rem); --c: var(--accent); }
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .frame::before { transition: --mark 0.9s var(--ease) 0.2s, inset 0.6s var(--ease), --c 0.4s ease; }
+      }
+      @media (prefers-reduced-motion: reduce) { .frame::before { --mark: 1rem; } }
+      /* The ground: darker than the light, so every demo stands on the same
+         quiet surface; no border, the marks frame it. */
+      .view {
+        position: relative;
+        height: var(--h);
+        overflow: hidden;
+        background: color-mix(in srgb, var(--bg) 72%, transparent);
+      }
+      @media (max-width: 899px) { .view { height: var(--h-phone, var(--h)); } }
+
+      /* Under the frame: what it is built with, and where to go. */
+      .demo-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.5rem 1.5rem; margin-top: 1rem; }
+      .demo-links { display: flex; gap: 1.25rem; }
+      .demo-links a { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); transition: color 0.3s ease; }
+      .demo-links a:hover { color: var(--fg); }
+
+      /* ---- stand-ins -------------------------------------------------- */
+      .stand-in { position: absolute; inset: 0; display: grid; place-content: center; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+      .stand-in p { margin: 0; max-width: 34ch; color: var(--muted); font-size: 0.92rem; }
+      .view [data-spiral] { position: absolute; inset: 0; display: grid; place-items: center; }
+      .view [data-spiral] .spiral { width: min(78%, 340px); }
+
+      /* CSS-only effects: a jelly button and a ring carved out of a conic
+         gradient, spinning (the real demo's two pieces, in small). */
+      .effects { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 3.5rem; flex-wrap: wrap; }
+      .jelly { padding: 0.9rem 1.6rem; background: var(--accent); color: var(--bg); font-weight: 500; }
+      .jelly:hover { animation: jelly 0.6s; }
+      @keyframes jelly {
+        30% { transform: scale(1.18, 0.82); }
+        45% { transform: scale(0.88, 1.12); }
+        60% { transform: scale(1.06, 0.95); }
+        75% { transform: scale(0.98, 1.03); }
+      }
+      .ring {
+        width: 120px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: conic-gradient(from 0deg, transparent 0 55%, var(--accent));
+        mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+        animation: spin 1.6s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(1turn); } }
+      @media (prefers-reduced-motion: reduce) { .ring { animation: none; } }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="stage">
+        <div class="stage-mid">
+          <div class="hero">
+            <h1><span>Playground</span></h1>
+            <p class="blurb">Simple things I built and found too interesting, or too silly, to throw away. Some shipped, some never left the sketchbook.</p>
+            <span class="mono">Seven demos, all live</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="flow">
+        <section id="drive-in" data-section>
+          <h2>Drive-in cards</h2>
+          <div class="entry">
+            <div class="frame"><div class="view" style="--h: 540px; --h-phone: 400px">
+              <div class="stand-in"><span class="mono">Live demo</span><p>Vans drive in on scroll and park as cards. In the real page this frame holds the demo.</p></div>
+            </div></div>
+            <p class="entry-text">SVG path morph driven by scroll: items arrive as vans, park as cards. Hover a parked card to wake it. Scroll inside the frame.</p>
+            <div class="demo-meta"><span class="mono">SVG · Framer Motion</span><span class="demo-links"><a href="#">Open ↗</a><a href="#">Source ↗</a></span></div>
+          </div>
+        </section>
+
+        <section id="spiral" data-section>
+          <h2>Golden spiral</h2>
+          <div class="entry">
+            <div class="frame"><div class="view" style="--h: 420px; --h-phone: 380px"><div data-spiral="500"></div></div></div>
+            <p class="entry-text">500 dots placed with the golden angle, the same packing a sunflower uses. A pulse ripples outward forever. No libraries, just SVG.</p>
+            <div class="demo-meta"><span class="mono">SVG</span><span class="demo-links"><a href="#">Open ↗</a><a href="#">Source ↗</a></span></div>
+          </div>
+        </section>
+
+        <section id="css-effects" data-section>
+          <h2>CSS-only effects</h2>
+          <div class="entry">
+            <div class="frame"><div class="view" style="--h: 340px">
+              <div class="effects"><button class="jelly">Hover me</button><div class="ring" aria-hidden="true"></div></div>
+            </div></div>
+            <p class="entry-text">A jelly button hover and a spinning highlight ring carved out of a conic gradient with mask-composite. Obviously pure CSS, no JavaScript at all.</p>
+            <div class="demo-meta"><span class="mono">CSS</span><span class="demo-links"><a href="#">Open ↗</a><a href="#">Source ↗</a></span></div>
+          </div>
+        </section>
+
+        <section id="sakura" data-section>
+          <h2>Sakura badge</h2>
+          <div class="entry">
+            <div class="frame"><div class="view" style="--h: 260px">
+              <div class="stand-in"><span class="mono">Live demo</span><p>A badge with cherry-blossom petals falling inside it.</p></div>
+            </div></div>
+            <p class="entry-text">A little badge with cherry-blossom petals falling inside it. Petal positions are randomized client-side to avoid hydration mismatches.</p>
+            <div class="demo-meta"><span class="mono">React · CSS</span><span class="demo-links"><a href="#">Open ↗</a><a href="#">Source ↗</a></span></div>
+          </div>
+        </section>
+
+        <section id="time-picker" data-section>
+          <h2>Time picker</h2>
+          <div class="entry">
+            <div class="frame"><div class="view" style="--h: 420px">
+              <div class="stand-in"><span class="mono">Live demo</span><p>Staged selection, a "now" shortcut, per-slot disabling.</p></div>
+            </div></div>
+            <p class="entry-text">Built for a client project after every free time picker I looked into misbehaved somewhere: controlled values, mobile scrolling, popover clipping. Writing one was faster: staged selection, a "now" shortcut, per-slot disabling.</p>
+            <div class="demo-meta"><span class="mono">React</span><span class="demo-links"><a href="#">Open ↗</a><a href="#">Source ↗</a></span></div>
+          </div>
+        </section>
+
+        <section id="chip-composer" data-section>
+          <h2>Entity-chip composer</h2>
+          <div class="entry">
+            <div class="frame"><div class="view" style="--h: 480px">
+              <div class="stand-in"><span class="mono">Live demo</span><p>Type @ and pick a destination: it becomes a chip the caret can't split.</p></div>
+            </div></div>
+            <p class="entry-text">Type @ and pick a destination: it becomes a chip the caret can't split. Built on raw DOM Ranges and Selection, no editor library. The palette anchors to the caret and the panel below shows how the message serializes.</p>
+            <div class="demo-meta"><span class="mono">DOM Ranges</span><span class="demo-links"><a href="#">Open ↗</a><a href="#">Source ↗</a></span></div>
+          </div>
+        </section>
+
+        <section id="transit-drag" data-section>
+          <h2>Transit drag</h2>
+          <div class="entry">
+            <div class="frame"><div class="view" style="--h: 640px; --h-phone: 560px">
+              <div class="stand-in"><span class="mono">Live demo</span><p>Drag the train and every later time recalculates.</p></div>
+            </div></div>
+            <p class="entry-text">A day of activities with a train in the middle. Drag the train (or use the arrows) and every later time recalculates: transfers, departure, the whole afternoon.</p>
+            <div class="demo-meta"><span class="mono">Drag and drop</span><span class="demo-links"><a href="#">Open ↗</a><a href="#">Source ↗</a></span></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="shell.js"></script>
+  </body>
+</html>
