@@ -1,17 +1,14 @@
 import { DICTS, type Lang } from '@/lib/i18n';
 import { DemoCards } from '@/components/demos/DemoCards';
-import { EmbedMarker } from '@/components/EmbedMarker';
 import { DemoLayout } from '@/components/fancy/DemoLayout';
 
-// Chrome hides itself when embedded (iframe src carries #embed). Inside the
-// playground iframe this page's own scrollbar scrubs the animation.
+// Inside the playground's frame, this page's own scrollbar scrubs the animation.
 export function DriveInDemoPage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang].demos.driveIn;
 
   return (
     <DemoLayout lang={lang} slug="drive-in">
       <div className="px-6">
-        <EmbedMarker />
         <p className="pt-5 text-center label text-muted-foreground">
           {dict.scroll}
         </p>

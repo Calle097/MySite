@@ -1,17 +1,13 @@
 import { DICTS, type Lang } from '@/lib/i18n';
 import { TimePickerDemo } from '@/components/demos/TimePickerDemo';
-import { EmbedMarker } from '@/components/EmbedMarker';
 import { DemoLayout } from '@/components/fancy/DemoLayout';
 
-// Chrome hides itself when embedded (iframe src carries #embed); a
-// standalone visit keeps the header and footer.
 export function TimePickerDemoPage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang].demos;
 
   return (
     <DemoLayout lang={lang} slug="time-picker">
       <div className="px-6">
-        <EmbedMarker />
         <noscript>
           <p className="mx-auto mt-10 max-w-md text-center text-sm leading-relaxed text-muted-foreground">
             {dict.noscript}

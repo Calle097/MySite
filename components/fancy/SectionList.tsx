@@ -1,7 +1,7 @@
 'use client';
 
 import type { CSSProperties, MouseEvent } from 'react';
-import { twoDigits } from '@/lib/fancy/format';
+import { twoDigits } from '@/lib/format';
 
 export type IndexItem = { href: string; title: string };
 

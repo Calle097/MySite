@@ -1,9 +1,7 @@
 import { DICTS, type Lang } from '@/lib/i18n';
-import { EmbedMarker } from '@/components/EmbedMarker';
 import { DemoLayout } from '@/components/fancy/DemoLayout';
 import '@/components/demos/css-effects.css';
 
-// Chrome hides itself when embedded (iframe src carries #embed).
 // Everything on this page animates with CSS alone; there is no JavaScript.
 export function CssEffectsDemoPage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang].demos.css;
@@ -11,7 +9,6 @@ export function CssEffectsDemoPage({ lang }: { lang: Lang }) {
   return (
     <DemoLayout lang={lang} slug="css-effects">
       <div className="flex min-h-dvh flex-col items-center justify-center gap-14 px-6">
-        <EmbedMarker />
         <p className="text-center label text-muted-foreground">
           {dict.hint}
         </p>

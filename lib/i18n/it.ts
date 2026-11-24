@@ -212,6 +212,7 @@ export const it: Dict = {
     },
   },
   nav: {
+    home: 'Home',
     about: 'Chi sono',
     playground: 'Playground',
     stack: 'Stack',

@@ -2,29 +2,27 @@
 
 import { useEffect, type CSSProperties } from 'react';
 import { setCurrentSection, useCurrentSection } from '@/lib/fancy/current-section';
-import { twoDigits } from '@/lib/fancy/format';
+import { twoDigits } from '@/lib/format';
 import { SectionList, type IndexItem } from './SectionList';
 
 /**
  * The index at the bottom of the column: its label, a counter that rolls to
- * the current number, and the list. With `follow`, the items are the page's
- * own sections and the current one follows the scroll; otherwise (a demo
- * page listing every demo) `fixedCurrent` marks this page.
+ * the current number, and the list. Without `current`, the items are the
+ * page's own sections and the current one follows the scroll; with it (a
+ * demo page listing every demo), it marks this page.
  */
 export function SectionIndex({
   label,
   items,
-  follow,
-  fixedCurrent = -1,
+  current: fixed,
 }: {
   label: string;
   items: readonly IndexItem[];
-  follow: boolean;
-  fixedCurrent?: number;
+  current?: number;
 }) {
   const followed = useCurrentSection();
-  useSectionSpy(follow ? items : null);
-  const current = follow ? followed : fixedCurrent;
+  useSectionSpy(fixed === undefined ? items : null);
+  const current = fixed ?? followed;
 
   return (
     <nav className="fc-index only-fancy" aria-label={label}>

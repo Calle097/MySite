@@ -1,20 +1,22 @@
 import type { ReactNode } from 'react';
-import { DICTS, LANGUAGES, prefix, type Lang } from '@/lib/i18n';
-import { EMAIL } from '@/lib/site';
+import { DICTS, LANGUAGES, type Lang } from '@/lib/i18n';
+import { PAGES, isFile, pageHref } from '@/lib/pages';
+import { EMAIL, GITHUB_URL, SOURCE_URL } from '@/lib/site';
 import { FancyHeader } from './FancyHeader';
 import { PhoneMenu } from './PhoneMenu';
 import { SectionIndex } from './SectionIndex';
 import type { IndexItem } from './SectionList';
+import type { ChromeLabels } from './types';
 import { VersionSwitch } from './VersionSwitch';
 
 export type Section = { id: string; title: string };
 
 /**
  * Every page's frame. Plain mode doesn't style any of its wrappers, so a
- * page renders exactly as before: its hero, then its sections. The fancier version
- * (app/fancy.css) turns them into the split: a column that holds still on
- * the left (header, the hero, the index, the version switch) and the
- * content on the right. The fancier-only parts carry `only-fancy`.
+ * page renders exactly as before: its hero, then its sections. The fancier
+ * version (app/fancy.css) turns them into the split: a column that holds
+ * still on the left (header, the hero, the index, the version switch) and
+ * the content on the right. The fancier-only parts carry `only-fancy`.
  *
  * `sections` are the page's own, in order, matching the ids of its
  * <section>s: the index lists them and follows the scroll. A page can bring
@@ -34,66 +36,37 @@ export function PageLayout({
   children: ReactNode;
 }) {
   const dict = DICTS[lang];
-  const p = prefix(lang);
   const items = index?.items ?? sections.map((s) => ({ href: `#${s.id}`, title: s.title }));
-  const languageName = LANGUAGES.find((l) => l.lang === lang)?.name ?? lang;
-  const homeHref = `${p}/`;
-  // The name is the way home, so the header lists the other pages.
-  const links = [
-    { href: `${p}/about/`, label: dict.nav.about },
-    { href: `${p}/playground/`, label: dict.nav.playground },
-    { href: `${p}/stack/`, label: dict.nav.stack },
-    { href: '/cv.pdf', label: dict.nav.cv, file: true },
-  ];
+  const pages = PAGES.map((page) => ({ href: pageHref(lang, page), label: dict.nav[page], file: isFile(page) }));
+  const homeHref = pageHref(lang, 'home');
+  const labels: ChromeLabels = {
+    home: dict.nav.home,
+    menu: dict.nav.menu,
+    close: dict.nav.close,
+    pages: dict.nav.pages,
+    language: dict.nav.language,
+    languageName: LANGUAGES.find((l) => l.lang === lang)?.name ?? lang,
+    version: dict.mode.version,
+    plain: dict.mode.plain,
+    fancier: dict.mode.fancier,
+  };
 
   return (
     <div className="fc-page">
       <PhoneMenu
         lang={lang}
         homeHref={homeHref}
-        pages={[
-          { href: homeHref, label: 'Home' },
-          ...links.map((l) => (l.file ? { ...l, label: `${l.label} ↓` } : l)),
-        ]}
-        index={{ label: index?.label ?? dict.nav.onThisPage, items, follow: !index, fixedCurrent: index?.current }}
-        labels={{
-          menu: dict.nav.menu,
-          close: dict.nav.close,
-          pages: dict.nav.pages,
-          language: dict.nav.language,
-          languageName,
-          version: dict.mode.version,
-          plain: dict.mode.plain,
-          fancier: dict.mode.fancier,
-        }}
+        pages={pages}
+        index={{ label: index?.label ?? dict.nav.onThisPage, items, current: index?.current }}
+        labels={labels}
       />
       <div className="fc-stage">
-        <FancyHeader
-          lang={lang}
-          homeHref={homeHref}
-          // "home" reads the same in Italian ("Torna alla home").
-          homeLabel="Mattia Callegher, home"
-          links={links}
-          labels={{
-            pages: dict.nav.pages,
-            menu: dict.nav.menu,
-            close: dict.nav.close,
-            language: dict.nav.language,
-            languageName,
-          }}
-        />
+        <FancyHeader lang={lang} homeHref={homeHref} links={pages.filter((p) => p.href !== homeHref)} labels={labels} />
         <div className="fc-stage-mid">{hero}</div>
-        {items.length > 0 && (
-          <SectionIndex
-            label={index?.label ?? dict.nav.index}
-            items={items}
-            follow={!index}
-            fixedCurrent={index?.current}
-          />
-        )}
+        {items.length > 0 && <SectionIndex label={index?.label ?? dict.nav.index} items={items} current={index?.current} />}
         <div className="fc-stage-foot only-fancy">
           <span className="fc-mono">{dict.mode.version}</span>
-          <VersionSwitch label={dict.mode.version} plain={dict.mode.plain} fancier={dict.mode.fancier} />
+          <VersionSwitch labels={labels} />
         </div>
       </div>
 
@@ -103,8 +76,8 @@ export function PageLayout({
           <span className="fc-mono">{dict.footer.location}</span>
           <nav className="fc-foot-links" aria-label={dict.footer.elsewhere}>
             <a href={`mailto:${EMAIL}`}>{dict.footer.email}</a>
-            <a href="https://github.com/Calle097">{dict.footer.github}</a>
-            <a href="https://github.com/Calle097/MySite">{dict.footer.source}</a>
+            <a href={GITHUB_URL}>{dict.footer.github}</a>
+            <a href={SOURCE_URL}>{dict.footer.source}</a>
           </nav>
         </footer>
       </div>

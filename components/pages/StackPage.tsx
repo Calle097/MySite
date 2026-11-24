@@ -1,5 +1,6 @@
 import { DICTS, type Lang } from '@/lib/i18n';
-import { sectionId } from '@/lib/fancy/format';
+import { sectionId } from '@/lib/format';
+import { SOURCE_URL } from '@/lib/site';
 import { SectionHeader } from '@/components/SectionHeader';
 import { PageLayout } from '@/components/fancy/PageLayout';
 
@@ -19,10 +20,7 @@ export function StackPage({ lang }: { lang: Lang }) {
       <h1 className="page-title font-semibold tracking-tight">{dict.stack.title}</h1>
       <p data-part="blurb" className="mt-5 max-w-[52ch] leading-relaxed text-muted-foreground">
         {dict.stack.sourcePre}{' '}
-        <a
-          href="https://github.com/Calle097/MySite"
-          className="underline underline-offset-4 transition-colors hover:text-brand-accent"
-        >
+        <a href={SOURCE_URL} className="underline underline-offset-4 transition-colors hover:text-brand-accent">
           {dict.stack.sourceLabel}
         </a>
         .

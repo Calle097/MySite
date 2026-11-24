@@ -5,9 +5,8 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import type { Lang } from '@/lib/i18n';
 import { MODE_EVENT } from '@/lib/mode';
 import { NavLink } from '../NavLink';
-import { LanguageList } from './LanguageList';
-
-export type HeaderLink = { href: string; label: string; /** A file, not a route: a plain <a>. */ file?: boolean };
+import { LanguageList, LanguageToggle } from './LanguageList';
+import type { ChromeLabels, PageLink } from './types';
 
 /**
  * The header at the top of the column: the name (home), the pages, the
@@ -22,15 +21,14 @@ export type HeaderLink = { href: string; label: string; /** A file, not a route:
 export function FancyHeader({
   lang,
   homeHref,
-  homeLabel,
   links,
   labels,
 }: {
   lang: Lang;
   homeHref: string;
-  homeLabel: string;
-  links: readonly HeaderLink[];
-  labels: { pages: string; menu: string; close: string; language: string; languageName: string };
+  /** The pages but home: the name is the way there. */
+  links: readonly PageLink[];
+  labels: ChromeLabels;
 }) {
   const header = useRef<HTMLElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -104,24 +102,21 @@ export function FancyHeader({
       ref={header}
       className={['fc-header', 'only-fancy', extended && 'is-extended', langsOpen && 'is-langs-open'].filter(Boolean).join(' ')}
     >
-      <Link href={homeHref} className="fc-name" aria-label={homeLabel}>
+      <Link href={homeHref} className="fc-name" aria-label={`Mattia Callegher, ${labels.home}`}>
         Mattia Callegher
       </Link>
       <nav className="fc-header-nav" aria-label={labels.pages}>
         {pageLinks(false)}
       </nav>
       <div className="fc-header-tools">
-        <button
+        <LanguageToggle
           ref={langButton}
-          type="button"
-          className="fc-mono fc-lang-toggle"
-          aria-controls="fc-header-langs"
-          aria-expanded={langsOpen}
-          aria-label={`${labels.language}: ${labels.languageName}`}
-          onClick={() => setLangsOpen((open) => !open)}
-        >
-          {lang.toUpperCase()} <span className="fc-caret" aria-hidden>▾</span>
-        </button>
+          lang={lang}
+          controls="fc-header-langs"
+          open={langsOpen}
+          labels={labels}
+          onToggle={() => setLangsOpen((open) => !open)}
+        />
         <button
           ref={menuButton}
           type="button"

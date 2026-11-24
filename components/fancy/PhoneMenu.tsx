@@ -5,21 +5,29 @@ import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from
 import type { Lang } from '@/lib/i18n';
 import { useCurrentSection } from '@/lib/fancy/current-section';
 import { MODE_EVENT } from '@/lib/mode';
+import { EASE, circleFrames, reducedMotion } from '@/lib/motion';
 import { NavLink } from '../NavLink';
-import { LanguageList } from './LanguageList';
+import { LanguageList, LanguageToggle } from './LanguageList';
 import { SectionList, type IndexItem } from './SectionList';
-import type { HeaderLink } from './FancyHeader';
+import type { ChromeLabels, PageLink } from './types';
 import { VersionSwitch } from './VersionSwitch';
 
-const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
-/** Where the column's header takes over (app/fancy.css, narrow screens). */
+/** Where the column's header takes over: keep in step with the 900px
+    breakpoints in app/fancy/ (narrow.css and the short-screen queries). */
 const WIDE = 900;
+
+/** Locks the page under the menu: overflow hidden on <html>, with the
+    scrollbar's width put back as padding so nothing shifts sideways. */
+function lockPage(on: boolean) {
+  const html = document.documentElement;
+  if (on) html.style.setProperty('--scrollbar-w', `${innerWidth - html.clientWidth}px`);
+  html.classList.toggle('fc-menu-open', on);
+}
 
 /**
  * Narrow screens: one bar (name · Menu) and a full-screen menu that opens
  * as a circle from its button. While it is open the page underneath can't
- * move: overflow is locked on <html>, with the scrollbar's width put back as
- * padding so nothing shifts sideways.
+ * move.
  *
  * Inside: the pages, then one slot that shows either the index or, while
  * EN is open, the languages (so the menu never grows), then EN and the
@@ -36,18 +44,11 @@ export function PhoneMenu({
 }: {
   lang: Lang;
   homeHref: string;
-  pages: readonly HeaderLink[];
-  index: { label: string; items: readonly IndexItem[]; follow: boolean; fixedCurrent?: number };
-  labels: {
-    menu: string;
-    close: string;
-    pages: string;
-    language: string;
-    languageName: string;
-    version: string;
-    plain: string;
-    fancier: string;
-  };
+  pages: readonly PageLink[];
+  /** `current`: a fixed current item (a demo page lists every demo); without
+      it the items are the page's own sections, following the scroll. */
+  index: { label: string; items: readonly IndexItem[]; current?: number };
+  labels: ChromeLabels;
 }) {
   const menu = useRef<HTMLDivElement>(null);
   const sectionList = useRef<HTMLDivElement>(null);
@@ -57,7 +58,8 @@ export function PhoneMenu({
   const [shown, setShown] = useState(false);
   const [langsOpen, setLangsOpen] = useState(false);
   const followed = useCurrentSection();
-  const current = index.follow ? followed : (index.fixedCurrent ?? -1);
+  const follows = index.current === undefined;
+  const current = index.current ?? followed;
 
   // The circle, from (and back into) the button that opened the menu.
   const circle = (opening: boolean) => {
@@ -69,28 +71,21 @@ export function PhoneMenu({
     const y = r.top + r.height / 2;
     el.style.setProperty('--ox', `${x}px`);
     el.style.setProperty('--oy', `${y}px`);
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return null;
-    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-    const frames = [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`];
+    if (reducedMotion()) return null;
+    const frames = circleFrames(x, y);
     return el.animate({ clipPath: opening ? frames : [...frames].reverse() }, { duration: 650, easing: EASE });
-  };
-
-  const lock = (on: boolean) => {
-    const html = document.documentElement;
-    if (on) html.style.setProperty('--scrollbar-w', `${innerWidth - html.clientWidth}px`);
-    html.classList.toggle('fc-menu-open', on);
   };
 
   const openMenu = (button: HTMLButtonElement) => {
     opener.current = button;
-    lock(true);
+    lockPage(true);
     setOpen(true);
   };
 
   const closeMenu = () => {
     // Unlock first: a section link can start scrolling the page right away,
     // while the circle is still closing over it.
-    lock(false);
+    lockPage(false);
     setShown(false);
     const done = () => {
       setOpen(false);
@@ -132,7 +127,7 @@ export function PhoneMenu({
     // Switching to plain closes it at once, without the circle (plain never
     // shows the menu), so switching back finds it closed.
     const onModeChange = () => {
-      lock(false);
+      lockPage(false);
       setShown(false);
       setOpen(false);
       setLangsOpen(false);
@@ -148,17 +143,14 @@ export function PhoneMenu({
   }, [open, langsOpen]);
 
   // Leaving the page (a link in the menu) must not leave it locked.
-  useEffect(() => () => lock(false), []);
+  useEffect(() => () => lockPage(false), []);
 
   const goToSection = (i: number, e: MouseEvent<HTMLAnchorElement>) => {
     const target = document.getElementById(index.items[i].href.slice(1));
     if (!target) return;
     e.preventDefault();
     closeMenu();
-    target.scrollIntoView({
-      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-      block: 'start',
-    });
+    target.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
     history.replaceState(null, '', `#${target.id}`);
   };
 
@@ -200,7 +192,10 @@ export function PhoneMenu({
             {pages.map((page, i) => {
               const text = (
                 <span className="fc-mask">
-                  <span style={{ '--i': i } as CSSProperties}>{page.label}</span>
+                  <span style={{ '--i': i } as CSSProperties}>
+                    {page.label}
+                    {page.file && ' ↓'}
+                  </span>
                 </span>
               );
               return (
@@ -217,7 +212,7 @@ export function PhoneMenu({
           {index.items.length > 0 && (
             <nav ref={sectionList} className="fc-menu-group fc-menu-index" aria-label={index.label} inert={langsOpen}>
               <span className="fc-mono">{index.label}</span>
-              <SectionList items={index.items} current={current} onGo={index.follow ? goToSection : undefined} />
+              <SectionList items={index.items} current={current} onGo={follows ? goToSection : undefined} />
             </nav>
           )}
           <nav id="fc-menu-langs" className="fc-menu-group fc-menu-langs" aria-label={labels.language} inert={!langsOpen}>
@@ -226,18 +221,16 @@ export function PhoneMenu({
           </nav>
         </div>
 
-        <div className="fc-menu-foot" style={{ '--i': 6 } as CSSProperties}>
-          <button
-            type="button"
-            className="fc-mono fc-lang-toggle"
-            aria-controls="fc-menu-langs"
-            aria-expanded={langsOpen}
-            aria-label={`${labels.language}: ${labels.languageName}`}
-            onClick={() => setLangsOpen((o) => !o)}
-          >
-            {lang.toUpperCase()} <span className="fc-caret" aria-hidden>▾</span>
-          </button>
-          <VersionSwitch label={labels.version} plain={labels.plain} fancier={labels.fancier} />
+        {/* Enters a beat after the last page. */}
+        <div className="fc-menu-foot" style={{ '--i': pages.length + 1 } as CSSProperties}>
+          <LanguageToggle
+            lang={lang}
+            controls="fc-menu-langs"
+            open={langsOpen}
+            labels={labels}
+            onToggle={() => setLangsOpen((o) => !o)}
+          />
+          <VersionSwitch labels={labels} />
         </div>
       </div>
     </>

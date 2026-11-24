@@ -44,7 +44,8 @@ export interface Dict {
   hero: {
     line1: string;
     line2: string;
-    metaRow: string[];
+    /** Plain shows all three; the fancier version, the first two. */
+    metaRow: [place: string, wish: string, stack: string];
     blurb: string;
   };
   work: {
@@ -138,6 +139,7 @@ export interface Dict {
   /** The fancier version's header uses plain words instead of the /path labels; the
       rest names the parts of its menu and index. */
   nav: {
+    home: string;
     about: string;
     playground: string;
     stack: string;

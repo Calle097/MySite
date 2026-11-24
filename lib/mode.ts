@@ -13,9 +13,12 @@
  * other document of the site when the choice changes, so other tabs and the
  * playground's iframes follow the switch live.
  *
- * Components that care (the reveal observer) listen for MODE_EVENT on
- * window, fired whenever the mode changes in this document.
+ * Components that care (the reveal observer, the light, the menus) listen
+ * for MODE_EVENT on window, fired whenever the mode changes in this
+ * document.
  */
+
+import { EASE, circleFrames, reducedMotion } from './motion';
 
 export const MODE_KEY = 'site-mode';
 export const MODE_EVENT = 'site:mode';
@@ -30,7 +33,6 @@ apply();
 addEventListener('storage',function(e){if(e.key==='${MODE_KEY}'){apply();dispatchEvent(new Event('${MODE_EVENT}'));}});
 }catch(e){}})();`;
 
-const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
 /** How long the entrance choreography runs after switching to fancy;
     app/fancy.css can key entrance delays off data-entering while it lasts. */
 const ENTERING_MS = 1800;
@@ -68,7 +70,7 @@ export async function switchMode(x: number, y: number) {
   };
 
   try {
-    if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!document.startViewTransition || reducedMotion()) {
       apply();
       return;
     }
@@ -79,8 +81,7 @@ export async function switchMode(x: number, y: number) {
     const transition = document.startViewTransition(apply);
     await transition.ready;
 
-    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-    const circle = [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`];
+    const circle = circleFrames(x, y);
     const reveal = html.animate(
       { clipPath: toFancy ? circle : [...circle].reverse() },
       {

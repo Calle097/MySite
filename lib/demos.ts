@@ -1,3 +1,5 @@
+import { SOURCE_URL } from './site';
+
 /**
  * The one registry of playground demos.
  *
@@ -25,7 +27,7 @@ export const DEMO_SLUGS = [
 
 export type DemoSlug = (typeof DEMO_SLUGS)[number];
 
-const REPO = 'https://github.com/Calle097/MySite/blob/main';
+const REPO = `${SOURCE_URL}/blob/main`;
 
 interface Demo {
   /** Frame height in the playground — scroll-driven demos need the room. */

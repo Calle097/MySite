@@ -1,4 +1,4 @@
-/** "01", "02"… — the index's numbering, everywhere it appears. */
+/** "01", "02"… — section numbering, everywhere it appears (both versions). */
 export const twoDigits = (n: number) => String(n).padStart(2, '0');
 
 /** A section's anchor, from its English title ("First job" → "first-job"),

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
-import { EMAIL } from '@/lib/site';
+import { PAGES, isFile, pageHref } from '@/lib/pages';
+import { EMAIL, GITHUB_URL, SOURCE_URL } from '@/lib/site';
 import { LangSwitcher } from './LangSwitcher';
 import { MobileMenu } from './MobileMenu';
 import { ModeSwitch } from './ModeSwitch';
@@ -18,13 +19,11 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
   const p = prefix(lang);
 
   // File-path labels, plain mode's look.
-  const pathLinks = [
-    { href: `${p}/`, label: '/home' },
-    { href: `${p}/about/`, label: '/about' },
-    { href: `${p}/playground/`, label: '/playground' },
-    { href: `${p}/stack/`, label: '/stack' },
-    { href: '/cv.pdf', label: '/cv ↓' },
-  ];
+  const pathLinks = PAGES.map((page) => ({
+    href: pageHref(lang, page),
+    label: `/${page}${isFile(page) ? ' ↓' : ''}`,
+    file: isFile(page),
+  }));
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -54,7 +53,7 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
             plain <a>. */}
         <nav className="hidden items-baseline gap-6 font-mono text-sm nav:flex text-muted-foreground">
           {pathLinks.map((l) =>
-            l.href.endsWith('.pdf') ? (
+            l.file ? (
               <a key={l.href} href={l.href} className="transition-colors hover:text-brand-accent">
                 {l.label}
               </a>
@@ -89,10 +88,10 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
           <a href={`mailto:${EMAIL}`} className="transition-colors hover:text-brand-accent">
             {dict.footer.email}
           </a>
-          <a href="https://github.com/Calle097" className="transition-colors hover:text-brand-accent">
+          <a href={GITHUB_URL} className="transition-colors hover:text-brand-accent">
             {dict.footer.github}
           </a>
-          <a href="https://github.com/Calle097/MySite" className="transition-colors hover:text-brand-accent">
+          <a href={SOURCE_URL} className="transition-colors hover:text-brand-accent">
             {dict.footer.source}
           </a>
         </span>

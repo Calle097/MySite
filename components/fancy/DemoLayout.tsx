@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { DEMOS, DEMO_SLUGS, type DemoSlug } from '@/lib/demos';
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
+import { EmbedMarker } from '../EmbedMarker';
 import { PageLayout } from './PageLayout';
 
 /**
@@ -10,8 +11,9 @@ import { PageLayout } from './PageLayout';
  * and its source, and an index of every demo with this one lit; the demo
  * sits on the right in the same crop-mark frame as in the playground.
  *
- * Embedded in the playground (#embed, see components/EmbedMarker.tsx) the
- * column steps aside and only the demo shows (app/fancy.css).
+ * Embedded in the playground (its frames load the page with #embed, which
+ * targets the EmbedMarker here) the site's chrome and the column step
+ * aside and only the demo shows (app/globals.css, app/fancy/demos.css).
  */
 export function DemoLayout({ lang, slug, children }: { lang: Lang; slug: DemoSlug; children: ReactNode }) {
   const dict = DICTS[lang];
@@ -45,6 +47,7 @@ export function DemoLayout({ lang, slug, children }: { lang: Lang; slug: DemoSlu
         current: DEMO_SLUGS.indexOf(slug),
       }}
     >
+      <EmbedMarker />
       <div data-frame data-reveal="frame" data-part="demo">
         <div data-frame-view>{children}</div>
       </div>

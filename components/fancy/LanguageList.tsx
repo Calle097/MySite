@@ -1,8 +1,9 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, Ref } from 'react';
 import { LANGUAGES, pathIn, rememberLang, type Lang } from '@/lib/i18n';
+import type { ChromeLabels } from './types';
 
 /**
  * Every language, each named in itself, linking to this same page in it.
@@ -35,5 +36,37 @@ export function LanguageList({ lang, onPick }: { lang: Lang; onPick?: () => void
         </li>
       ))}
     </ul>
+  );
+}
+
+/** "EN ▾": opens and closes a LanguageList (the header's, or the phone menu's). */
+export function LanguageToggle({
+  lang,
+  controls,
+  open,
+  labels,
+  onToggle,
+  ref,
+}: {
+  lang: Lang;
+  /** The id of the list it opens. */
+  controls: string;
+  open: boolean;
+  labels: Pick<ChromeLabels, 'language' | 'languageName'>;
+  onToggle: () => void;
+  ref?: Ref<HTMLButtonElement>;
+}) {
+  return (
+    <button
+      ref={ref}
+      type="button"
+      className="fc-mono fc-lang-toggle"
+      aria-controls={controls}
+      aria-expanded={open}
+      aria-label={`${labels.language}: ${labels.languageName}`}
+      onClick={onToggle}
+    >
+      {lang.toUpperCase()} <span className="fc-caret" aria-hidden>▾</span>
+    </button>
   );
 }

@@ -1,8 +1,8 @@
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
 import { DEMO_SLUGS } from '@/lib/demos';
-import { twoDigits } from '@/lib/fancy/format';
+import { twoDigits } from '@/lib/format';
 import { revealOrder } from '@/lib/reveal';
-import { EMAIL, SITE_URL } from '@/lib/site';
+import { CV_PATH, EMAIL, GITHUB_URL, SITE_URL } from '@/lib/site';
 import { CopyEmail } from '@/components/CopyEmail';
 import { ModeSwitch } from '@/components/ModeSwitch';
 import { SectionHeader } from '@/components/SectionHeader';
@@ -31,7 +31,7 @@ function structuredData(lang: Lang) {
         jobTitle: `${dict.hero.line1} ${dict.hero.line2}`,
         description: dict.description,
         address: { '@type': 'PostalAddress', addressCountry: 'IT' },
-        sameAs: ['https://github.com/Calle097'],
+        sameAs: [GITHUB_URL],
       },
       {
         '@type': 'WebSite',
@@ -46,15 +46,16 @@ function structuredData(lang: Lang) {
 }
 
 /**
- * Plain mode renders this as it always has. The fancier version lays it out through
- * PageLayout and app/fancy.css, using the hooks here: data-part names a
- * piece, data-entry marks an entry, data-reveal / revealOrder set up the
- * scroll reveals (lib/reveal.ts). Two sections are fancier only: the
+ * Plain mode renders this as it always has. The fancier version lays it out
+ * through PageLayout and app/fancy.css, using the hooks here: data-part
+ * names a piece, data-entry marks an entry, data-reveal / revealOrder set up
+ * the scroll reveals (lib/reveal.ts). Two sections are fancier only: the
  * playground teaser and About.
  */
 export function HomePage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];
   const p = prefix(lang);
+  const [place, wish] = dict.hero.metaRow;
 
   // In page order: the index lists these, and the ids are the anchors.
   const sections = [
@@ -105,7 +106,7 @@ export function HomePage({ lang }: { lang: Lang }) {
 
       {/* Fancier: where, under the blurb (the meta row's first two facts). */}
       <p data-part="place" data-reveal="rise" style={revealOrder(5)} className="only-fancy fc-mono">
-        {dict.hero.metaRow.slice(0, 2).join(' · ')}
+        {place} · {wish}
       </p>
 
       {/* Plain only: the fancier version has its switch in the column. */}
@@ -153,7 +154,7 @@ export function HomePage({ lang }: { lang: Lang }) {
         </ul>
         <p data-part="aside" data-reveal="rise" className="gutter pt-5 label text-muted-foreground">
           {dict.work.fullHistory}{' '}
-          <a href="/cv.pdf" className="underline underline-offset-4 transition-colors hover:text-brand-accent">
+          <a href={CV_PATH} className="underline underline-offset-4 transition-colors hover:text-brand-accent">
             {dict.work.cvLabel}
           </a>
         </p>
@@ -218,6 +219,7 @@ export function HomePage({ lang }: { lang: Lang }) {
       </section>
 
       <section id="contact" data-section data-part="contact" className="mt-20 sm:mt-28">
+        {/* Third in plain, which has no playground or About section here. */}
         <SectionHeader index={3} title={dict.contact.header} />
         <div data-part="email" data-reveal="rise" className="gutter pt-8 sm:pt-10">
           <a
@@ -235,8 +237,8 @@ export function HomePage({ lang }: { lang: Lang }) {
           <span className="fc-actions only-fancy">
             <CopyEmail email={EMAIL} copy={dict.contact.copy} copied={dict.contact.copied} />
             <a href={`mailto:${EMAIL}`}>{dict.contact.write}</a>
-            <a href="https://github.com/Calle097">{dict.footer.github} ↗</a>
-            <a href="/cv.pdf">{dict.nav.cv} ↓</a>
+            <a href={GITHUB_URL}>{dict.footer.github} ↗</a>
+            <a href={CV_PATH}>{dict.nav.cv} ↓</a>
           </span>
         </div>
       </section>
