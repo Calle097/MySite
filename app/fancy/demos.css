@@ -1,4 +1,21 @@
+/* The crop marks' length and colour animate, so they're registered
+   properties: global names, so outside the layer. An initial value must
+   not depend on font size (1rem would void the whole rule), so the length
+   starts at 0px and the frame sets it. */
+@property --fc-mark {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --fc-mark-color {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: transparent;
+}
+
 @layer fancy {
+  /* --- Demos: the frame, the playground, demo pages --------------------- */
   [data-mode='fancy'] {
     /* The frame for a demo (playground and demo pages): no box, no title
        bar, only crop marks at the four corners, like a print plate, around a
@@ -94,6 +111,7 @@
       }
     }
 
+    /* Rows of .fc-mono labels. */
     [data-demo-links],
     [data-part='demo-meta'] {
       display: flex;
@@ -101,10 +119,6 @@
       margin: 0;
 
       a {
-        font-family: var(--fc-mono);
-        font-size: 0.72rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
         text-decoration: none;
         color: var(--fc-muted);
         transition: color 0.3s ease;

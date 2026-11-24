@@ -29,7 +29,9 @@ export function AboutPage({ lang }: { lang: Lang }) {
         {parts.map((part, i) => (
           <section key={part.title} id={sections[i].id} data-section>
             <SectionHeader index={i + 1} title={part.title} className="only-fancy" />
-            <p data-reveal="rise">{part.text}</p>
+            <p data-reveal="rise" className="fc-lead">
+              {part.text}
+            </p>
           </section>
         ))}
       </div>

@@ -14,20 +14,21 @@
    on <html>, set by lib/mode.ts; plain matches nothing here but the switch.
 
    One file per part, imported in cascade order (within one layer, later
-   files win ties):
-     base        the switch between versions, tokens, page, registered props
+   files win ties, so keep the order). A part's own motion sits at the end
+   of its file, behind the reduced-motion gate:
+     base        the view transition, tokens, page, the label, dashed links
      layout      the column and the content
      header      its sideways Menu, the language list
      hero        the page's title, in the column
      index       the index and the version switch
-     content     section titles, entries
+     content     section titles, entries, the lead paragraph
      pages       stack, about, 404
      demos       the crop-mark frame, the playground, demo pages, embedding
      home        the home page's own parts
      footer
      narrow      one column on narrow screens, the phone bar
      phone-menu  the phone menu
-     motion      entrances, reveals, the menu's and header's choreography
+     motion      what runs across parts: the arrival fade, scroll reveals
 
    Narrow screens start below 900px (narrow.css and the short-screen
    queries); components/fancy/PhoneMenu.tsx closes the menu at the same

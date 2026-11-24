@@ -1,27 +1,4 @@
-/* The fancier version: what every part relies on. Keyframes and registered
-   properties are global names, so they live outside the layer. */
-
-@keyframes fc-fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-/* The demo frame's crop marks: their length and colour animate, so they're
-   registered (also global, outside the layer). An initial value must not
-   depend on font size (1rem would void the whole rule), so the length
-   starts at 0px and the frame sets it. */
-@property --fc-mark {
-  syntax: '<length>';
-  inherits: false;
-  initial-value: 0px;
-}
-
-@property --fc-mark-color {
-  syntax: '<color>';
-  inherits: false;
-  initial-value: transparent;
-}
+/* The fancier version: what every part relies on. */
 
 @layer fancy {
   /* --- The switch --------------------------------------------------------
@@ -113,6 +90,35 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--fc-muted);
+    }
+
+    /* Links with a dash in front (the index, the languages, the phone
+       menu's pages): the dash grows in for the current one; each list sets
+       how long, and its own spacing. */
+    :is(.fc-sections, .fc-langs, .fc-menu-pages) a {
+      display: flex;
+      align-items: center;
+      color: var(--fc-muted);
+      transition: color 0.3s ease;
+
+      &::before {
+        content: '';
+        width: 0;
+        height: 1px;
+        background: var(--fc-accent);
+        transition: width 0.6s var(--fc-ease);
+      }
+
+      &[aria-current='true'],
+      &[aria-current='page'] {
+        color: var(--fc-fg);
+      }
+    }
+
+    @media (hover: hover) {
+      :is(.fc-sections, .fc-langs, .fc-menu-pages) a:hover {
+        color: var(--fc-fg);
+      }
     }
   }
 }

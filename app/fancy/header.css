@@ -200,24 +200,12 @@
       padding: 0;
 
       a {
-        display: flex;
-        align-items: center;
         gap: 0.75rem;
         padding: 0.3rem 0;
-        color: var(--fc-muted);
-        transition: color 0.3s ease;
       }
 
       a::before {
-        content: '';
-        width: 0;
-        height: 1px;
         background: color-mix(in srgb, var(--fc-fg) 40%, transparent);
-        transition: width 0.6s var(--fc-ease);
-      }
-
-      a[aria-current='true'] {
-        color: var(--fc-fg);
       }
 
       a[aria-current='true']::before {
@@ -227,12 +215,119 @@
     }
 
     @media (hover: hover) {
-      .fc-langs a:hover {
-        color: var(--fc-fg);
-      }
-
       .fc-langs a:hover::before {
         width: 1.25rem;
+      }
+    }
+  }
+
+  /* Motion (not for those who asked for less): Menu grows the surface
+     sideways and the pages slide in after it; EN opens its list downward. */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-mode='fancy'] {
+      .fc-header {
+        transition: border-color 0.25s ease 0.45s;
+
+        &.is-extended {
+          transition: border-color 0s;
+        }
+
+        &::before {
+          transition:
+            clip-path 0.6s var(--fc-ease),
+            opacity 0.25s ease 0.45s,
+            visibility 0s linear 0.7s;
+        }
+
+        &.is-extended::before {
+          transition:
+            clip-path 0.7s var(--fc-ease),
+            opacity 0.25s ease,
+            visibility 0s;
+        }
+      }
+
+      .fc-header-tools {
+        transition: transform 0.7s var(--fc-ease);
+      }
+
+      /* The pages slide out after the surface, one by one; they leave together. */
+      .fc-header-more {
+        transition: visibility 0s linear 0.4s;
+
+        a {
+          opacity: 0;
+          transform: translateX(-0.75rem);
+          transition:
+            color 0.3s ease,
+            opacity 0.3s ease,
+            transform 0.5s var(--fc-ease);
+        }
+      }
+
+      .fc-header.is-extended .fc-header-more {
+        transition: visibility 0s;
+
+        a {
+          opacity: 1;
+          transform: none;
+          transition:
+            color 0.3s ease,
+            opacity 0.5s ease,
+            transform 0.7s var(--fc-ease);
+          transition-delay: 0s, calc(var(--i, 0) * 50ms + 150ms), calc(var(--i, 0) * 50ms + 150ms);
+        }
+      }
+
+      /* The language list opens downward from the line, the options
+         following one by one, the haze fading in under them. */
+      .fc-header-langs {
+        transition:
+          visibility 0s linear 0.35s,
+          translate 0.7s var(--fc-ease);
+
+        &::before {
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .fc-langs {
+          clip-path: inset(0 0 100% 0);
+          transition: clip-path 0.35s var(--fc-ease);
+        }
+
+        li {
+          opacity: 0;
+          transform: translateY(-0.4rem);
+          transition:
+            opacity 0.3s ease,
+            transform 0.5s var(--fc-ease);
+        }
+      }
+
+      .fc-header.is-langs-open .fc-header-langs {
+        transition:
+          visibility 0s,
+          translate 0.7s var(--fc-ease);
+
+        &::before {
+          opacity: 1;
+          transition-duration: 0.5s;
+        }
+
+        .fc-langs {
+          clip-path: inset(0);
+          transition-duration: 0.6s;
+        }
+
+        li {
+          opacity: 1;
+          transform: none;
+          transition:
+            opacity 0.5s ease,
+            transform 0.7s var(--fc-ease);
+          transition-delay: calc(var(--i, 0) * 60ms + 120ms);
+        }
       }
     }
   }

@@ -1,4 +1,5 @@
 @layer fancy {
+  /* --- Home: its own parts ---------------------------------------------- */
   [data-mode='fancy'] {
     /* Home: the line after the work list. */
     [data-part='aside'] {
@@ -39,16 +40,8 @@
       height: auto;
     }
 
-    /* Home: About, in short. The lead reads like the About page's own
-       paragraphs ([data-part='about-text'] p, pages.css). */
-    .fc-lead {
-      margin: 0 0 1.5rem;
-      font-size: clamp(1.3rem, 1.9vw, 1.7rem);
-      font-weight: var(--fc-display-weight);
-      line-height: 1.4;
-      letter-spacing: -0.015em;
-    }
-
+    /* Home: About, in short: the first part as a lead (content.css), the
+       rest as body text. */
     .fc-para {
       max-width: 58ch;
       margin: 0 0 1rem;
@@ -67,6 +60,8 @@
       text-decoration: none;
     }
 
+    /* The row is an .fc-mono label; its links and the copy button take
+       that look from it. */
     .fc-actions {
       display: flex;
       flex-wrap: wrap;
@@ -76,11 +71,8 @@
       > * {
         padding: 0.5rem 0.85rem;
         border: 1px solid var(--fc-line);
-        font-family: var(--fc-mono);
-        font-size: 0.7rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--fc-muted);
+        /* A button doesn't inherit it by default. */
+        text-transform: inherit;
         transition:
           color 0.3s ease,
           border-color 0.3s ease;

@@ -1,179 +1,27 @@
+/* Keyframes are global names, so they live outside the layer. */
+@keyframes fc-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
 @layer fancy {
   /* --- Motion -----------------------------------------------------------
-     The column's header, index and switch fade in on arrival. Scroll
-     reveals (components/RevealObserver.tsx marks each [data-reveal]
-     data-shown as it enters the view): the title's lines rise from behind
-     a clean edge, section titles rise out of their own edge, everything
-     else fades up, entries' hairlines draw across. Content is hidden only
-     while the observer runs (data-observing on <html>): if the script never
-     starts, nothing stays hidden. */
+     What runs across the parts: the column's header, index and switch fade
+     in on arrival, and the scroll reveals (components/RevealObserver.tsx
+     marks each [data-reveal] data-shown as it enters the view): the title's
+     lines rise from behind a clean edge, section titles rise out of their
+     own edge, everything else fades up, entries' hairlines draw across, the
+     crop marks draw in. Content is hidden only while the observer runs
+     (data-observing on <html>): if the script never starts, nothing stays
+     hidden. The header's and the phone menu's own motion lives at the end
+     of their files. */
   @media (prefers-reduced-motion: no-preference) {
     [data-mode='fancy'] {
       .fc-header,
       .fc-index,
       .fc-stage-foot {
         animation: fc-fade-in 1.2s ease 0.5s both;
-      }
-
-      .fc-header {
-        transition: border-color 0.25s ease 0.45s;
-
-        &.is-extended {
-          transition: border-color 0s;
-        }
-
-        &::before {
-          transition:
-            clip-path 0.6s var(--fc-ease),
-            opacity 0.25s ease 0.45s,
-            visibility 0s linear 0.7s;
-        }
-
-        &.is-extended::before {
-          transition:
-            clip-path 0.7s var(--fc-ease),
-            opacity 0.25s ease,
-            visibility 0s;
-        }
-      }
-
-      .fc-header-tools {
-        transition: transform 0.7s var(--fc-ease);
-      }
-
-      /* The pages slide out after the surface, one by one; they leave together. */
-      .fc-header-more {
-        transition: visibility 0s linear 0.4s;
-
-        a {
-          opacity: 0;
-          transform: translateX(-0.75rem);
-          transition:
-            color 0.3s ease,
-            opacity 0.3s ease,
-            transform 0.5s var(--fc-ease);
-        }
-      }
-
-      .fc-header.is-extended .fc-header-more {
-        transition: visibility 0s;
-
-        a {
-          opacity: 1;
-          transform: none;
-          transition:
-            color 0.3s ease,
-            opacity 0.5s ease,
-            transform 0.7s var(--fc-ease);
-          transition-delay: 0s, calc(var(--i, 0) * 50ms + 150ms), calc(var(--i, 0) * 50ms + 150ms);
-        }
-      }
-
-      /* The language list opens downward from the line, the options
-         following one by one, the haze fading in under them. */
-      .fc-header-langs {
-        transition:
-          visibility 0s linear 0.35s,
-          translate 0.7s var(--fc-ease);
-
-        &::before {
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .fc-langs {
-          clip-path: inset(0 0 100% 0);
-          transition: clip-path 0.35s var(--fc-ease);
-        }
-
-        li {
-          opacity: 0;
-          transform: translateY(-0.4rem);
-          transition:
-            opacity 0.3s ease,
-            transform 0.5s var(--fc-ease);
-        }
-      }
-
-      .fc-header.is-langs-open .fc-header-langs {
-        transition:
-          visibility 0s,
-          translate 0.7s var(--fc-ease);
-
-        &::before {
-          opacity: 1;
-          transition-duration: 0.5s;
-        }
-
-        .fc-langs {
-          clip-path: inset(0);
-          transition-duration: 0.6s;
-        }
-
-        li {
-          opacity: 1;
-          transform: none;
-          transition:
-            opacity 0.5s ease,
-            transform 0.7s var(--fc-ease);
-          transition-delay: calc(var(--i, 0) * 60ms + 120ms);
-        }
-      }
-
-      /* The phone menu: the pages rise from behind their edge one after
-         another once the circle opens, then the rest follows; EN swaps the
-         index for the languages (fade out, then they rise in). */
-      .fc-menu {
-        .fc-mask > span {
-          transform: translateY(108%);
-          transition: transform 1.2s var(--fc-ease);
-          transition-delay: calc(var(--i, 0) * 90ms);
-        }
-
-        .fc-menu-index li,
-        .fc-menu-foot {
-          opacity: 0;
-          transform: translateY(0.6rem);
-          transition:
-            opacity 0.7s ease,
-            transform 0.9s var(--fc-ease);
-          transition-delay: calc(var(--i, 0) * 60ms + 250ms);
-        }
-
-        &.is-open .fc-mask > span,
-        &.is-open .fc-menu-index li,
-        &.is-open .fc-menu-foot {
-          opacity: 1;
-          transform: none;
-        }
-      }
-
-      .fc-menu-index,
-      .fc-menu-langs {
-        transition:
-          opacity 0.35s ease,
-          visibility 0s linear 0.35s;
-      }
-
-      .fc-menu-slot.is-langs-open .fc-menu-langs,
-      .fc-menu-slot:not(.is-langs-open) .fc-menu-index {
-        transition:
-          opacity 0.35s ease 0.15s,
-          visibility 0s;
-      }
-
-      .fc-menu-langs li {
-        opacity: 0;
-        transform: translateY(0.5rem);
-        transition:
-          opacity 0.5s ease,
-          transform 0.7s var(--fc-ease);
-        transition-delay: calc(var(--i, 0) * 60ms + 150ms);
-      }
-
-      .fc-menu-slot.is-langs-open .fc-menu-langs li {
-        opacity: 1;
-        transform: none;
       }
 
       /* Scroll reveals. */

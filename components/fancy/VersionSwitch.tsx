@@ -8,11 +8,11 @@ import type { ChromeLabels } from './types';
 export function VersionSwitch({ labels }: { labels: Pick<ChromeLabels, 'version' | 'plain' | 'fancier'> }) {
   return (
     <div className="fc-version" role="group" aria-label={labels.version}>
-      <ModeSwitch className="fc-version-option">{labels.plain}</ModeSwitch>
+      <ModeSwitch className="fc-version-option fc-mono">{labels.plain}</ModeSwitch>
       <span className="fc-version-separator" aria-hidden>
         ·
       </span>
-      <span className="fc-version-option" aria-current="true">
+      <span className="fc-version-option fc-mono" aria-current="true">
         {labels.fancier}
       </span>
     </div>

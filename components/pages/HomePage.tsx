@@ -234,7 +234,7 @@ export function HomePage({ lang }: { lang: Lang }) {
               ↗
             </span>
           </a>
-          <span className="fc-actions only-fancy">
+          <span className="fc-actions fc-mono only-fancy">
             <CopyEmail email={EMAIL} copy={dict.contact.copy} copied={dict.contact.copied} />
             <a href={`mailto:${EMAIL}`}>{dict.contact.write}</a>
             <a href={GITHUB_URL}>{dict.footer.github} ↗</a>

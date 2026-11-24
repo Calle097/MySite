@@ -51,7 +51,7 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
                   <span data-part="tech" className="only-fancy fc-mono">
                     {tech}
                   </span>
-                  <p data-demo-links className="label mt-6 flex gap-6 text-muted-foreground">
+                  <p data-demo-links className="label fc-mono mt-6 flex gap-6 text-muted-foreground">
                     <a href={src} className="underline underline-offset-4 transition-colors hover:text-brand-accent">
                       {dict.playground.openLabel}
                     </a>

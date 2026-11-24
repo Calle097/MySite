@@ -117,5 +117,15 @@
         filter: opacity(0.42);
       }
     }
+
+    /* A paragraph at reading size: the About page's parts, and its first
+       part again on the home page. */
+    .fc-lead {
+      margin: 0 0 1.5rem;
+      font-size: clamp(1.3rem, 1.9vw, 1.7rem);
+      font-weight: var(--fc-display-weight);
+      line-height: 1.4;
+      letter-spacing: -0.015em;
+    }
   }
 }

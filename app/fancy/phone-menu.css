@@ -1,5 +1,6 @@
 @layer fancy {
-  /* The phone menu (components/fancy/PhoneMenu.tsx). Solid, so nothing
+  /* --- Phone menu --------------------------------------------------------
+     components/fancy/PhoneMenu.tsx. Solid, so nothing
      moves behind it, with one still glow from where the circle opened
      (--ox/--oy). It fits the screen without scrolling down to a small
      phone with its browser bars showing: spacing and the page names scale
@@ -60,38 +61,16 @@
       padding: 0;
 
       a {
-        display: flex;
-        align-items: center;
         gap: 0.9rem;
         padding-block: clamp(0.1rem, 0.5svh, 0.25rem);
         font-size: clamp(1.55rem, min(9vw, 4.7svh), 3.4rem);
         font-weight: var(--fc-display-weight);
         line-height: 1.1;
         letter-spacing: -0.03em;
-        color: var(--fc-muted);
-        transition: color 0.3s ease;
-      }
-
-      a::before {
-        content: '';
-        width: 0;
-        height: 1px;
-        background: var(--fc-accent);
-        transition: width 0.6s var(--fc-ease);
-      }
-
-      a[aria-current='page'] {
-        color: var(--fc-fg);
       }
 
       a[aria-current='page']::before {
         width: 1.5rem;
-      }
-    }
-
-    @media (hover: hover) {
-      .fc-menu-pages a:hover {
-        color: var(--fc-fg);
       }
     }
 
@@ -163,6 +142,67 @@
       justify-content: space-between;
       align-items: baseline;
       gap: 1rem;
+    }
+  }
+
+  /* Motion (not for those who asked for less). */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-mode='fancy'] {
+      /* The phone menu: the pages rise from behind their edge one after
+         another once the circle opens, then the rest follows; EN swaps the
+         index for the languages (fade out, then they rise in). */
+      .fc-menu {
+        .fc-mask > span {
+          transform: translateY(108%);
+          transition: transform 1.2s var(--fc-ease);
+          transition-delay: calc(var(--i, 0) * 90ms);
+        }
+
+        .fc-menu-index li,
+        .fc-menu-foot {
+          opacity: 0;
+          transform: translateY(0.6rem);
+          transition:
+            opacity 0.7s ease,
+            transform 0.9s var(--fc-ease);
+          transition-delay: calc(var(--i, 0) * 60ms + 250ms);
+        }
+
+        &.is-open .fc-mask > span,
+        &.is-open .fc-menu-index li,
+        &.is-open .fc-menu-foot {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .fc-menu-index,
+      .fc-menu-langs {
+        transition:
+          opacity 0.35s ease,
+          visibility 0s linear 0.35s;
+      }
+
+      .fc-menu-slot.is-langs-open .fc-menu-langs,
+      .fc-menu-slot:not(.is-langs-open) .fc-menu-index {
+        transition:
+          opacity 0.35s ease 0.15s,
+          visibility 0s;
+      }
+
+      .fc-menu-langs li {
+        opacity: 0;
+        transform: translateY(0.5rem);
+        transition:
+          opacity 0.5s ease,
+          transform 0.7s var(--fc-ease);
+        transition-delay: calc(var(--i, 0) * 60ms + 150ms);
+      }
+
+      .fc-menu-slot.is-langs-open .fc-menu-langs li {
+        opacity: 1;
+        transform: none;
+      }
     }
   }
 }
