@@ -1,0 +1,144 @@
+@layer lively {
+  /* --- Index, and the version switch -------------------------------------
+     Always there: the current section lit, the counter rolling as you move
+     through the page. */
+  [data-mode='lively'] {
+    .lv-index-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 0.7rem;
+    }
+
+    .lv-count {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .lv-roll {
+      height: 1em;
+      overflow: hidden;
+      font-size: clamp(2.2rem, 2.8vw, 3rem);
+      font-weight: var(--lv-display-weight);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .lv-roll-inner {
+      display: block;
+      transform: translateY(calc(var(--n, 0) * -1em));
+      transition: transform 0.9s var(--lv-ease);
+
+      span {
+        display: block;
+        height: 1em;
+      }
+    }
+
+    .lv-sections {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid var(--lv-line);
+
+      a {
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--lv-line);
+        color: var(--lv-muted);
+        transition: color 0.4s ease;
+      }
+
+      a::before {
+        content: '';
+        align-self: center;
+        width: 0;
+        height: 1px;
+        background: var(--lv-accent);
+        transition: width 0.6s var(--lv-ease);
+      }
+
+      a[aria-current='true'] {
+        color: var(--lv-fg);
+      }
+
+      a[aria-current='true']::before {
+        width: 1.5rem;
+      }
+    }
+
+    .lv-sections-title {
+      font-size: 1.02rem;
+    }
+
+    @media (hover: hover) {
+      .lv-sections a:hover {
+        color: var(--lv-fg);
+      }
+    }
+
+    .lv-stage-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      padding-top: 1rem;
+    }
+
+    @media (min-width: 900px) and (max-height: 820px) {
+      .lv-sections a {
+        padding-block: 0.36rem;
+      }
+
+      .lv-stage-foot {
+        padding-top: 0.6rem;
+      }
+    }
+
+    /* "Plain · Lively", the current one lit (a placeholder design). */
+    .lv-version {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.15rem;
+    }
+
+    .lv-version-option {
+      position: relative;
+      padding: 0.2rem 0.4rem;
+      font-family: var(--lv-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--lv-muted);
+      transition: color 0.3s ease;
+
+      &[aria-current='true'] {
+        color: var(--lv-fg);
+      }
+
+      &[aria-current='true']::after {
+        content: '';
+        position: absolute;
+        left: 0.4rem;
+        right: 0.4rem;
+        bottom: -0.1rem;
+        height: 1px;
+        background: var(--lv-accent);
+      }
+    }
+
+    @media (hover: hover) {
+      .lv-version-option:hover {
+        color: var(--lv-fg);
+      }
+    }
+
+    .lv-version-separator {
+      color: var(--lv-line);
+    }
+  }
+}

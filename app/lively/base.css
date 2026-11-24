@@ -1,0 +1,109 @@
+/* The fancier version: what every part relies on. Keyframes and registered
+   properties are global names, so they live outside the layer. */
+
+@keyframes lv-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* The demo frame's crop marks: their length and colour animate, so they're
+   registered (also global, outside the layer). An initial value must not
+   depend on font size (1rem would void the whole rule), so the length
+   starts at 0px and the frame sets it. */
+@property --lv-mark {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --lv-mark-color {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: transparent;
+}
+
+@layer lively {
+  /* --- The switch --------------------------------------------------------
+     The browser's default crossfade is off; lib/mode.ts animates a growing
+     circle on the new snapshot instead. Going back, the old (lively)
+     snapshot has to sit on top so it can shrink away. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  [data-vt='out']::view-transition-old(root) {
+    z-index: 1;
+  }
+
+  /* --- Tokens ----------------------------------------------------------- */
+  [data-mode='lively'] {
+    /* Forest. */
+    --lv-bg: #0f2a22;
+    --lv-fg: #e9f1ea;
+    --lv-muted: #a3bcae;
+    --lv-accent: #cfe57c;
+    --lv-light: #1f4a3b;
+    --lv-line: color-mix(in srgb, var(--lv-fg) 13%, transparent);
+    /* The bars and the menu: a step lighter than the page, leaning
+       grey-green so less of the screen is one hue. Secondary text on it
+       ~6.7:1, in the menu's glow ~5:1. */
+    --lv-surface: color-mix(in oklab, var(--lv-bg) 55%, #343a38);
+    --lv-glow: color-mix(in oklab, var(--lv-light) 50%, #404543);
+
+    --lv-font: var(--font-lively), system-ui, sans-serif;
+    --lv-mono: var(--font-plex-mono), ui-monospace, monospace;
+    --lv-display-weight: 300;
+    --lv-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* Plain's colour tokens, retuned: every utility on shared markup
+       (text-muted-foreground, border-secondary-darker…) follows. */
+    --color-background: var(--lv-bg);
+    --color-background-edge: var(--lv-bg);
+    --color-foreground: var(--lv-fg);
+    --color-muted-foreground: var(--lv-muted);
+    --color-secondary-darker: var(--lv-line);
+    --color-brand-accent: var(--lv-accent);
+  }
+
+  /* --- Page ------------------------------------------------------------- */
+  /* The page's colour is on <html>; <body> stays clear, so the light
+     (components/lively/LiquidBackground.tsx), fixed behind everything,
+     shows through. */
+  [data-mode='lively'] {
+    background: var(--lv-bg);
+
+    body {
+      background: none;
+      color: var(--lv-fg);
+      font-family: var(--lv-font);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: color-mix(in srgb, var(--lv-accent) 30%, transparent);
+    }
+
+    .lv-light {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* The small uppercase label of the design. */
+    .lv-mono {
+      font-family: var(--lv-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--lv-muted);
+    }
+  }
+}

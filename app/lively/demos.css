@@ -1,0 +1,179 @@
+@layer lively {
+  [data-mode='lively'] {
+    /* The frame for a demo (playground and demo pages): no box, no title
+       bar, only crop marks at the four corners, like a print plate, around a
+       quiet ground. The marks draw in when the demo arrives (Motion), step
+       outward and turn to the accent when you point at it. */
+    [data-frame] {
+      --gap: 0.65rem;
+      position: relative;
+      margin: var(--gap) var(--gap) calc(var(--gap) + 1.25rem);
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: calc(-1 * var(--gap));
+        z-index: 1;
+        pointer-events: none;
+        --lv-mark: 1rem;
+        --lv-mark-color: color-mix(in srgb, var(--lv-fg) 55%, transparent);
+        /* Eight hairlines, two at each corner. */
+        background:
+          linear-gradient(var(--lv-mark-color) 0 0) top left / var(--lv-mark) 1px,
+          linear-gradient(var(--lv-mark-color) 0 0) top left / 1px var(--lv-mark),
+          linear-gradient(var(--lv-mark-color) 0 0) top right / var(--lv-mark) 1px,
+          linear-gradient(var(--lv-mark-color) 0 0) top right / 1px var(--lv-mark),
+          linear-gradient(var(--lv-mark-color) 0 0) bottom left / var(--lv-mark) 1px,
+          linear-gradient(var(--lv-mark-color) 0 0) bottom left / 1px var(--lv-mark),
+          linear-gradient(var(--lv-mark-color) 0 0) bottom right / var(--lv-mark) 1px,
+          linear-gradient(var(--lv-mark-color) 0 0) bottom right / 1px var(--lv-mark);
+        background-repeat: no-repeat;
+      }
+    }
+
+    @media (hover: hover) {
+      [data-entry]:hover [data-frame]::before,
+      [data-frame]:hover::before {
+        inset: calc(-1 * var(--gap) - 0.4rem);
+        --lv-mark-color: var(--lv-accent);
+      }
+    }
+
+    /* The ground: darker than the light, so every demo stands on the same
+       quiet surface; no border, the marks frame it. */
+    [data-frame-view] {
+      border: 0;
+      background: color-mix(in srgb, var(--lv-bg) 72%, transparent);
+    }
+
+    /* Playground: wider sections for the demos; each one stacks as the
+       frame, then the caption, what it is built with and its links. The
+       demo's own <h2> stays for screen readers, the section title shows. */
+    [data-part='demos'] {
+      padding-bottom: 0;
+
+      [data-section] {
+        max-width: 56rem;
+      }
+    }
+
+    [data-part='demo-entry'] {
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 0 0;
+
+      [data-frame] {
+        order: -1;
+      }
+    }
+
+    [data-part='demo-text'] {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.5rem 1.5rem;
+
+      h2 {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+
+      /* The caption takes its own row (so what it's built with and the
+         links share the next), its text kept to a reading width. */
+      > p:not([data-demo-links]) {
+        flex-basis: 100%;
+        max-width: none;
+        margin: 0 0 0.5rem;
+        padding-right: max(0px, calc(100% - 58ch));
+      }
+    }
+
+    [data-demo-links],
+    [data-part='demo-meta'] {
+      display: flex;
+      gap: 1.25rem;
+      margin: 0;
+
+      a {
+        font-family: var(--lv-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--lv-muted);
+        transition: color 0.3s ease;
+      }
+
+      a:hover {
+        color: var(--lv-fg);
+      }
+    }
+
+    /* A demo page: the way back above the title, the demo's details under
+       it, the demo itself on the right in its frame. */
+    .lv-back {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: var(--lv-fg);
+      }
+    }
+
+    [data-part='demo-meta'] {
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-top: 1.4rem;
+    }
+
+    .lv-flow:has(> [data-part='demo']) {
+      padding-top: clamp(2rem, 6vh, 4rem);
+    }
+
+    [data-part='demo'] {
+      max-width: 56rem;
+      margin-inline: auto;
+    }
+
+    /* Embedded in the playground (#embed): only the demo, no column, no
+       marks of its own (the playground's frame has them). */
+    &:has(#embed:target) {
+      .lv-page {
+        display: block;
+      }
+
+      .lv-stage,
+      .lv-phone-bar,
+      .lv-menu,
+      .lv-foot {
+        display: none;
+      }
+
+      .lv-flow {
+        padding: 0;
+        background: none;
+      }
+
+      [data-part='demo'] {
+        max-width: none;
+        margin: 0;
+
+        &::before {
+          display: none;
+        }
+      }
+
+      [data-frame-view] {
+        background: none;
+      }
+    }
+
+  }
+}

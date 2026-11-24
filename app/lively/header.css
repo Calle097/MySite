@@ -1,0 +1,243 @@
+@layer lively {
+  /* --- Header ------------------------------------------------------------
+     Name (home) · pages · language, with a hairline under it. When the
+     column is too narrow for the pages (container query), they fold into
+     Menu, which grows the header sideways across the window as one solid
+     surface from the top of the page down to its line (like the phone bar);
+     the pages appear in the middle and EN and Close travel to the right
+     end. LivelyHeader measures --full (the window's width) and --reach
+     (from the column's edge to the window's). */
+  [data-mode='lively'] {
+    .lv-header {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 0.75rem 1.5rem;
+      padding-bottom: 1.1rem;
+      border-bottom: 1px solid var(--lv-line);
+    }
+
+    .lv-name {
+      font-size: 1.02rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .lv-header-nav {
+      justify-self: center;
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.92rem;
+      color: var(--lv-muted);
+
+      a {
+        transition: color 0.3s ease;
+      }
+
+      a:hover,
+      a[aria-current='page'] {
+        color: var(--lv-fg);
+      }
+    }
+
+    /* Always the last column, so it stays right when the nav folds away. */
+    .lv-header-tools {
+      grid-column: 3;
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .lv-menu-button,
+    .lv-header-more {
+      display: none;
+    }
+
+    @container stage (max-width: 31.5rem) {
+      .lv-header-nav {
+        display: none;
+      }
+
+      .lv-menu-button {
+        display: inline;
+      }
+
+      .lv-header-more {
+        display: flex;
+      }
+    }
+
+    /* The surface it grows with. At rest: exactly the column's width. */
+    .lv-header::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      top: calc(-1 * var(--pad-y));
+      bottom: -1px;
+      left: calc(-1 * var(--pad-x));
+      width: var(--full, 100vw);
+      border-bottom: 1px solid var(--lv-line);
+      background: color-mix(in srgb, var(--lv-surface) 70%, transparent);
+      backdrop-filter: blur(14px);
+      pointer-events: none;
+      visibility: hidden;
+      opacity: 0;
+      clip-path: inset(0 var(--reach, 58%) 0 0);
+    }
+
+    .lv-header.is-extended {
+      /* One line at a time: the surface's replaces the column's. */
+      border-bottom-color: transparent;
+
+      &::before {
+        visibility: visible;
+        opacity: 1;
+        clip-path: inset(0);
+      }
+
+      .lv-header-tools {
+        transform: translateX(var(--reach, 0px));
+      }
+    }
+
+    /* The pages, centred in the window as the unfolded header's are in the
+       column. */
+    .lv-header-more {
+      position: absolute;
+      top: 0;
+      bottom: 1.1rem;
+      left: calc(var(--full, 100vw) / 2 - var(--pad-x));
+      translate: -50% 0;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.92rem;
+      color: var(--lv-muted);
+      white-space: nowrap;
+      visibility: hidden;
+
+      a {
+        transition: color 0.3s ease;
+      }
+
+      a:hover,
+      a[aria-current='page'] {
+        color: var(--lv-fg);
+      }
+    }
+
+    .lv-header.is-extended .lv-header-more {
+      visibility: visible;
+    }
+
+    /* EN ▾ and its list. */
+    .lv-lang-toggle {
+      transition: color 0.3s ease;
+
+      &:hover,
+      &[aria-expanded='true'] {
+        color: var(--lv-fg);
+      }
+    }
+
+    .lv-caret {
+      display: inline-block;
+      transition: transform 0.5s var(--lv-ease);
+    }
+
+    .lv-lang-toggle[aria-expanded='true'] .lv-caret {
+      transform: rotate(180deg);
+    }
+
+    /* The list hangs from the header's line, flush with the line's right
+       end (under EN, also when the header has grown sideways), over a soft
+       frosted haze: crisp along the line, fading out to the left and at the
+       bottom, and fading to nothing exactly where the line ends on the
+       right, never past it. A fixed zone of about five and a half rows: a
+       half-cut row shows there's more, then it scrolls. */
+    .lv-header-langs {
+      position: absolute;
+      top: calc(100% + 1px);
+      right: 0;
+      z-index: 5;
+      min-width: 12rem;
+      padding: 0.9rem 0 1.1rem;
+      visibility: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 -3.5rem -5rem;
+        z-index: -1;
+        pointer-events: none;
+        background: color-mix(in srgb, var(--lv-bg) 55%, transparent);
+        backdrop-filter: blur(24px);
+        mask-image:
+          linear-gradient(90deg, transparent, #000 5rem, #000 calc(100% - 1.5rem), transparent),
+          linear-gradient(180deg, #000 calc(100% - 5rem), transparent);
+        mask-composite: intersect;
+      }
+
+      .lv-langs {
+        max-height: 13.5rem;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--lv-line) transparent;
+      }
+    }
+
+    .lv-header.is-langs-open .lv-header-langs {
+      visibility: visible;
+    }
+
+    .lv-header.is-extended .lv-header-langs {
+      translate: var(--reach, 0px) 0;
+    }
+
+    /* Each language in its own name. The accent dash means "selected" and
+       nothing else; pointing at another draws a pale dash. */
+    .lv-langs {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.3rem 0;
+        color: var(--lv-muted);
+        transition: color 0.3s ease;
+      }
+
+      a::before {
+        content: '';
+        width: 0;
+        height: 1px;
+        background: color-mix(in srgb, var(--lv-fg) 40%, transparent);
+        transition: width 0.6s var(--lv-ease);
+      }
+
+      a[aria-current='true'] {
+        color: var(--lv-fg);
+      }
+
+      a[aria-current='true']::before {
+        width: 1.25rem;
+        background: var(--lv-accent);
+      }
+    }
+
+    @media (hover: hover) {
+      .lv-langs a:hover {
+        color: var(--lv-fg);
+      }
+
+      .lv-langs a:hover::before {
+        width: 1.25rem;
+      }
+    }
+  }
+}

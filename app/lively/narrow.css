@@ -1,0 +1,69 @@
+@layer lively {
+  /* --- Narrow screens ----------------------------------------------------
+     One column: the hero, then the content. The phone bar and menu take
+     over the column's header, index and switch; on wide screens the bar is
+     not there (this rule comes first, so the narrow one below wins). */
+  [data-mode='lively'] .lv-phone-bar {
+    display: none;
+  }
+
+  @media (max-width: 899px) {
+    [data-mode='lively'] {
+      .lv-page {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .lv-stage {
+        position: relative;
+        height: auto;
+        padding-top: 4.5rem;
+      }
+
+      .lv-header,
+      .lv-index,
+      .lv-stage-foot {
+        display: none;
+      }
+
+      .lv-stage-mid {
+        padding-block: 1.5rem 0;
+      }
+
+      .hero-title,
+      .page-title,
+      .notfound-title {
+        font-size: clamp(2.2rem, 9vw, 3.2rem);
+      }
+
+      .lv-flow {
+        padding: 4rem 1.5rem 2rem;
+        background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--lv-bg) 34%, transparent) 14rem);
+      }
+
+      /* Clear the phone bar when jumping to a section. */
+      [data-section] {
+        scroll-margin-top: 5rem;
+      }
+
+      [data-part='teaser'] {
+        grid-template-columns: minmax(0, 1fr) 110px;
+      }
+
+      /* Always there, always a little solid: text never runs under it bare. */
+      .lv-phone-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--lv-line);
+        background: color-mix(in srgb, var(--lv-surface) 70%, transparent);
+        backdrop-filter: blur(14px);
+      }
+    }
+  }
+}

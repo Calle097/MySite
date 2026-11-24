@@ -179,9 +179,11 @@ export function startLiquidLight(canvas: HTMLCanvasElement): () => void {
   };
 
   // Runs while the page is visible and motion is welcome; otherwise the
-  // last frame stays.
+  // last frame stays. While the phone menu covers the whole screen
+  // (lv-menu-open on <html>) there is nothing to see, so frames skip the
+  // drawing.
   const loop = (now: number) => {
-    draw(now);
+    if (!document.documentElement.classList.contains('lv-menu-open')) draw(now);
     frame = !still() && !document.hidden ? requestAnimationFrame(loop) : 0;
   };
   const restart = () => {
