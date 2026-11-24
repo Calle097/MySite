@@ -32,7 +32,7 @@ export const it: Dict = {
     fullHistory: 'Percorso completo —',
     cvLabel: 'CV (PDF)',
   },
-  contact: { header: 'Contatti', copy: 'Copia', copied: 'Copiato' },
+  contact: { header: 'Contatti', copy: 'Copia', copied: 'Copiato', write: 'Scrivi ↗' },
   playground: {
     title: 'Playground',
     intro:
@@ -40,6 +40,7 @@ export const it: Dict = {
     openLabel: 'Apri ↗',
     sourceLabel: 'Codice ↗',
     loading: 'caricamento',
+    open: 'Apri il playground',
     items: {
       'drive-in': {
         title: 'Drive-in cards',
@@ -183,14 +184,27 @@ export const it: Dict = {
     aiLine: "Costruito con l'aiuto di Claude Code, rivisto riga per riga",
   },
   notFound: { text: 'Pagina non trovata —', back: 'Torna alla home' },
-  nav: { about: 'Chi sono', playground: 'Playground', stack: 'Stack', cv: 'CV', menu: 'Menu' },
+  nav: {
+    about: 'Chi sono',
+    playground: 'Playground',
+    stack: 'Stack',
+    cv: 'CV',
+    menu: 'Menu',
+    close: 'Chiudi',
+    pages: 'Pagine',
+    onThisPage: 'In questa pagina',
+    index: 'Indice',
+    language: 'Lingua',
+  },
   mode: {
     plainNote: 'Questa è la versione semplice.',
     showLively: 'Mostra quella vivace →',
     navLively: '/lively',
     toggle: 'Vivace',
     toPlain: 'Versione semplice',
+    version: 'Versione',
+    plain: 'Semplice',
   },
-  footer: { location: 'Mattia Callegher — Italia', email: 'Email', github: 'GitHub', source: 'Codice' },
+  footer: { location: 'Mattia Callegher — Italia', email: 'Email', github: 'GitHub', source: 'Codice', elsewhere: 'Altrove' },
   skipToContent: 'Vai al contenuto',
 };

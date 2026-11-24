@@ -7,6 +7,38 @@ export type Lang = 'en' | 'it';
 /** URL prefix for a language ('' for en, '/it' for it). */
 export const prefix = (lang: Lang) => (lang === 'it' ? '/it' : '');
 
+/** Every language, named in itself, in display order. */
+export const LANGUAGES: readonly { lang: Lang; name: string }[] = [
+  { lang: 'en', name: 'English' },
+  { lang: 'it', name: 'Italiano' },
+];
+
+/**
+ * The current page's path in another language. Strips any /it prefix to get
+ * the English path, then builds the Italian one back from it, so both are
+ * derived the same way and keep the trailing slash the rest of the site
+ * uses (next.config `trailingSlash`); building them independently once
+ * handed back a slashless '/it' for home, costing a redirect per switch.
+ * The lookahead anchors on '/it' only when the next character ends the
+ * segment, so a future '/italy' route would not be mangled.
+ */
+export function pathIn(lang: Lang, pathname: string) {
+  const enPath = pathname.replace(/^\/it(?=\/|$)/, '') || '/';
+  if (lang === 'en') return enPath;
+  return enPath === '/' ? '/it/' : `/it${enPath}`;
+}
+
+/** Remembers a chosen language, so the root layouts' locale script keeps
+    future visits on it. Private mode etc.: switching still works, it just
+    isn't remembered. */
+export function rememberLang(lang: Lang) {
+  try {
+    localStorage.setItem('site-lang', lang);
+  } catch {
+    /* not remembered, that's all */
+  }
+}
+
 export interface Dict {
   description: string;
   hero: {
@@ -21,13 +53,16 @@ export interface Dict {
     fullHistory: string;
     cvLabel: string;
   };
-  contact: { header: string; copy: string; copied: string };
+  /** write: lively's "Write ↗" action next to the address. */
+  contact: { header: string; copy: string; copied: string; write: string };
   playground: {
     title: string;
     intro: string;
     openLabel: string;
     sourceLabel: string;
     loading: string;
+    /** Lively home's playground teaser: "{open} · {count} →". */
+    open: string;
     /** How each demo is listed on the playground page. Keyed by slug rather
         than ordered, so EN and IT cannot drift apart — display order comes
         from DEMO_SLUGS. Record<DemoSlug, …> means adding a demo without
@@ -86,8 +121,20 @@ export interface Dict {
     aiLine: string;
   };
   notFound: { text: string; back: string };
-  /** Lively mode's header uses plain words instead of the /path labels. */
-  nav: { about: string; playground: string; stack: string; cv: string; menu: string };
+  /** Lively mode's header uses plain words instead of the /path labels; the
+      rest names the parts of its menu and index. */
+  nav: {
+    about: string;
+    playground: string;
+    stack: string;
+    cv: string;
+    menu: string;
+    close: string;
+    pages: string;
+    onThisPage: string;
+    index: string;
+    language: string;
+  };
   mode: {
     /** Hero line in plain mode: "{plainNote} {showLively}". */
     plainNote: string;
@@ -98,8 +145,12 @@ export interface Dict {
     toggle: string;
     /** Mobile menu item in lively mode, back to plain. */
     toPlain: string;
+    /** Lively's version switch: "{version}  {plain} · {toggle}". */
+    version: string;
+    plain: string;
   };
-  footer: { location: string; email: string; github: string; source: string };
+  /** elsewhere: screen-reader name of the footer's links. */
+  footer: { location: string; email: string; github: string; source: string; elsewhere: string };
   skipToContent: string;
 }
 

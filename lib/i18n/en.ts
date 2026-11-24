@@ -32,7 +32,7 @@ export const en: Dict = {
     fullHistory: 'Full history —',
     cvLabel: 'CV (PDF)',
   },
-  contact: { header: 'Contact', copy: 'Copy', copied: 'Copied' },
+  contact: { header: 'Contact', copy: 'Copy', copied: 'Copied', write: 'Write ↗' },
   playground: {
     title: 'Playground',
     intro:
@@ -40,6 +40,7 @@ export const en: Dict = {
     openLabel: 'Open ↗',
     sourceLabel: 'Source ↗',
     loading: 'loading',
+    open: 'Open the playground',
     items: {
       'drive-in': {
         title: 'Drive-in cards',
@@ -183,14 +184,27 @@ export const en: Dict = {
     aiLine: 'Built with help from Claude Code, reviewed line by line',
   },
   notFound: { text: 'Page not found —', back: 'Back home' },
-  nav: { about: 'About', playground: 'Playground', stack: 'Stack', cv: 'CV', menu: 'Menu' },
+  nav: {
+    about: 'About',
+    playground: 'Playground',
+    stack: 'Stack',
+    cv: 'CV',
+    menu: 'Menu',
+    close: 'Close',
+    pages: 'Pages',
+    onThisPage: 'On this page',
+    index: 'Index',
+    language: 'Language',
+  },
   mode: {
     plainNote: 'This is the plain version.',
     showLively: 'Show the lively one →',
     navLively: '/lively',
     toggle: 'Lively',
     toPlain: 'Plain version',
+    version: 'Version',
+    plain: 'Plain',
   },
-  footer: { location: 'Mattia Callegher — Italy', email: 'Email', github: 'GitHub', source: 'Source' },
+  footer: { location: 'Mattia Callegher — Italy', email: 'Email', github: 'GitHub', source: 'Source', elsewhere: 'Elsewhere' },
   skipToContent: 'Skip to content',
 };
