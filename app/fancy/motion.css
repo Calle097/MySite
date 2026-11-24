@@ -1,4 +1,4 @@
-@layer lively {
+@layer fancy {
   /* --- Motion -----------------------------------------------------------
      The column's header, index and switch fade in on arrival. Scroll
      reveals (components/RevealObserver.tsx marks each [data-reveal]
@@ -8,14 +8,14 @@
      while the observer runs (data-observing on <html>): if the script never
      starts, nothing stays hidden. */
   @media (prefers-reduced-motion: no-preference) {
-    [data-mode='lively'] {
-      .lv-header,
-      .lv-index,
-      .lv-stage-foot {
-        animation: lv-fade-in 1.2s ease 0.5s both;
+    [data-mode='fancy'] {
+      .fc-header,
+      .fc-index,
+      .fc-stage-foot {
+        animation: fc-fade-in 1.2s ease 0.5s both;
       }
 
-      .lv-header {
+      .fc-header {
         transition: border-color 0.25s ease 0.45s;
 
         &.is-extended {
@@ -24,25 +24,25 @@
 
         &::before {
           transition:
-            clip-path 0.6s var(--lv-ease),
+            clip-path 0.6s var(--fc-ease),
             opacity 0.25s ease 0.45s,
             visibility 0s linear 0.7s;
         }
 
         &.is-extended::before {
           transition:
-            clip-path 0.7s var(--lv-ease),
+            clip-path 0.7s var(--fc-ease),
             opacity 0.25s ease,
             visibility 0s;
         }
       }
 
-      .lv-header-tools {
-        transition: transform 0.7s var(--lv-ease);
+      .fc-header-tools {
+        transition: transform 0.7s var(--fc-ease);
       }
 
       /* The pages slide out after the surface, one by one; they leave together. */
-      .lv-header-more {
+      .fc-header-more {
         transition: visibility 0s linear 0.4s;
 
         a {
@@ -51,11 +51,11 @@
           transition:
             color 0.3s ease,
             opacity 0.3s ease,
-            transform 0.5s var(--lv-ease);
+            transform 0.5s var(--fc-ease);
         }
       }
 
-      .lv-header.is-extended .lv-header-more {
+      .fc-header.is-extended .fc-header-more {
         transition: visibility 0s;
 
         a {
@@ -64,26 +64,26 @@
           transition:
             color 0.3s ease,
             opacity 0.5s ease,
-            transform 0.7s var(--lv-ease);
+            transform 0.7s var(--fc-ease);
           transition-delay: 0s, calc(var(--i, 0) * 50ms + 150ms), calc(var(--i, 0) * 50ms + 150ms);
         }
       }
 
       /* The language list opens downward from the line, the options
          following one by one, the haze fading in under them. */
-      .lv-header-langs {
+      .fc-header-langs {
         transition:
           visibility 0s linear 0.35s,
-          translate 0.7s var(--lv-ease);
+          translate 0.7s var(--fc-ease);
 
         &::before {
           opacity: 0;
           transition: opacity 0.3s ease;
         }
 
-        .lv-langs {
+        .fc-langs {
           clip-path: inset(0 0 100% 0);
-          transition: clip-path 0.35s var(--lv-ease);
+          transition: clip-path 0.35s var(--fc-ease);
         }
 
         li {
@@ -91,21 +91,21 @@
           transform: translateY(-0.4rem);
           transition:
             opacity 0.3s ease,
-            transform 0.5s var(--lv-ease);
+            transform 0.5s var(--fc-ease);
         }
       }
 
-      .lv-header.is-langs-open .lv-header-langs {
+      .fc-header.is-langs-open .fc-header-langs {
         transition:
           visibility 0s,
-          translate 0.7s var(--lv-ease);
+          translate 0.7s var(--fc-ease);
 
         &::before {
           opacity: 1;
           transition-duration: 0.5s;
         }
 
-        .lv-langs {
+        .fc-langs {
           clip-path: inset(0);
           transition-duration: 0.6s;
         }
@@ -115,7 +115,7 @@
           transform: none;
           transition:
             opacity 0.5s ease,
-            transform 0.7s var(--lv-ease);
+            transform 0.7s var(--fc-ease);
           transition-delay: calc(var(--i, 0) * 60ms + 120ms);
         }
       }
@@ -123,55 +123,55 @@
       /* The phone menu: the pages rise from behind their edge one after
          another once the circle opens, then the rest follows; EN swaps the
          index for the languages (fade out, then they rise in). */
-      .lv-menu {
-        .lv-mask > span {
+      .fc-menu {
+        .fc-mask > span {
           transform: translateY(108%);
-          transition: transform 1.2s var(--lv-ease);
+          transition: transform 1.2s var(--fc-ease);
           transition-delay: calc(var(--i, 0) * 90ms);
         }
 
-        .lv-menu-index li,
-        .lv-menu-foot {
+        .fc-menu-index li,
+        .fc-menu-foot {
           opacity: 0;
           transform: translateY(0.6rem);
           transition:
             opacity 0.7s ease,
-            transform 0.9s var(--lv-ease);
+            transform 0.9s var(--fc-ease);
           transition-delay: calc(var(--i, 0) * 60ms + 250ms);
         }
 
-        &.is-open .lv-mask > span,
-        &.is-open .lv-menu-index li,
-        &.is-open .lv-menu-foot {
+        &.is-open .fc-mask > span,
+        &.is-open .fc-menu-index li,
+        &.is-open .fc-menu-foot {
           opacity: 1;
           transform: none;
         }
       }
 
-      .lv-menu-index,
-      .lv-menu-langs {
+      .fc-menu-index,
+      .fc-menu-langs {
         transition:
           opacity 0.35s ease,
           visibility 0s linear 0.35s;
       }
 
-      .lv-menu-slot.is-langs-open .lv-menu-langs,
-      .lv-menu-slot:not(.is-langs-open) .lv-menu-index {
+      .fc-menu-slot.is-langs-open .fc-menu-langs,
+      .fc-menu-slot:not(.is-langs-open) .fc-menu-index {
         transition:
           opacity 0.35s ease 0.15s,
           visibility 0s;
       }
 
-      .lv-menu-langs li {
+      .fc-menu-langs li {
         opacity: 0;
         transform: translateY(0.5rem);
         transition:
           opacity 0.5s ease,
-          transform 0.7s var(--lv-ease);
+          transform 0.7s var(--fc-ease);
         transition-delay: calc(var(--i, 0) * 60ms + 150ms);
       }
 
-      .lv-menu-slot.is-langs-open .lv-menu-langs li {
+      .fc-menu-slot.is-langs-open .fc-menu-langs li {
         opacity: 1;
         transform: none;
       }
@@ -184,7 +184,7 @@
 
         > span {
           display: inline-block;
-          transition: transform 1.2s var(--lv-ease);
+          transition: transform 1.2s var(--fc-ease);
         }
 
         &:nth-child(2) > span {
@@ -195,18 +195,18 @@
       [data-reveal='rise'] {
         transition:
           opacity 0.9s ease,
-          transform 1.1s var(--lv-ease);
+          transform 1.1s var(--fc-ease);
         transition-delay: calc(var(--i, 0) * 90ms + 150ms);
       }
 
       [data-reveal='rule'] {
         transition:
-          clip-path 1.2s var(--lv-ease),
-          transform 1.2s var(--lv-ease);
+          clip-path 1.2s var(--fc-ease),
+          transform 1.2s var(--fc-ease);
       }
 
       [data-entry]::before {
-        transition: transform 1.2s var(--lv-ease);
+        transition: transform 1.2s var(--fc-ease);
         transition-delay: calc(var(--i, 0) * 90ms);
       }
 
@@ -214,14 +214,14 @@
          on hover. */
       [data-frame]::before {
         transition:
-          --lv-mark 0.9s var(--lv-ease) 0.2s,
-          inset 0.6s var(--lv-ease),
-          --lv-mark-color 0.4s ease;
+          --fc-mark 0.9s var(--fc-ease) 0.2s,
+          inset 0.6s var(--fc-ease),
+          --fc-mark-color 0.4s ease;
       }
 
       &[data-observing] {
         [data-reveal='frame']:not([data-shown])::before {
-          --lv-mark: 0px;
+          --fc-mark: 0px;
         }
 
         [data-reveal='mask']:not([data-shown]) [data-line] > span {

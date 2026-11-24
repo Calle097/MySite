@@ -1,5 +1,5 @@
 /**
- * Lively mode's background: a slow liquid light (WebGL), designed in lab/.
+ * The fancier version's background: a slow liquid light (WebGL).
  *
  * Smooth and uniform on purpose: simplex noise (no grid creases), three
  * octaves at low frequency (nothing fine enough to shimmer), full CSS-pixel
@@ -7,7 +7,7 @@
  * gradients. It leans toward the pointer and gathers behind the entry under
  * it, and fades in on start. Under reduced motion it draws one still frame.
  *
- * Loaded only when lively mode is on (components/lively/LiquidBackground.tsx
+ * Loaded only when the fancier version is on (components/fancy/LiquidBackground.tsx
  * imports this module dynamically), so plain visitors never download it.
  */
 
@@ -131,7 +131,7 @@ export function startLiquidLight(canvas: HTMLCanvasElement): () => void {
   gl.enableVertexAttribArray(position);
   gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
 
-  const colors = { bg: readColor('--lv-bg'), light: readColor('--lv-light'), accent: readColor('--lv-accent') };
+  const colors = { bg: readColor('--fc-bg'), light: readColor('--fc-light'), accent: readColor('--fc-accent') };
   // Eased toward their targets every frame, so nothing jumps.
   const mouse = { x: 0.65, y: 0.55, tx: 0.65, ty: 0.55, on: 0, ton: 0 };
   const focus = { v: [0.5, 0.5, 0.1, 0.05], t: [0.5, 0.5, 0.1, 0.05], on: 0, ton: 0, el: null as Element | null };
@@ -180,10 +180,10 @@ export function startLiquidLight(canvas: HTMLCanvasElement): () => void {
 
   // Runs while the page is visible and motion is welcome; otherwise the
   // last frame stays. While the phone menu covers the whole screen
-  // (lv-menu-open on <html>) there is nothing to see, so frames skip the
+  // (fc-menu-open on <html>) there is nothing to see, so frames skip the
   // drawing.
   const loop = (now: number) => {
-    if (!document.documentElement.classList.contains('lv-menu-open')) draw(now);
+    if (!document.documentElement.classList.contains('fc-menu-open')) draw(now);
     frame = !still() && !document.hidden ? requestAnimationFrame(loop) : 0;
   };
   const restart = () => {

@@ -13,7 +13,7 @@ export function LanguageList({ lang, onPick }: { lang: Lang; onPick?: () => void
   const pathname = usePathname() ?? '/';
 
   return (
-    <ul className="lv-langs">
+    <ul className="fc-langs">
       {LANGUAGES.map(({ lang: l, name }, i) => (
         <li key={l} style={{ '--i': i } as CSSProperties}>
           <a

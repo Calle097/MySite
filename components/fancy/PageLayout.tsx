@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { DICTS, LANGUAGES, prefix, type Lang } from '@/lib/i18n';
 import { EMAIL } from '@/lib/site';
-import { LivelyHeader } from './LivelyHeader';
+import { FancyHeader } from './FancyHeader';
 import { PhoneMenu } from './PhoneMenu';
 import { SectionIndex } from './SectionIndex';
 import type { IndexItem } from './SectionList';
@@ -11,10 +11,10 @@ export type Section = { id: string; title: string };
 
 /**
  * Every page's frame. Plain mode doesn't style any of its wrappers, so a
- * page renders exactly as before: its hero, then its sections. Lively mode
- * (app/lively.css) turns them into the split: a column that holds still on
+ * page renders exactly as before: its hero, then its sections. The fancier version
+ * (app/fancy.css) turns them into the split: a column that holds still on
  * the left (header, the hero, the index, the version switch) and the
- * content on the right. The lively-only parts carry `only-lively`.
+ * content on the right. The fancier-only parts carry `only-fancy`.
  *
  * `sections` are the page's own, in order, matching the ids of its
  * <section>s: the index lists them and follows the scroll. A page can bring
@@ -47,7 +47,7 @@ export function PageLayout({
   ];
 
   return (
-    <div className="lv-page">
+    <div className="fc-page">
       <PhoneMenu
         lang={lang}
         homeHref={homeHref}
@@ -64,11 +64,11 @@ export function PageLayout({
           languageName,
           version: dict.mode.version,
           plain: dict.mode.plain,
-          lively: dict.mode.fancier,
+          fancier: dict.mode.fancier,
         }}
       />
-      <div className="lv-stage">
-        <LivelyHeader
+      <div className="fc-stage">
+        <FancyHeader
           lang={lang}
           homeHref={homeHref}
           // "home" reads the same in Italian ("Torna alla home").
@@ -82,7 +82,7 @@ export function PageLayout({
             languageName,
           }}
         />
-        <div className="lv-stage-mid">{hero}</div>
+        <div className="fc-stage-mid">{hero}</div>
         {items.length > 0 && (
           <SectionIndex
             label={index?.label ?? dict.nav.index}
@@ -91,17 +91,17 @@ export function PageLayout({
             fixedCurrent={index?.current}
           />
         )}
-        <div className="lv-stage-foot only-lively">
-          <span className="lv-mono">{dict.mode.version}</span>
-          <VersionSwitch label={dict.mode.version} plain={dict.mode.plain} lively={dict.mode.fancier} />
+        <div className="fc-stage-foot only-fancy">
+          <span className="fc-mono">{dict.mode.version}</span>
+          <VersionSwitch label={dict.mode.version} plain={dict.mode.plain} fancier={dict.mode.fancier} />
         </div>
       </div>
 
-      <div className="lv-flow">
+      <div className="fc-flow">
         {children}
-        <footer className="lv-foot only-lively">
-          <span className="lv-mono">{dict.footer.location}</span>
-          <nav className="lv-foot-links" aria-label={dict.footer.elsewhere}>
+        <footer className="fc-foot only-fancy">
+          <span className="fc-mono">{dict.footer.location}</span>
+          <nav className="fc-foot-links" aria-label={dict.footer.elsewhere}>
             <a href={`mailto:${EMAIL}`}>{dict.footer.email}</a>
             <a href="https://github.com/Calle097">{dict.footer.github}</a>
             <a href="https://github.com/Calle097/MySite">{dict.footer.source}</a>

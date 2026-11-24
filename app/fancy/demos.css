@@ -1,5 +1,5 @@
-@layer lively {
-  [data-mode='lively'] {
+@layer fancy {
+  [data-mode='fancy'] {
     /* The frame for a demo (playground and demo pages): no box, no title
        bar, only crop marks at the four corners, like a print plate, around a
        quiet ground. The marks draw in when the demo arrives (Motion), step
@@ -15,18 +15,18 @@
         inset: calc(-1 * var(--gap));
         z-index: 1;
         pointer-events: none;
-        --lv-mark: 1rem;
-        --lv-mark-color: color-mix(in srgb, var(--lv-fg) 55%, transparent);
+        --fc-mark: 1rem;
+        --fc-mark-color: color-mix(in srgb, var(--fc-fg) 55%, transparent);
         /* Eight hairlines, two at each corner. */
         background:
-          linear-gradient(var(--lv-mark-color) 0 0) top left / var(--lv-mark) 1px,
-          linear-gradient(var(--lv-mark-color) 0 0) top left / 1px var(--lv-mark),
-          linear-gradient(var(--lv-mark-color) 0 0) top right / var(--lv-mark) 1px,
-          linear-gradient(var(--lv-mark-color) 0 0) top right / 1px var(--lv-mark),
-          linear-gradient(var(--lv-mark-color) 0 0) bottom left / var(--lv-mark) 1px,
-          linear-gradient(var(--lv-mark-color) 0 0) bottom left / 1px var(--lv-mark),
-          linear-gradient(var(--lv-mark-color) 0 0) bottom right / var(--lv-mark) 1px,
-          linear-gradient(var(--lv-mark-color) 0 0) bottom right / 1px var(--lv-mark);
+          linear-gradient(var(--fc-mark-color) 0 0) top left / var(--fc-mark) 1px,
+          linear-gradient(var(--fc-mark-color) 0 0) top left / 1px var(--fc-mark),
+          linear-gradient(var(--fc-mark-color) 0 0) top right / var(--fc-mark) 1px,
+          linear-gradient(var(--fc-mark-color) 0 0) top right / 1px var(--fc-mark),
+          linear-gradient(var(--fc-mark-color) 0 0) bottom left / var(--fc-mark) 1px,
+          linear-gradient(var(--fc-mark-color) 0 0) bottom left / 1px var(--fc-mark),
+          linear-gradient(var(--fc-mark-color) 0 0) bottom right / var(--fc-mark) 1px,
+          linear-gradient(var(--fc-mark-color) 0 0) bottom right / 1px var(--fc-mark);
         background-repeat: no-repeat;
       }
     }
@@ -35,7 +35,7 @@
       [data-entry]:hover [data-frame]::before,
       [data-frame]:hover::before {
         inset: calc(-1 * var(--gap) - 0.4rem);
-        --lv-mark-color: var(--lv-accent);
+        --fc-mark-color: var(--fc-accent);
       }
     }
 
@@ -43,7 +43,7 @@
        quiet surface; no border, the marks frame it. */
     [data-frame-view] {
       border: 0;
-      background: color-mix(in srgb, var(--lv-bg) 72%, transparent);
+      background: color-mix(in srgb, var(--fc-bg) 72%, transparent);
     }
 
     /* Playground: wider sections for the demos; each one stacks as the
@@ -101,29 +101,29 @@
       margin: 0;
 
       a {
-        font-family: var(--lv-mono);
+        font-family: var(--fc-mono);
         font-size: 0.72rem;
         letter-spacing: 0.14em;
         text-transform: uppercase;
         text-decoration: none;
-        color: var(--lv-muted);
+        color: var(--fc-muted);
         transition: color 0.3s ease;
       }
 
       a:hover {
-        color: var(--lv-fg);
+        color: var(--fc-fg);
       }
     }
 
     /* A demo page: the way back above the title, the demo's details under
        it, the demo itself on the right in its frame. */
-    .lv-back {
+    .fc-back {
       display: inline-block;
       margin-bottom: 1.5rem;
       transition: color 0.3s ease;
 
       &:hover {
-        color: var(--lv-fg);
+        color: var(--fc-fg);
       }
     }
 
@@ -133,7 +133,7 @@
       margin-top: 1.4rem;
     }
 
-    .lv-flow:has(> [data-part='demo']) {
+    .fc-flow:has(> [data-part='demo']) {
       padding-top: clamp(2rem, 6vh, 4rem);
     }
 
@@ -145,18 +145,18 @@
     /* Embedded in the playground (#embed): only the demo, no column, no
        marks of its own (the playground's frame has them). */
     &:has(#embed:target) {
-      .lv-page {
+      .fc-page {
         display: block;
       }
 
-      .lv-stage,
-      .lv-phone-bar,
-      .lv-menu,
-      .lv-foot {
+      .fc-stage,
+      .fc-phone-bar,
+      .fc-menu,
+      .fc-foot {
         display: none;
       }
 
-      .lv-flow {
+      .fc-flow {
         padding: 0;
         background: none;
       }

@@ -5,12 +5,12 @@ import { LangSwitcher } from './LangSwitcher';
 import { MobileMenu } from './MobileMenu';
 import { ModeSwitch } from './ModeSwitch';
 import { RevealObserver } from './RevealObserver';
-import { LiquidBackground } from './lively/LiquidBackground';
+import { LiquidBackground } from './fancy/LiquidBackground';
 
 /**
  * The site's frame around every page: the skip link, and plain mode's
- * header and footer. Lively mode has its own header, index and footer
- * inside each page's layout (components/lively/PageLayout.tsx), so the two
+ * header and footer. The fancier version has its own header, index and footer
+ * inside each page's layout (components/fancy/PageLayout.tsx), so the two
  * here are plain only.
  */
 export function SiteChrome({ lang, children }: { lang: Lang; children: React.ReactNode }) {

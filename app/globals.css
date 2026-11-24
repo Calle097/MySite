@@ -1,12 +1,12 @@
 @import 'tailwindcss';
 
 /* Cascade order, lowest to highest. Tailwind declares the first four;
-   `lively` comes last, so lively mode (app/lively.css) wins over every plain
+   `fancy` comes last, so the fancier version (app/fancy.css) wins over every plain
    style and utility by layer order alone — no specificity contests, no
    !important. All site CSS lives in a layer: unlayered rules would beat
    every layer and break that guarantee. (Demo-only stylesheets under
    components/demos keep to their own class names.) */
-@layer theme, base, components, utilities, lively;
+@layer theme, base, components, utilities, fancy;
 
 /* Map the next/font variables to Tailwind font utilities. One family
    (Wix Madefor Text) for display and body; IBM Plex Mono for small labels.
@@ -21,7 +21,7 @@
 /* Palette: dark navy, one theme for everyone. Light text; hairlines sit
    LIGHTER than the background (on dark themes darker hairlines vanish).
    These six variables are also the contract DriveInCards relies on, and the
-   tokens lively mode redefines.
+   tokens the fancier version redefines.
 
    Declared in @theme, NOT `@theme inline`, which matters: plain @theme both
    generates the colour utilities (bg-background, text-muted-foreground,
@@ -93,7 +93,7 @@
     background-color: color-mix(in srgb, var(--color-brand-accent) 5%, transparent);
   }
 
-  /* Type sizes that lively mode resizes, so they are classes rather than
+  /* Type sizes that the fancier version resizes, so they are classes rather than
      inline styles (an inline style would beat every layer). */
   .hero-title {
     font-size: clamp(2.25rem, 4.5vw, 4.25rem);
@@ -136,14 +136,14 @@
     animation: menu-drop 0.22s ease both;
   }
 
-  /* Plain / lively (see lib/mode.ts). Anything that differs between the two
+  /* Plain / fancy (see lib/mode.ts). Anything that differs between the two
      is in the page twice, and these show the one for the current mode, so
      neither flashes on load. needs-js hides controls that cannot work without
      JavaScript; the pre-paint script sets data-js. !important because a
      visibility switch has to beat the display utilities on the same
      element (flex, sm:flex…). */
-  html[data-mode='lively'] .only-plain,
-  html:not([data-mode='lively']) .only-lively,
+  html[data-mode='fancy'] .only-plain,
+  html:not([data-mode='fancy']) .only-fancy,
   html:not([data-js]) .needs-js {
     display: none !important;
   }

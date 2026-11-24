@@ -1,5 +1,5 @@
-@layer lively {
-  [data-mode='lively'] {
+@layer fancy {
+  [data-mode='fancy'] {
     /* Home: the line after the work list. */
     [data-part='aside'] {
       padding: 1.25rem 0 0;
@@ -19,39 +19,39 @@
       }
 
       [data-part='spiral'] {
-        color: var(--lv-accent);
+        color: var(--fc-accent);
       }
     }
 
-    .lv-teaser-text {
+    .fc-teaser-text {
       display: block;
     }
 
-    .lv-teaser-link {
+    .fc-teaser-link {
       display: block;
       margin-top: 1rem;
-      color: var(--lv-fg);
+      color: var(--fc-fg);
     }
 
-    .lv-teaser-spiral {
+    .fc-teaser-spiral {
       display: block;
       width: 100%;
       height: auto;
     }
 
     /* Home: About, in short. */
-    .lv-lead {
+    .fc-lead {
       margin: 0 0 1.5rem;
       font-size: clamp(1.3rem, 1.9vw, 1.7rem);
-      font-weight: var(--lv-display-weight);
+      font-weight: var(--fc-display-weight);
       line-height: 1.4;
       letter-spacing: -0.015em;
     }
 
-    .lv-para {
+    .fc-para {
       max-width: 58ch;
       margin: 0 0 1rem;
-      color: var(--lv-muted);
+      color: var(--fc-muted);
     }
 
     /* Home: contact. The address large enough to read, not to shout. */
@@ -61,12 +61,12 @@
 
     .contact-email {
       font-size: clamp(1.4rem, 2.2vw, 2rem);
-      font-weight: var(--lv-display-weight);
+      font-weight: var(--fc-display-weight);
       letter-spacing: -0.02em;
       text-decoration: none;
     }
 
-    .lv-actions {
+    .fc-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 0.6rem;
@@ -74,20 +74,20 @@
 
       > * {
         padding: 0.5rem 0.85rem;
-        border: 1px solid var(--lv-line);
-        font-family: var(--lv-mono);
+        border: 1px solid var(--fc-line);
+        font-family: var(--fc-mono);
         font-size: 0.7rem;
         letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: var(--lv-muted);
+        color: var(--fc-muted);
         transition:
           color 0.3s ease,
           border-color 0.3s ease;
       }
 
       > *:hover {
-        color: var(--lv-fg);
-        border-color: var(--lv-accent);
+        color: var(--fc-fg);
+        border-color: var(--fc-accent);
       }
     }
   }

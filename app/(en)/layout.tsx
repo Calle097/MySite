@@ -4,7 +4,7 @@ import { DICTS } from '@/lib/i18n';
 import { MODE_SCRIPT } from '@/lib/mode';
 import { SITE_URL } from '@/lib/site';
 import '../globals.css';
-import '../lively.css';
+import '../fancy.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

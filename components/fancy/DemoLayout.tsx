@@ -11,7 +11,7 @@ import { PageLayout } from './PageLayout';
  * sits on the right in the same crop-mark frame as in the playground.
  *
  * Embedded in the playground (#embed, see components/EmbedMarker.tsx) the
- * column steps aside and only the demo shows (app/lively.css).
+ * column steps aside and only the demo shows (app/fancy.css).
  */
 export function DemoLayout({ lang, slug, children }: { lang: Lang; slug: DemoSlug; children: ReactNode }) {
   const dict = DICTS[lang];
@@ -20,15 +20,15 @@ export function DemoLayout({ lang, slug, children }: { lang: Lang; slug: DemoSlu
   const { tech, source } = DEMOS[slug];
 
   const hero = (
-    <div data-part="hero" className="only-lively">
-      <a href={`${p}/playground/#${slug}`} className="lv-mono lv-back">
+    <div data-part="hero" className="only-fancy">
+      <a href={`${p}/playground/#${slug}`} className="fc-mono fc-back">
         ← {dict.nav.playground}
       </a>
       <h1 className="page-title">{title}</h1>
       <p data-part="blurb">{caption}</p>
       <p data-part="demo-meta">
-        <span className="lv-mono">{tech}</span>
-        <a href={source} className="lv-mono">
+        <span className="fc-mono">{tech}</span>
+        <a href={source} className="fc-mono">
           {dict.playground.sourceLabel}
         </a>
       </p>

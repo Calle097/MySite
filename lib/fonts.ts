@@ -14,7 +14,7 @@ const mono = IBM_Plex_Mono({
   variable: '--font-plex-mono',
 });
 
-// Lively mode's typeface: light for display, regular and medium for text.
+// The fancier version's typeface: light for display, regular and medium for text.
 // Open Font License, so it can be self-hosted from the repo (Satoshi, the
 // first choice, may not sit in a public repository). preload: false — the
 // @font-face is on every page, but a browser fetches a font only once some
@@ -22,7 +22,7 @@ const mono = IBM_Plex_Mono({
 const albert = Albert_Sans({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-lively',
+  variable: '--font-fancy',
   preload: false,
 });
 

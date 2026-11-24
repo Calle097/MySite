@@ -1,10 +1,10 @@
-@layer lively {
+@layer fancy {
   /* --- Hero: the page's title, in the column ---------------------------
      Plain's hero markup, restyled: no gutter (the column pads), the title
      sized to hold two lines in the column, the blurb and the place under
      it; plain's meta row and note are plain only. */
-  [data-mode='lively'] {
-    .lv-stage-mid [data-part='hero'] {
+  [data-mode='fancy'] {
+    .fc-stage-mid [data-part='hero'] {
       min-height: 0;
       padding: 0;
       animation: none;
@@ -15,7 +15,7 @@
     .page-title,
     .notfound-title {
       font-size: clamp(2.3rem, 3.7vw, 5rem);
-      font-weight: var(--lv-display-weight);
+      font-weight: var(--fc-display-weight);
       line-height: 1.02;
       letter-spacing: -0.035em;
     }
@@ -29,20 +29,20 @@
       margin-top: 1.4rem;
       font-size: clamp(1rem, 1.1vw, 1.1rem);
       line-height: 1.55;
-      color: var(--lv-muted);
+      color: var(--fc-muted);
       animation: none;
 
       /* A link in it: the text's own colour, underlined in the accent. */
       a {
-        color: var(--lv-fg);
-        text-decoration: underline 1px var(--lv-accent);
+        color: var(--fc-fg);
+        text-decoration: underline 1px var(--fc-accent);
         text-underline-offset: 0.25em;
         transition: text-decoration-color 0.3s ease;
       }
 
       a:hover {
-        color: var(--lv-fg);
-        text-decoration-color: var(--lv-fg);
+        color: var(--fc-fg);
+        text-decoration-color: var(--fc-fg);
       }
     }
 

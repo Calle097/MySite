@@ -53,7 +53,7 @@ export interface Dict {
     fullHistory: string;
     cvLabel: string;
   };
-  /** write: lively's "Write ↗" action next to the address. */
+  /** write: the fancier version's "Write ↗" action next to the address. */
   contact: { header: string; copy: string; copied: string; write: string };
   playground: {
     title: string;
@@ -135,7 +135,7 @@ export interface Dict {
     where: string;
     hints: { home: string; about: string; playground: string; stack: string; cv: string };
   };
-  /** Lively mode's header uses plain words instead of the /path labels; the
+  /** The fancier version's header uses plain words instead of the /path labels; the
       rest names the parts of its menu and index. */
   nav: {
     about: string;
@@ -151,7 +151,7 @@ export interface Dict {
     demos: string;
     language: string;
   };
-  /** The two versions: plain, and the fancier one (called "lively" in the code). */
+  /** The two versions: plain, and the fancier one (called "fancy" in the code). */
   mode: {
     /** Hero line in plain mode: "{plainNote} {showFancier}". */
     plainNote: string;

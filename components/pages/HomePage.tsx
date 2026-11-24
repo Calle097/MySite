@@ -1,13 +1,13 @@
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
 import { DEMO_SLUGS } from '@/lib/demos';
-import { twoDigits } from '@/lib/lively/format';
+import { twoDigits } from '@/lib/fancy/format';
 import { revealOrder } from '@/lib/reveal';
 import { EMAIL, SITE_URL } from '@/lib/site';
 import { CopyEmail } from '@/components/CopyEmail';
 import { ModeSwitch } from '@/components/ModeSwitch';
 import { SectionHeader } from '@/components/SectionHeader';
 import { SpiralDots } from '@/components/demos/SpiralDots';
-import { PageLayout } from '@/components/lively/PageLayout';
+import { PageLayout } from '@/components/fancy/PageLayout';
 
 /**
  * The same facts the page already states, in the form search engines read:
@@ -46,10 +46,10 @@ function structuredData(lang: Lang) {
 }
 
 /**
- * Plain mode renders this as it always has. Lively mode lays it out through
- * PageLayout and app/lively.css, using the hooks here: data-part names a
+ * Plain mode renders this as it always has. The fancier version lays it out through
+ * PageLayout and app/fancy.css, using the hooks here: data-part names a
  * piece, data-entry marks an entry, data-reveal / revealOrder set up the
- * scroll reveals (lib/reveal.ts). Two sections are lively only: the
+ * scroll reveals (lib/reveal.ts). Two sections are fancier only: the
  * playground teaser and About.
  */
 export function HomePage({ lang }: { lang: Lang }) {
@@ -67,7 +67,7 @@ export function HomePage({ lang }: { lang: Lang }) {
 
   const hero = (
     <section data-part="hero" className="gutter rise pt-8 sm:pt-12">
-      {/* One block per line (same layout as a <br>) so lively mode can
+      {/* One block per line (same layout as a <br>) so the fancier version can
           raise each line from behind its own edge. */}
       <h1 data-reveal="mask" className="hero-title font-semibold leading-[1.04] tracking-tight">
         <span data-line className="block">
@@ -103,12 +103,12 @@ export function HomePage({ lang }: { lang: Lang }) {
         {dict.hero.blurb}
       </p>
 
-      {/* Lively: where, under the blurb (the meta row's first two facts). */}
-      <p data-part="place" data-reveal="rise" style={revealOrder(5)} className="only-lively lv-mono">
+      {/* Fancier: where, under the blurb (the meta row's first two facts). */}
+      <p data-part="place" data-reveal="rise" style={revealOrder(5)} className="only-fancy fc-mono">
         {dict.hero.metaRow.slice(0, 2).join(' · ')}
       </p>
 
-      {/* Plain only: lively mode has its switch in the column. */}
+      {/* Plain only: the fancier version has its switch in the column. */}
       <p className="needs-js only-plain label mt-8 text-muted-foreground">
         {dict.mode.plainNote}{' '}
         <ModeSwitch className="cursor-pointer uppercase underline underline-offset-4 text-brand-accent transition-colors hover:text-foreground">
@@ -189,28 +189,28 @@ export function HomePage({ lang }: { lang: Lang }) {
         </ul>
       </section>
 
-      {/* Lively only: a way into the playground, with the spiral beside it. */}
-      <section id="playground" data-section data-part="playground" className="only-lively">
+      {/* Fancier only: a way into the playground, with the spiral beside it. */}
+      <section id="playground" data-section data-part="playground" className="only-fancy">
         <SectionHeader index={3} title={dict.playground.title} />
         <a href={`${p}/playground/`} data-entry data-part="teaser" data-reveal="rise">
           <span data-part="text">
-            <span className="lv-teaser-text">{dict.playground.intro}</span>
-            <span className="lv-mono lv-teaser-link">
+            <span className="fc-teaser-text">{dict.playground.intro}</span>
+            <span className="fc-mono fc-teaser-link">
               {dict.playground.open} · {twoDigits(DEMO_SLUGS.length)} →
             </span>
           </span>
           <span data-part="spiral" aria-hidden>
-            <SpiralDots totalDots={150} size={150} dotRadius={1.8} className="lv-teaser-spiral" />
+            <SpiralDots totalDots={150} size={150} dotRadius={1.8} className="fc-teaser-spiral" />
           </span>
         </a>
       </section>
 
-      {/* Lively only: the about page's text, in short. */}
-      <section id="about" data-section data-part="about" className="only-lively">
+      {/* Fancier only: the about page's text, in short. */}
+      <section id="about" data-section data-part="about" className="only-fancy">
         <SectionHeader index={4} title={dict.about.title} />
         <div data-entry data-reveal="rise">
           {dict.about.parts.map((part, i) => (
-            <p key={part.title} className={i === 0 ? 'lv-lead' : 'lv-para'}>
+            <p key={part.title} className={i === 0 ? 'fc-lead' : 'fc-para'}>
               {part.text}
             </p>
           ))}
@@ -232,7 +232,7 @@ export function HomePage({ lang }: { lang: Lang }) {
               ↗
             </span>
           </a>
-          <span className="lv-actions only-lively">
+          <span className="fc-actions only-fancy">
             <CopyEmail email={EMAIL} copy={dict.contact.copy} copied={dict.contact.copied} />
             <a href={`mailto:${EMAIL}`}>{dict.contact.write}</a>
             <a href="https://github.com/Calle097">{dict.footer.github} ↗</a>

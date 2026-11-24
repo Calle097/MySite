@@ -4,8 +4,8 @@ import { useEffect, useRef } from 'react';
 import { MODE_EVENT } from '@/lib/mode';
 
 /**
- * The canvas for lively mode's liquid light. The light itself
- * (lib/lively/liquid-light.ts) is imported only once lively mode is on, so
+ * The canvas for the fancier version's liquid light. The light itself
+ * (lib/fancy/liquid-light.ts) is imported only once the fancier version is on, so
  * plain visitors never download it; it stops when the mode goes back to
  * plain. Never inside a frame: the playground embeds each demo's page, and
  * seven copies of the light at once would be heavy.
@@ -21,14 +21,14 @@ export function LiquidBackground() {
     let gone = false;
 
     const sync = async () => {
-      const lively = html.dataset.mode === 'lively';
-      if (lively && !stop && !starting && canvas.current) {
+      const fancy = html.dataset.mode === 'fancy';
+      if (fancy && !stop && !starting && canvas.current) {
         starting = true;
-        const { startLiquidLight } = await import('@/lib/lively/liquid-light');
+        const { startLiquidLight } = await import('@/lib/fancy/liquid-light');
         starting = false;
         // The mode (or the page) may have changed while it loaded.
-        if (!gone && html.dataset.mode === 'lively' && canvas.current) stop = startLiquidLight(canvas.current);
-      } else if (!lively && stop) {
+        if (!gone && html.dataset.mode === 'fancy' && canvas.current) stop = startLiquidLight(canvas.current);
+      } else if (!fancy && stop) {
         stop();
         stop = null;
       }
@@ -43,5 +43,5 @@ export function LiquidBackground() {
     };
   }, []);
 
-  return <canvas ref={canvas} className="lv-light only-lively" aria-hidden />;
+  return <canvas ref={canvas} className="fc-light only-fancy" aria-hidden />;
 }

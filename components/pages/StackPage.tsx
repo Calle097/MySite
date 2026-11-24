@@ -1,7 +1,7 @@
 import { DICTS, type Lang } from '@/lib/i18n';
-import { sectionId } from '@/lib/lively/format';
+import { sectionId } from '@/lib/fancy/format';
 import { SectionHeader } from '@/components/SectionHeader';
-import { PageLayout } from '@/components/lively/PageLayout';
+import { PageLayout } from '@/components/fancy/PageLayout';
 
 /**
  * Plain: the title and source link, then each section's list, the line
@@ -27,7 +27,7 @@ export function StackPage({ lang }: { lang: Lang }) {
         </a>
         .
       </p>
-      <p data-part="place" className="only-lively lv-mono">
+      <p data-part="place" className="only-fancy fc-mono">
         {dict.stack.aiLine}
       </p>
     </section>
@@ -55,7 +55,7 @@ export function StackPage({ lang }: { lang: Lang }) {
                 ) : (
                   <>
                     <span className="only-plain">{item.plain}</span>
-                    <span className="only-lively">{item.fancier}</span>
+                    <span className="only-fancy">{item.fancier}</span>
                   </>
                 )}
               </li>

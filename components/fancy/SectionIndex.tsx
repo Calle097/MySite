@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, type CSSProperties } from 'react';
-import { setCurrentSection, useCurrentSection } from '@/lib/lively/current-section';
-import { twoDigits } from '@/lib/lively/format';
+import { setCurrentSection, useCurrentSection } from '@/lib/fancy/current-section';
+import { twoDigits } from '@/lib/fancy/format';
 import { SectionList, type IndexItem } from './SectionList';
 
 /**
@@ -27,18 +27,18 @@ export function SectionIndex({
   const current = follow ? followed : fixedCurrent;
 
   return (
-    <nav className="lv-index only-lively" aria-label={label}>
-      <div className="lv-index-head">
-        <span className="lv-mono">{label}</span>
-        <span className="lv-count" aria-hidden>
-          <span className="lv-roll">
-            <span className="lv-roll-inner" style={{ '--n': Math.max(current, 0) } as CSSProperties}>
+    <nav className="fc-index only-fancy" aria-label={label}>
+      <div className="fc-index-head">
+        <span className="fc-mono">{label}</span>
+        <span className="fc-count" aria-hidden>
+          <span className="fc-roll">
+            <span className="fc-roll-inner" style={{ '--n': Math.max(current, 0) } as CSSProperties}>
               {items.map((item, i) => (
                 <span key={item.href}>{twoDigits(i + 1)}</span>
               ))}
             </span>
           </span>
-          <span className="lv-mono">/ {twoDigits(items.length)}</span>
+          <span className="fc-mono">/ {twoDigits(items.length)}</span>
         </span>
       </div>
       <SectionList items={items} current={current} />

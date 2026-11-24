@@ -28,11 +28,11 @@ export function SectionHeader({
   index: number;
   title: string;
   as?: 'h2' | 'span';
-  /** Extra classes, e.g. only-lively for a title only the fancier version shows. */
+  /** Extra classes, e.g. only-fancy for a title only the fancier version shows. */
   className?: string;
 }) {
   return (
-    // data-rule: a styling hook for lively mode (app/lively.css), where the
+    // data-rule: a styling hook for the fancier version (app/fancy.css), where the
     // label also reveals as a "rule" (lib/reveal.ts).
     <div
       data-rule

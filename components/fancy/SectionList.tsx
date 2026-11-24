@@ -1,7 +1,7 @@
 'use client';
 
 import type { CSSProperties, MouseEvent } from 'react';
-import { twoDigits } from '@/lib/lively/format';
+import { twoDigits } from '@/lib/fancy/format';
 
 export type IndexItem = { href: string; title: string };
 
@@ -20,7 +20,7 @@ export function SectionList({
   onGo?: (i: number, e: MouseEvent<HTMLAnchorElement>) => void;
 }) {
   return (
-    <ol className="lv-sections">
+    <ol className="fc-sections">
       {items.map((item, i) => (
         <li key={item.href} style={{ '--i': i } as CSSProperties}>
           <a
@@ -29,8 +29,8 @@ export function SectionList({
             data-focus
             onClick={onGo ? (e) => onGo(i, e) : undefined}
           >
-            <span className="lv-mono">{twoDigits(i + 1)}</span>
-            <span className="lv-sections-title">{item.title}</span>
+            <span className="fc-mono">{twoDigits(i + 1)}</span>
+            <span className="fc-sections-title">{item.title}</span>
           </a>
         </li>
       ))}

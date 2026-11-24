@@ -1,7 +1,7 @@
 import { DICTS, type Lang } from '@/lib/i18n';
 import { ChipComposer } from '@/components/demos/ChipComposer';
 import { EmbedMarker } from '@/components/EmbedMarker';
-import { DemoLayout } from '@/components/lively/DemoLayout';
+import { DemoLayout } from '@/components/fancy/DemoLayout';
 
 // Chrome hides itself when embedded (iframe src carries #embed); a
 // standalone visit keeps the header and footer.

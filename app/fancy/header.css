@@ -1,35 +1,35 @@
-@layer lively {
+@layer fancy {
   /* --- Header ------------------------------------------------------------
      Name (home) · pages · language, with a hairline under it. When the
      column is too narrow for the pages (container query), they fold into
      Menu, which grows the header sideways across the window as one solid
      surface from the top of the page down to its line (like the phone bar);
      the pages appear in the middle and EN and Close travel to the right
-     end. LivelyHeader measures --full (the window's width) and --reach
+     end. FancyHeader measures --full (the window's width) and --reach
      (from the column's edge to the window's). */
-  [data-mode='lively'] {
-    .lv-header {
+  [data-mode='fancy'] {
+    .fc-header {
       position: relative;
       display: grid;
       grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
       gap: 0.75rem 1.5rem;
       padding-bottom: 1.1rem;
-      border-bottom: 1px solid var(--lv-line);
+      border-bottom: 1px solid var(--fc-line);
     }
 
-    .lv-name {
+    .fc-name {
       font-size: 1.02rem;
       font-weight: 500;
       letter-spacing: -0.01em;
     }
 
-    .lv-header-nav {
+    .fc-header-nav {
       justify-self: center;
       display: flex;
       gap: 1.25rem;
       font-size: 0.92rem;
-      color: var(--lv-muted);
+      color: var(--fc-muted);
 
       a {
         transition: color 0.3s ease;
@@ -37,12 +37,12 @@
 
       a:hover,
       a[aria-current='page'] {
-        color: var(--lv-fg);
+        color: var(--fc-fg);
       }
     }
 
     /* Always the last column, so it stays right when the nav folds away. */
-    .lv-header-tools {
+    .fc-header-tools {
       grid-column: 3;
       justify-self: end;
       display: flex;
@@ -50,27 +50,27 @@
       gap: 1.25rem;
     }
 
-    .lv-menu-button,
-    .lv-header-more {
+    .fc-menu-button,
+    .fc-header-more {
       display: none;
     }
 
     @container stage (max-width: 31.5rem) {
-      .lv-header-nav {
+      .fc-header-nav {
         display: none;
       }
 
-      .lv-menu-button {
+      .fc-menu-button {
         display: inline;
       }
 
-      .lv-header-more {
+      .fc-header-more {
         display: flex;
       }
     }
 
     /* The surface it grows with. At rest: exactly the column's width. */
-    .lv-header::before {
+    .fc-header::before {
       content: '';
       position: absolute;
       z-index: -1;
@@ -78,8 +78,8 @@
       bottom: -1px;
       left: calc(-1 * var(--pad-x));
       width: var(--full, 100vw);
-      border-bottom: 1px solid var(--lv-line);
-      background: color-mix(in srgb, var(--lv-surface) 70%, transparent);
+      border-bottom: 1px solid var(--fc-line);
+      background: color-mix(in srgb, var(--fc-surface) 70%, transparent);
       backdrop-filter: blur(14px);
       pointer-events: none;
       visibility: hidden;
@@ -87,7 +87,7 @@
       clip-path: inset(0 var(--reach, 58%) 0 0);
     }
 
-    .lv-header.is-extended {
+    .fc-header.is-extended {
       /* One line at a time: the surface's replaces the column's. */
       border-bottom-color: transparent;
 
@@ -97,14 +97,14 @@
         clip-path: inset(0);
       }
 
-      .lv-header-tools {
+      .fc-header-tools {
         transform: translateX(var(--reach, 0px));
       }
     }
 
     /* The pages, centred in the window as the unfolded header's are in the
        column. */
-    .lv-header-more {
+    .fc-header-more {
       position: absolute;
       top: 0;
       bottom: 1.1rem;
@@ -113,7 +113,7 @@
       align-items: center;
       gap: 1.5rem;
       font-size: 0.92rem;
-      color: var(--lv-muted);
+      color: var(--fc-muted);
       white-space: nowrap;
       visibility: hidden;
 
@@ -123,30 +123,30 @@
 
       a:hover,
       a[aria-current='page'] {
-        color: var(--lv-fg);
+        color: var(--fc-fg);
       }
     }
 
-    .lv-header.is-extended .lv-header-more {
+    .fc-header.is-extended .fc-header-more {
       visibility: visible;
     }
 
     /* EN ▾ and its list. */
-    .lv-lang-toggle {
+    .fc-lang-toggle {
       transition: color 0.3s ease;
 
       &:hover,
       &[aria-expanded='true'] {
-        color: var(--lv-fg);
+        color: var(--fc-fg);
       }
     }
 
-    .lv-caret {
+    .fc-caret {
       display: inline-block;
-      transition: transform 0.5s var(--lv-ease);
+      transition: transform 0.5s var(--fc-ease);
     }
 
-    .lv-lang-toggle[aria-expanded='true'] .lv-caret {
+    .fc-lang-toggle[aria-expanded='true'] .fc-caret {
       transform: rotate(180deg);
     }
 
@@ -156,7 +156,7 @@
        bottom, and fading to nothing exactly where the line ends on the
        right, never past it. A fixed zone of about five and a half rows: a
        half-cut row shows there's more, then it scrolls. */
-    .lv-header-langs {
+    .fc-header-langs {
       position: absolute;
       top: calc(100% + 1px);
       right: 0;
@@ -171,7 +171,7 @@
         inset: 0 0 -3.5rem -5rem;
         z-index: -1;
         pointer-events: none;
-        background: color-mix(in srgb, var(--lv-bg) 55%, transparent);
+        background: color-mix(in srgb, var(--fc-bg) 55%, transparent);
         backdrop-filter: blur(24px);
         mask-image:
           linear-gradient(90deg, transparent, #000 5rem, #000 calc(100% - 1.5rem), transparent),
@@ -179,26 +179,26 @@
         mask-composite: intersect;
       }
 
-      .lv-langs {
+      .fc-langs {
         max-height: 13.5rem;
         overflow-y: auto;
         overscroll-behavior: contain;
         scrollbar-width: thin;
-        scrollbar-color: var(--lv-line) transparent;
+        scrollbar-color: var(--fc-line) transparent;
       }
     }
 
-    .lv-header.is-langs-open .lv-header-langs {
+    .fc-header.is-langs-open .fc-header-langs {
       visibility: visible;
     }
 
-    .lv-header.is-extended .lv-header-langs {
+    .fc-header.is-extended .fc-header-langs {
       translate: var(--reach, 0px) 0;
     }
 
     /* Each language in its own name. The accent dash means "selected" and
        nothing else; pointing at another draws a pale dash. */
-    .lv-langs {
+    .fc-langs {
       list-style: none;
       margin: 0;
       padding: 0;
@@ -208,7 +208,7 @@
         align-items: center;
         gap: 0.75rem;
         padding: 0.3rem 0;
-        color: var(--lv-muted);
+        color: var(--fc-muted);
         transition: color 0.3s ease;
       }
 
@@ -216,26 +216,26 @@
         content: '';
         width: 0;
         height: 1px;
-        background: color-mix(in srgb, var(--lv-fg) 40%, transparent);
-        transition: width 0.6s var(--lv-ease);
+        background: color-mix(in srgb, var(--fc-fg) 40%, transparent);
+        transition: width 0.6s var(--fc-ease);
       }
 
       a[aria-current='true'] {
-        color: var(--lv-fg);
+        color: var(--fc-fg);
       }
 
       a[aria-current='true']::before {
         width: 1.25rem;
-        background: var(--lv-accent);
+        background: var(--fc-accent);
       }
     }
 
     @media (hover: hover) {
-      .lv-langs a:hover {
-        color: var(--lv-fg);
+      .fc-langs a:hover {
+        color: var(--fc-fg);
       }
 
-      .lv-langs a:hover::before {
+      .fc-langs a:hover::before {
         width: 1.25rem;
       }
     }

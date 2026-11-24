@@ -3,15 +3,15 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 import type { Lang } from '@/lib/i18n';
-import { useCurrentSection } from '@/lib/lively/current-section';
+import { useCurrentSection } from '@/lib/fancy/current-section';
 import { NavLink } from '../NavLink';
 import { LanguageList } from './LanguageList';
 import { SectionList, type IndexItem } from './SectionList';
-import type { HeaderLink } from './LivelyHeader';
+import type { HeaderLink } from './FancyHeader';
 import { VersionSwitch } from './VersionSwitch';
 
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
-/** Where the column's header takes over (app/lively.css, narrow screens). */
+/** Where the column's header takes over (app/fancy.css, narrow screens). */
 const WIDE = 900;
 
 /**
@@ -44,7 +44,7 @@ export function PhoneMenu({
     languageName: string;
     version: string;
     plain: string;
-    lively: string;
+    fancier: string;
   };
 }) {
   const menu = useRef<HTMLDivElement>(null);
@@ -76,7 +76,7 @@ export function PhoneMenu({
   const lock = (on: boolean) => {
     const html = document.documentElement;
     if (on) html.style.setProperty('--scrollbar-w', `${innerWidth - html.clientWidth}px`);
-    html.classList.toggle('lv-menu-open', on);
+    html.classList.toggle('fc-menu-open', on);
   };
 
   const openMenu = (button: HTMLButtonElement) => {
@@ -152,14 +152,14 @@ export function PhoneMenu({
 
   return (
     <>
-      <header className="lv-phone-bar only-lively">
-        <Link href={homeHref} className="lv-name">
+      <header className="fc-phone-bar only-fancy">
+        <Link href={homeHref} className="fc-name">
           Mattia Callegher
         </Link>
         <button
           type="button"
-          className="lv-mono"
-          aria-controls="lv-menu"
+          className="fc-mono"
+          aria-controls="fc-menu"
           aria-expanded={open}
           onClick={(e) => openMenu(e.currentTarget)}
         >
@@ -169,25 +169,25 @@ export function PhoneMenu({
 
       <div
         ref={menu}
-        id="lv-menu"
-        className={['lv-menu', 'only-lively', shown && 'is-open'].filter(Boolean).join(' ')}
+        id="fc-menu"
+        className={['fc-menu', 'only-fancy', shown && 'is-open'].filter(Boolean).join(' ')}
         hidden={!open}
       >
-        <div className="lv-menu-top">
-          <Link href={homeHref} className="lv-name">
+        <div className="fc-menu-top">
+          <Link href={homeHref} className="fc-name">
             Mattia Callegher
           </Link>
-          <button ref={closeButton} type="button" className="lv-mono" onClick={closeMenu}>
+          <button ref={closeButton} type="button" className="fc-mono" onClick={closeMenu}>
             {labels.close}
           </button>
         </div>
 
-        <nav className="lv-menu-group" aria-label={labels.pages}>
-          <span className="lv-mono">{labels.pages}</span>
-          <ul className="lv-menu-pages">
+        <nav className="fc-menu-group" aria-label={labels.pages}>
+          <span className="fc-mono">{labels.pages}</span>
+          <ul className="fc-menu-pages">
             {pages.map((page, i) => {
               const text = (
-                <span className="lv-mask">
+                <span className="fc-mask">
                   <span style={{ '--i': i } as CSSProperties}>{page.label}</span>
                 </span>
               );
@@ -201,31 +201,31 @@ export function PhoneMenu({
         </nav>
 
         {/* One slot: the index, or the languages while EN is open. */}
-        <div className={['lv-menu-slot', langsOpen && 'is-langs-open'].filter(Boolean).join(' ')}>
+        <div className={['fc-menu-slot', langsOpen && 'is-langs-open'].filter(Boolean).join(' ')}>
           {index.items.length > 0 && (
-            <nav ref={sectionList} className="lv-menu-group lv-menu-index" aria-label={index.label} inert={langsOpen}>
-              <span className="lv-mono">{index.label}</span>
+            <nav ref={sectionList} className="fc-menu-group fc-menu-index" aria-label={index.label} inert={langsOpen}>
+              <span className="fc-mono">{index.label}</span>
               <SectionList items={index.items} current={current} onGo={index.follow ? goToSection : undefined} />
             </nav>
           )}
-          <nav id="lv-menu-langs" className="lv-menu-group lv-menu-langs" aria-label={labels.language} inert={!langsOpen}>
-            <span className="lv-mono">{labels.language}</span>
+          <nav id="fc-menu-langs" className="fc-menu-group fc-menu-langs" aria-label={labels.language} inert={!langsOpen}>
+            <span className="fc-mono">{labels.language}</span>
             <LanguageList lang={lang} onPick={() => setLangsOpen(false)} />
           </nav>
         </div>
 
-        <div className="lv-menu-foot" style={{ '--i': 6 } as CSSProperties}>
+        <div className="fc-menu-foot" style={{ '--i': 6 } as CSSProperties}>
           <button
             type="button"
-            className="lv-mono lv-lang-toggle"
-            aria-controls="lv-menu-langs"
+            className="fc-mono fc-lang-toggle"
+            aria-controls="fc-menu-langs"
             aria-expanded={langsOpen}
             aria-label={`${labels.language}: ${labels.languageName}`}
             onClick={() => setLangsOpen((o) => !o)}
           >
-            {lang.toUpperCase()} <span className="lv-caret" aria-hidden>▾</span>
+            {lang.toUpperCase()} <span className="fc-caret" aria-hidden>▾</span>
           </button>
-          <VersionSwitch label={labels.version} plain={labels.plain} lively={labels.lively} />
+          <VersionSwitch label={labels.version} plain={labels.plain} fancier={labels.fancier} />
         </div>
       </div>
     </>

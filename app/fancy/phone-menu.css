@@ -1,18 +1,18 @@
-@layer lively {
-  /* The phone menu (components/lively/PhoneMenu.tsx). Solid, so nothing
+@layer fancy {
+  /* The phone menu (components/fancy/PhoneMenu.tsx). Solid, so nothing
      moves behind it, with one still glow from where the circle opened
      (--ox/--oy). It fits the screen without scrolling down to a small
      phone with its browser bars showing: spacing and the page names scale
      with svh (the viewport with the bars shown, the smallest case). Only
      a phone held sideways scrolls it, as a last resort. While it is open
      the page is locked, the scrollbar's width put back as padding. */
-  [data-mode='lively'] {
-    &.lv-menu-open {
+  [data-mode='fancy'] {
+    &.fc-menu-open {
       overflow: hidden;
       padding-right: var(--scrollbar-w, 0px);
     }
 
-    .lv-menu {
+    .fc-menu {
       position: fixed;
       inset: 0;
       z-index: 40;
@@ -23,8 +23,8 @@
       overflow: auto;
       overscroll-behavior: contain;
       background:
-        radial-gradient(110vmax 90vmax at var(--ox, 100%) var(--oy, 0%), var(--lv-glow), transparent 70%),
-        var(--lv-surface);
+        radial-gradient(110vmax 90vmax at var(--ox, 100%) var(--oy, 0%), var(--fc-glow), transparent 70%),
+        var(--fc-surface);
 
       &[hidden] {
         display: none;
@@ -37,24 +37,24 @@
         -webkit-tap-highlight-color: transparent;
       }
 
-      .lv-sections a {
+      .fc-sections a {
         padding-block: clamp(0.25rem, 1svh, 0.5rem);
         line-height: 1.35;
       }
     }
 
-    .lv-menu-top {
+    .fc-menu-top {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
     }
 
-    .lv-menu-group > .lv-mono {
+    .fc-menu-group > .fc-mono {
       display: block;
       margin-bottom: clamp(0.4rem, 1.4svh, 0.75rem);
     }
 
-    .lv-menu-pages {
+    .fc-menu-pages {
       list-style: none;
       margin: 0;
       padding: 0;
@@ -65,10 +65,10 @@
         gap: 0.9rem;
         padding-block: clamp(0.1rem, 0.5svh, 0.25rem);
         font-size: clamp(1.55rem, min(9vw, 4.7svh), 3.4rem);
-        font-weight: var(--lv-display-weight);
+        font-weight: var(--fc-display-weight);
         line-height: 1.1;
         letter-spacing: -0.03em;
-        color: var(--lv-muted);
+        color: var(--fc-muted);
         transition: color 0.3s ease;
       }
 
@@ -76,12 +76,12 @@
         content: '';
         width: 0;
         height: 1px;
-        background: var(--lv-accent);
-        transition: width 0.6s var(--lv-ease);
+        background: var(--fc-accent);
+        transition: width 0.6s var(--fc-ease);
       }
 
       a[aria-current='page'] {
-        color: var(--lv-fg);
+        color: var(--fc-fg);
       }
 
       a[aria-current='page']::before {
@@ -90,13 +90,13 @@
     }
 
     @media (hover: hover) {
-      .lv-menu-pages a:hover {
-        color: var(--lv-fg);
+      .fc-menu-pages a:hover {
+        color: var(--fc-fg);
       }
     }
 
     /* Lines that rise from behind a clean edge. */
-    .lv-mask {
+    .fc-mask {
       display: block;
       overflow: clip;
       padding-bottom: 0.1em;
@@ -111,7 +111,7 @@
        between the pages and the bottom row: EN swaps one for the other, so
        the menu never grows. Whichever shows fills it and scrolls inside it
        when it holds more than fits, its bottom edge fading so that's clear. */
-    .lv-menu-slot {
+    .fc-menu-slot {
       position: relative;
       flex: 1 1 0;
       min-height: 7rem;
@@ -119,44 +119,44 @@
       flex-direction: column;
     }
 
-    .lv-menu-index {
+    .fc-menu-index {
       flex: 1 1 auto;
       min-height: 0;
       display: flex;
       flex-direction: column;
     }
 
-    .lv-menu-langs {
+    .fc-menu-langs {
       position: absolute;
       inset: 0;
       display: flex;
       flex-direction: column;
     }
 
-    .lv-menu-index .lv-sections,
-    .lv-menu-langs .lv-langs {
+    .fc-menu-index .fc-sections,
+    .fc-menu-langs .fc-langs {
       flex: 1 1 auto;
       min-height: 0;
       padding-bottom: 1.5rem;
       overflow-y: auto;
       overscroll-behavior: contain;
       scrollbar-width: thin;
-      scrollbar-color: var(--lv-line) transparent;
+      scrollbar-color: var(--fc-line) transparent;
       mask-image: linear-gradient(#000 calc(100% - 1.5rem), transparent);
     }
 
-    .lv-menu-slot.is-langs-open .lv-menu-index,
-    .lv-menu-langs {
+    .fc-menu-slot.is-langs-open .fc-menu-index,
+    .fc-menu-langs {
       visibility: hidden;
       opacity: 0;
     }
 
-    .lv-menu-slot.is-langs-open .lv-menu-langs {
+    .fc-menu-slot.is-langs-open .fc-menu-langs {
       visibility: visible;
       opacity: 1;
     }
 
-    .lv-menu-foot {
+    .fc-menu-foot {
       margin-top: auto;
       display: flex;
       flex-wrap: wrap;

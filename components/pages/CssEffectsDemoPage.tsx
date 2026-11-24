@@ -1,6 +1,6 @@
 import { DICTS, type Lang } from '@/lib/i18n';
 import { EmbedMarker } from '@/components/EmbedMarker';
-import { DemoLayout } from '@/components/lively/DemoLayout';
+import { DemoLayout } from '@/components/fancy/DemoLayout';
 import '@/components/demos/css-effects.css';
 
 // Chrome hides itself when embedded (iframe src carries #embed).

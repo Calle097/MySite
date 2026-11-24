@@ -1,11 +1,11 @@
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
 import { DEMOS, DEMO_SLUGS } from '@/lib/demos';
 import { SectionHeader } from '@/components/SectionHeader';
-import { PageLayout } from '@/components/lively/PageLayout';
+import { PageLayout } from '@/components/fancy/PageLayout';
 
 /**
  * Plain: each demo as a section, its text beside it and the demo's page in
- * a hairline box. The fancier version (app/lively.css) stacks each one as
+ * a hairline box. The fancier version (app/fancy.css) stacks each one as
  * title, the live demo in a frame of crop marks, then the caption, what it
  * is built with and its links; the index in the column lists the demos.
  */
@@ -20,7 +20,7 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
       <p data-part="blurb" className="mt-6 max-w-[52ch] leading-relaxed text-muted-foreground">
         {dict.playground.intro}
       </p>
-      <p data-part="place" className="only-lively lv-mono">
+      <p data-part="place" className="only-fancy fc-mono">
         {dict.playground.summary}
       </p>
     </section>
@@ -48,7 +48,7 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
                 <div data-part="demo-text">
                   <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">{title}</h2>
                   <p className="mt-4 max-w-[48ch] leading-relaxed text-muted-foreground">{caption}</p>
-                  <span data-part="tech" className="only-lively lv-mono">
+                  <span data-part="tech" className="only-fancy fc-mono">
                     {tech}
                   </span>
                   <p data-demo-links className="label mt-6 flex gap-6 text-muted-foreground">

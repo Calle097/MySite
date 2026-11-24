@@ -1,7 +1,7 @@
-@layer lively {
+@layer fancy {
   /* --- Footer: closes the page instead of letting it trail off. -------- */
-  [data-mode='lively'] {
-    .lv-foot {
+  [data-mode='fancy'] {
+    .fc-foot {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
@@ -10,21 +10,21 @@
       max-width: 48rem;
       margin: clamp(6rem, 14vh, 9rem) auto 0;
       padding-top: 1.4rem;
-      border-top: 1px solid var(--lv-line);
+      border-top: 1px solid var(--fc-line);
     }
 
-    .lv-foot-links {
+    .fc-foot-links {
       display: flex;
       flex-wrap: wrap;
       gap: 0.4rem 1.4rem;
 
       a {
-        color: var(--lv-muted);
+        color: var(--fc-muted);
         transition: color 0.3s ease;
       }
 
       a:hover {
-        color: var(--lv-fg);
+        color: var(--fc-fg);
       }
     }
   }

@@ -12,12 +12,12 @@ export type HeaderLink = { href: string; label: string; /** A file, not a route:
  * The header at the top of the column: the name (home), the pages, the
  * language and, when the column is too narrow for the pages, Menu.
  *
- * Menu grows the header sideways across the whole window (app/lively.css),
+ * Menu grows the header sideways across the whole window (app/fancy.css),
  * with the pages in the middle; EN opens the language list under the line.
  * Both close on Escape (the list first), on a click outside, and when the
  * window changes size (the measurements no longer hold).
  */
-export function LivelyHeader({
+export function FancyHeader({
   lang,
   homeHref,
   homeLabel,
@@ -98,31 +98,31 @@ export function LivelyHeader({
   return (
     <header
       ref={header}
-      className={['lv-header', 'only-lively', extended && 'is-extended', langsOpen && 'is-langs-open'].filter(Boolean).join(' ')}
+      className={['fc-header', 'only-fancy', extended && 'is-extended', langsOpen && 'is-langs-open'].filter(Boolean).join(' ')}
     >
-      <Link href={homeHref} className="lv-name" aria-label={homeLabel}>
+      <Link href={homeHref} className="fc-name" aria-label={homeLabel}>
         Mattia Callegher
       </Link>
-      <nav className="lv-header-nav" aria-label={labels.pages}>
+      <nav className="fc-header-nav" aria-label={labels.pages}>
         {pageLinks(false)}
       </nav>
-      <div className="lv-header-tools">
+      <div className="fc-header-tools">
         <button
           ref={langButton}
           type="button"
-          className="lv-mono lv-lang-toggle"
-          aria-controls="lv-header-langs"
+          className="fc-mono fc-lang-toggle"
+          aria-controls="fc-header-langs"
           aria-expanded={langsOpen}
           aria-label={`${labels.language}: ${labels.languageName}`}
           onClick={() => setLangsOpen((open) => !open)}
         >
-          {lang.toUpperCase()} <span className="lv-caret" aria-hidden>▾</span>
+          {lang.toUpperCase()} <span className="fc-caret" aria-hidden>▾</span>
         </button>
         <button
           ref={menuButton}
           type="button"
-          className="lv-mono lv-menu-button"
-          aria-controls="lv-header-more"
+          className="fc-mono fc-menu-button"
+          aria-controls="fc-header-more"
           aria-expanded={extended}
           onClick={() => {
             if (!extended) measure();
@@ -132,10 +132,10 @@ export function LivelyHeader({
           {extended ? labels.close : labels.menu}
         </button>
       </div>
-      <nav id="lv-header-more" className="lv-header-more" aria-label={labels.pages} inert={!extended}>
+      <nav id="fc-header-more" className="fc-header-more" aria-label={labels.pages} inert={!extended}>
         {pageLinks(true, () => setExtended(false))}
       </nav>
-      <nav id="lv-header-langs" ref={langList} className="lv-header-langs" aria-label={labels.language} inert={!langsOpen}>
+      <nav id="fc-header-langs" ref={langList} className="fc-header-langs" aria-label={labels.language} inert={!langsOpen}>
         <LanguageList lang={lang} onPick={() => setLangsOpen(false)} />
       </nav>
     </header>

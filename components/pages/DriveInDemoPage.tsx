@@ -1,7 +1,7 @@
 import { DICTS, type Lang } from '@/lib/i18n';
 import { DemoCards } from '@/components/demos/DemoCards';
 import { EmbedMarker } from '@/components/EmbedMarker';
-import { DemoLayout } from '@/components/lively/DemoLayout';
+import { DemoLayout } from '@/components/fancy/DemoLayout';
 
 // Chrome hides itself when embedded (iframe src carries #embed). Inside the
 // playground iframe this page's own scrollbar scrubs the animation.

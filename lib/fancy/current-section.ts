@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react';
 
 /**
- * Which of the page's sections is in the middle of the view (lively mode).
+ * Which of the page's sections is in the middle of the view (the fancier version).
  * One value, written by the section index as you scroll and read by every
  * list that shows the sections (the column's index, the phone menu), so the
  * two can never disagree.

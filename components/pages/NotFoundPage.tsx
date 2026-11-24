@@ -1,6 +1,6 @@
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
-import { LiquidBackground } from '@/components/lively/LiquidBackground';
-import { PageLayout } from '@/components/lively/PageLayout';
+import { LiquidBackground } from '@/components/fancy/LiquidBackground';
+import { PageLayout } from '@/components/fancy/PageLayout';
 
 /**
  * Rendered by the real routes at /not-found/ and /it/not-found/, which Caddy serves for
@@ -41,7 +41,7 @@ export function NotFoundPage({ lang }: { lang: Lang }) {
           {dict.notFound.back}
         </a>
       </p>
-      <p data-part="blurb" className="only-lively">
+      <p data-part="blurb" className="only-fancy">
         {dict.notFound.title}
       </p>
     </div>
@@ -51,16 +51,16 @@ export function NotFoundPage({ lang }: { lang: Lang }) {
     <>
       <LiquidBackground />
       <PageLayout lang={lang} hero={hero}>
-        <section data-part="where" className="only-lively" aria-labelledby="where-to-go">
-          <h2 id="where-to-go" className="lv-mono">
+        <section data-part="where" className="only-fancy" aria-labelledby="where-to-go">
+          <h2 id="where-to-go" className="fc-mono">
             {dict.notFound.where}
           </h2>
-          <ul className="lv-where">
+          <ul className="fc-where">
             {destinations.map((d) => (
               <li key={d.href}>
                 <a href={d.href}>
-                  <span className="lv-where-name">{d.name}</span>
-                  <span className="lv-where-hint">{d.hint}</span>
+                  <span className="fc-where-name">{d.name}</span>
+                  <span className="fc-where-hint">{d.hint}</span>
                 </a>
               </li>
             ))}

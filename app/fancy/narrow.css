@@ -1,31 +1,31 @@
-@layer lively {
+@layer fancy {
   /* --- Narrow screens ----------------------------------------------------
      One column: the hero, then the content. The phone bar and menu take
      over the column's header, index and switch; on wide screens the bar is
      not there (this rule comes first, so the narrow one below wins). */
-  [data-mode='lively'] .lv-phone-bar {
+  [data-mode='fancy'] .fc-phone-bar {
     display: none;
   }
 
   @media (max-width: 899px) {
-    [data-mode='lively'] {
-      .lv-page {
+    [data-mode='fancy'] {
+      .fc-page {
         grid-template-columns: minmax(0, 1fr);
       }
 
-      .lv-stage {
+      .fc-stage {
         position: relative;
         height: auto;
         padding-top: 4.5rem;
       }
 
-      .lv-header,
-      .lv-index,
-      .lv-stage-foot {
+      .fc-header,
+      .fc-index,
+      .fc-stage-foot {
         display: none;
       }
 
-      .lv-stage-mid {
+      .fc-stage-mid {
         padding-block: 1.5rem 0;
       }
 
@@ -35,9 +35,9 @@
         font-size: clamp(2.2rem, 9vw, 3.2rem);
       }
 
-      .lv-flow {
+      .fc-flow {
         padding: 4rem 1.5rem 2rem;
-        background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--lv-bg) 34%, transparent) 14rem);
+        background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--fc-bg) 34%, transparent) 14rem);
       }
 
       /* Clear the phone bar when jumping to a section. */
@@ -50,7 +50,7 @@
       }
 
       /* Always there, always a little solid: text never runs under it bare. */
-      .lv-phone-bar {
+      .fc-phone-bar {
         position: fixed;
         top: 0;
         left: 0;
@@ -60,8 +60,8 @@
         justify-content: space-between;
         align-items: baseline;
         padding: 1rem 1.25rem;
-        border-bottom: 1px solid var(--lv-line);
-        background: color-mix(in srgb, var(--lv-surface) 70%, transparent);
+        border-bottom: 1px solid var(--fc-line);
+        background: color-mix(in srgb, var(--fc-surface) 70%, transparent);
         backdrop-filter: blur(14px);
       }
     }
