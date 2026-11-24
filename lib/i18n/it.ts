@@ -1,4 +1,10 @@
+import { DEMO_SLUGS } from '../demos';
 import type { Dict } from './index';
+import { countWord } from './numbers';
+
+// The playground's size, counted from the demo list so the copy follows it.
+// Written for several demos, as the playground has.
+const DEMO_COUNT = countWord('it', DEMO_SLUGS.length);
 
 export const it: Dict = {
   role: 'Sviluppatore Frontend & QA Engineer',
@@ -37,12 +43,12 @@ export const it: Dict = {
   playground: {
     title: 'Playground',
     intro:
-      'Cose che ho costruito e che mi sembravano troppo interessanti, o troppo "uniche", per farle sparire. Alcune sono finite in produzione, altre no.',
+      'Cose semplici che ho costruito e che volevo mostrare, così, perché mi andava. Alcune sono finite in produzione, altre sono rimaste nel cassetto.',
     openLabel: 'Apri ↗',
     sourceLabel: 'Codice ↗',
     loading: 'caricamento',
     open: 'Apri il playground',
-    summary: 'Sette demo, tutte interattive',
+    summary: `${DEMO_COUNT} demo, tutte interattive`,
     items: {
       'drive-in': {
         title: 'Drive-in cards',
@@ -206,7 +212,7 @@ export const it: Dict = {
     hints: {
       home: 'Esperienza, progetti, contatti',
       about: 'La storia per intero',
-      playground: 'Sette demo interattive',
+      playground: `${DEMO_COUNT} demo interattive`,
       stack: 'Come è fatto questo sito',
       cv: 'Il PDF',
     },

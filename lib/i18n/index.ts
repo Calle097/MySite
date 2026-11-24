@@ -69,7 +69,7 @@ export interface Dict {
     loading: string;
     /** The fancier home's playground teaser: "{open} · {count} →". */
     open: string;
-    /** The fancier playground's line under the intro. */
+    /** The fancier playground's line under the intro; counts the demos. */
     summary: string;
     /** How each demo is listed on the playground page. Keyed by slug rather
         than ordered, so EN and IT cannot drift apart — display order comes
@@ -139,6 +139,7 @@ export interface Dict {
     back: string;
     title: string;
     where: string;
+    /** playground counts the demos. */
     hints: { home: string; about: string; playground: string; stack: string; cv: string };
   };
   /** The fancier version's header uses plain words instead of the /path labels; the

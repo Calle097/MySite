@@ -1,4 +1,10 @@
+import { DEMO_SLUGS } from '../demos';
 import type { Dict } from './index';
+import { countWord } from './numbers';
+
+// The playground's size, counted from the demo list so the copy follows it.
+// Written for several demos, as the playground has.
+const DEMO_COUNT = countWord('en', DEMO_SLUGS.length);
 
 export const en: Dict = {
   role: 'Frontend Developer & QA Engineer',
@@ -42,7 +48,7 @@ export const en: Dict = {
     sourceLabel: 'Source ↗',
     loading: 'loading',
     open: 'Open the playground',
-    summary: 'Seven demos, all live',
+    summary: `${DEMO_COUNT} demos, all live`,
     items: {
       'drive-in': {
         title: 'Drive-in cards',
@@ -206,7 +212,7 @@ export const en: Dict = {
     hints: {
       home: 'Work, projects, contact',
       about: 'The longer story',
-      playground: 'Seven live demos',
+      playground: `${DEMO_COUNT} live demos`,
       stack: 'How this site is built',
       cv: 'The PDF',
     },
