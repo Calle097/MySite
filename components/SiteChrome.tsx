@@ -37,9 +37,17 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
       </a>
 
       <header className="site-chrome site-header only-plain gutter sticky top-0 z-40 flex items-baseline justify-between gap-x-6 border-b py-5 backdrop-blur-md">
-        <Link href={`${p}/`} className="font-display text-lg font-semibold tracking-tight">
-          Mattia Callegher
-        </Link>
+        {/* The way into the fancier version sits by the name instead of
+            among the pages. Below 360px it would push the header to two
+            lines, so it steps aside there; the hero's line still offers it. */}
+        <span className="flex items-baseline gap-4">
+          <Link href={`${p}/`} className="font-display text-lg font-semibold tracking-tight">
+            Mattia Callegher
+          </Link>
+          <ModeSwitch className="needs-js label cursor-pointer whitespace-nowrap text-muted-foreground transition-colors hover:text-brand-accent max-[22.5rem]:hidden">
+            {dict.mode.getFancy}
+          </ModeSwitch>
+        </span>
 
         {/* Desktop nav. The CV is a file, not a route — a Next <Link> would
             prefetch it as an RSC payload (cv.pdf.txt → 404), so it gets a
@@ -56,9 +64,6 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
               </Link>
             ),
           )}
-          <ModeSwitch className="needs-js cursor-pointer transition-colors hover:text-brand-accent">
-            {dict.mode.navLively}
-          </ModeSwitch>
           <LangSwitcher lang={lang} />
         </nav>
 
@@ -70,9 +75,6 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
               {l.label}
             </a>
           ))}
-          <ModeSwitch className="needs-js cursor-pointer text-left transition-colors hover:text-brand-accent">
-            {dict.mode.navLively}
-          </ModeSwitch>
           <LangSwitcher lang={lang} />
         </MobileMenu>
       </header>

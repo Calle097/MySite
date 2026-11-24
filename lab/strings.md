@@ -1,9 +1,9 @@
-# Lively: new text, English and Italian
+# The fancier version: new text, English and Italian
 
-Everything the lively version says that the site's dictionaries
+Everything the fancier version says that the site's dictionaries
 (`lib/i18n/en.ts`, `lib/i18n/it.ts`) don't have yet. The rest of the page text
-already exists there and is reused as is. "Lively" / "vivace" is a working name:
-it will change.
+already exists there and is reused as is. Its name: "the fancier one" / "quella più
+elaborata" (called "lively" in the code).
 
 ## Shared (header, menu, index, footer)
 
@@ -16,7 +16,9 @@ it will change.
 | Language | Language | Lingua |
 | Language toggle (screen readers) | Language: English | Lingua: Italiano |
 | Version | Version | Versione |
-| Version switch | Plain · Lively | Semplice · Vivace |
+| Version switch | Plain · Fancier | Semplice · Elaborata |
+| Plain header, by the name | get fancy | elaborata |
+| Plain hero line | Show the fancier one → | Mostra quella più elaborata → |
 | Menu button | Menu | Menu |
 | Close button | Close | Chiudi |
 | Footer place | Mattia Callegher · Italy | Mattia Callegher · Italia |
@@ -51,8 +53,8 @@ Replaces "Works without JavaScript, except the playground" in both versions.
 
 | Version | English | Italian |
 | --- | --- | --- |
-| Lively | The plain version works without JavaScript, except the playground. This one needs it for the light, the menu and the motion. | La versione semplice funziona anche senza JavaScript, playground escluso. Questa no: luce, menu e animazioni ne hanno bisogno. |
-| Plain | This version works without JavaScript, except the playground. The lively one needs it for the light, the menu and the motion. | Questa versione funziona anche senza JavaScript, playground escluso. Quella vivace no: luce, menu e animazioni ne hanno bisogno. |
+| Fancier | The plain version works without JavaScript, except the playground. This one needs it for the light, the menu and the motion. | La versione semplice funziona anche senza JavaScript, playground escluso. Questa no: luce, menu e animazioni ne hanno bisogno. |
+| Plain | This version works without JavaScript, except the playground. The fancier one needs it for the light, the menu and the motion. | Questa versione funziona anche senza JavaScript, playground escluso. Quella più elaborata no: luce, menu e animazioni ne hanno bisogno. |
 
 ## 404 (left column, plus where to go on the right)
 

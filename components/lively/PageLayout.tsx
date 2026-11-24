@@ -64,7 +64,7 @@ export function PageLayout({
           languageName,
           version: dict.mode.version,
           plain: dict.mode.plain,
-          lively: dict.mode.toggle,
+          lively: dict.mode.fancier,
         }}
       />
       <div className="lv-stage">
@@ -93,7 +93,7 @@ export function PageLayout({
         )}
         <div className="lv-stage-foot only-lively">
           <span className="lv-mono">{dict.mode.version}</span>
-          <VersionSwitch label={dict.mode.version} plain={dict.mode.plain} lively={dict.mode.toggle} />
+          <VersionSwitch label={dict.mode.version} plain={dict.mode.plain} lively={dict.mode.fancier} />
         </div>
       </div>
 

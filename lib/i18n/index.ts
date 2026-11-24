@@ -135,19 +135,17 @@ export interface Dict {
     index: string;
     language: string;
   };
+  /** The two versions: plain, and the fancier one (called "lively" in the code). */
   mode: {
-    /** Hero line in plain mode: "{plainNote} {showLively}". */
+    /** Hero line in plain mode: "{plainNote} {showFancier}". */
     plainNote: string;
-    showLively: string;
-    /** The switch in the plain header, shaped like the other /path items. */
-    navLively: string;
-    /** The switch in the lively header: a toggle, shown on, with this label. */
-    toggle: string;
-    /** Mobile menu item in lively mode, back to plain. */
-    toPlain: string;
-    /** Lively's version switch: "{version}  {plain} · {toggle}". */
+    showFancier: string;
+    /** The switch in the plain header, next to the name. */
+    getFancy: string;
+    /** The fancier one's version switch: "{version}  {plain} · {fancier}". */
     version: string;
     plain: string;
+    fancier: string;
   };
   /** elsewhere: screen-reader name of the footer's links. */
   footer: { location: string; email: string; github: string; source: string; elsewhere: string };

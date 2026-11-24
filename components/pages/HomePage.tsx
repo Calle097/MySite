@@ -112,7 +112,7 @@ export function HomePage({ lang }: { lang: Lang }) {
       <p className="needs-js only-plain label mt-8 text-muted-foreground">
         {dict.mode.plainNote}{' '}
         <ModeSwitch className="cursor-pointer uppercase underline underline-offset-4 text-brand-accent transition-colors hover:text-foreground">
-          {dict.mode.showLively}
+          {dict.mode.showFancier}
         </ModeSwitch>
       </p>
     </section>
