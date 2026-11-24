@@ -11,9 +11,11 @@ export const it: Dict = {
   description:
     'Sviluppatore frontend e QA engineer. React, Next.js, TypeScript, Playwright. Vivo in Italia e mi piacerebbe lavorare in Giappone.',
   pageDescriptions: {
-    about: 'Prima studi di cinema, poi programmatore da autodidatta.',
-    playground: 'Esperimenti con i componenti.',
-    stack: 'Come è fatto e dove è ospitato questo sito.',
+    about:
+      'Dagli studi di cinema alla programmazione. Il primo lavoro tra frontend e QA, oggi da freelance, le lingue che parlo e cosa mi piace nel tempo libero.',
+    playground: `Cose semplici che ho costruito e che volevo mostrare. ${DEMO_COUNT} demo interattive da provare nel browser, dalle card guidate dallo scroll a un time picker.`,
+    stack:
+      'Come è fatto e ospitato questo sito. Next.js in file statici su un piccolo server che gestisco io, due lingue senza librerie i18n e nessun tracciamento.',
   },
   hero: {
     line1: 'Sviluppatore frontend',

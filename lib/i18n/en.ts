@@ -11,9 +11,11 @@ export const en: Dict = {
   description:
     'Frontend developer & QA engineer. React, Next.js, TypeScript, Playwright. Based in Italy, interested in working in Japan.',
   pageDescriptions: {
-    about: 'Film studies first, self-taught programmer after.',
-    playground: 'Component experiments.',
-    stack: 'How this site is built and hosted.',
+    about:
+      'From film studies to programming. My first job in frontend and QA, what I do now as a freelancer, the languages I speak and what I like outside work.',
+    playground: `Simple things I built and wanted to show. ${DEMO_COUNT} live demos to try in the browser, from scroll-driven cards to a time picker.`,
+    stack:
+      'How this site is built and hosted. Next.js as plain static files on a small server I manage, two languages without an i18n library and no tracking.',
   },
   hero: {
     line1: 'Frontend developer',
