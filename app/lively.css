@@ -24,7 +24,7 @@
      7. Index           and the version switch under it
      8. Content         section titles, entries, the home page's parts
      9. Footer
-    10. Narrow screens
+    10. Narrow screens  and the phone bar and menu
     11. Motion          entrance and scroll reveals
    ========================================================================== */
 
@@ -848,8 +848,13 @@
   }
 
   /* --- 10. Narrow screens ----------------------------------------------------
-     One column: the hero, then the content. (The phone bar and menu take
-     over the column's header, index and switch.) */
+     One column: the hero, then the content. The phone bar and menu take
+     over the column's header, index and switch; on wide screens the bar is
+     not there (this rule comes first, so the narrow one below wins). */
+  [data-mode='lively'] .lv-phone-bar {
+    display: none;
+  }
+
   @media (max-width: 899px) {
     [data-mode='lively'] {
       .lv-page {
@@ -889,6 +894,189 @@
       [data-part='teaser'] {
         grid-template-columns: minmax(0, 1fr) 110px;
       }
+
+      /* Always there, always a little solid: text never runs under it bare. */
+      .lv-phone-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--lv-line);
+        background: color-mix(in srgb, var(--lv-surface) 70%, transparent);
+        backdrop-filter: blur(14px);
+      }
+    }
+  }
+
+  /* The phone menu (components/lively/PhoneMenu.tsx). Solid, so nothing
+     moves behind it, with one still glow from where the circle opened
+     (--ox/--oy). It fits the screen without scrolling down to a small
+     phone with its browser bars showing: spacing and the page names scale
+     with svh (the viewport with the bars shown, the smallest case). Only
+     a phone held sideways scrolls it, as a last resort. While it is open
+     the page is locked, the scrollbar's width put back as padding. */
+  [data-mode='lively'] {
+    &.lv-menu-open {
+      overflow: hidden;
+      padding-right: var(--scrollbar-w, 0px);
+    }
+
+    .lv-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1rem, 3.6svh, 2.25rem);
+      padding: 1rem 1.25rem clamp(1rem, 3svh, 2rem);
+      overflow: auto;
+      overscroll-behavior: contain;
+      background:
+        radial-gradient(110vmax 90vmax at var(--ox, 100%) var(--oy, 0%), var(--lv-glow), transparent 70%),
+        var(--lv-surface);
+
+      &[hidden] {
+        display: none;
+      }
+
+      /* No flash or lit state when an item is tapped; keyboard focus keeps
+         its outline. */
+      a,
+      button {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .lv-sections a {
+        padding-block: clamp(0.25rem, 1svh, 0.5rem);
+        line-height: 1.35;
+      }
+    }
+
+    .lv-menu-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .lv-menu-group > .lv-mono {
+      display: block;
+      margin-bottom: clamp(0.4rem, 1.4svh, 0.75rem);
+    }
+
+    .lv-menu-pages {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      a {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        padding-block: clamp(0.1rem, 0.5svh, 0.25rem);
+        font-size: clamp(1.55rem, min(9vw, 4.7svh), 3.4rem);
+        font-weight: var(--lv-display-weight);
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        color: var(--lv-muted);
+        transition: color 0.3s ease;
+      }
+
+      a::before {
+        content: '';
+        width: 0;
+        height: 1px;
+        background: var(--lv-accent);
+        transition: width 0.6s var(--lv-ease);
+      }
+
+      a[aria-current='page'] {
+        color: var(--lv-fg);
+      }
+
+      a[aria-current='page']::before {
+        width: 1.5rem;
+      }
+    }
+
+    @media (hover: hover) {
+      .lv-menu-pages a:hover {
+        color: var(--lv-fg);
+      }
+    }
+
+    /* Lines that rise from behind a clean edge. */
+    .lv-mask {
+      display: block;
+      overflow: clip;
+      padding-bottom: 0.1em;
+      margin-bottom: -0.1em;
+
+      > span {
+        display: inline-block;
+      }
+    }
+
+    /* The index and the languages share one slot, all the free space
+       between the pages and the bottom row: EN swaps one for the other, so
+       the menu never grows. Whichever shows fills it and scrolls inside it
+       when it holds more than fits, its bottom edge fading so that's clear. */
+    .lv-menu-slot {
+      position: relative;
+      flex: 1 1 0;
+      min-height: 7rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lv-menu-index {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lv-menu-langs {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lv-menu-index .lv-sections,
+    .lv-menu-langs .lv-langs {
+      flex: 1 1 auto;
+      min-height: 0;
+      padding-bottom: 1.5rem;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: var(--lv-line) transparent;
+      mask-image: linear-gradient(#000 calc(100% - 1.5rem), transparent);
+    }
+
+    .lv-menu-slot.is-langs-open .lv-menu-index,
+    .lv-menu-langs {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .lv-menu-slot.is-langs-open .lv-menu-langs {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .lv-menu-foot {
+      margin-top: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
     }
   }
 
@@ -1011,6 +1199,62 @@
             transform 0.7s var(--lv-ease);
           transition-delay: calc(var(--i, 0) * 60ms + 120ms);
         }
+      }
+
+      /* The phone menu: the pages rise from behind their edge one after
+         another once the circle opens, then the rest follows; EN swaps the
+         index for the languages (fade out, then they rise in). */
+      .lv-menu {
+        .lv-mask > span {
+          transform: translateY(108%);
+          transition: transform 1.2s var(--lv-ease);
+          transition-delay: calc(var(--i, 0) * 90ms);
+        }
+
+        .lv-menu-index li,
+        .lv-menu-foot {
+          opacity: 0;
+          transform: translateY(0.6rem);
+          transition:
+            opacity 0.7s ease,
+            transform 0.9s var(--lv-ease);
+          transition-delay: calc(var(--i, 0) * 60ms + 250ms);
+        }
+
+        &.is-open .lv-mask > span,
+        &.is-open .lv-menu-index li,
+        &.is-open .lv-menu-foot {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .lv-menu-index,
+      .lv-menu-langs {
+        transition:
+          opacity 0.35s ease,
+          visibility 0s linear 0.35s;
+      }
+
+      .lv-menu-slot.is-langs-open .lv-menu-langs,
+      .lv-menu-slot:not(.is-langs-open) .lv-menu-index {
+        transition:
+          opacity 0.35s ease 0.15s,
+          visibility 0s;
+      }
+
+      .lv-menu-langs li {
+        opacity: 0;
+        transform: translateY(0.5rem);
+        transition:
+          opacity 0.5s ease,
+          transform 0.7s var(--lv-ease);
+        transition-delay: calc(var(--i, 0) * 60ms + 150ms);
+      }
+
+      .lv-menu-slot.is-langs-open .lv-menu-langs li {
+        opacity: 1;
+        transform: none;
       }
 
       /* Scroll reveals. */

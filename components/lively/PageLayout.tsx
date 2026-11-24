@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { DICTS, LANGUAGES, prefix, type Lang } from '@/lib/i18n';
 import { EMAIL } from '@/lib/site';
 import { LivelyHeader } from './LivelyHeader';
+import { PhoneMenu } from './PhoneMenu';
 import { SectionIndex } from './SectionIndex';
 import type { IndexItem } from './SectionList';
 import { VersionSwitch } from './VersionSwitch';
@@ -36,21 +37,43 @@ export function PageLayout({
   const p = prefix(lang);
   const items = index?.items ?? sections.map((s) => ({ href: `#${s.id}`, title: s.title }));
   const languageName = LANGUAGES.find((l) => l.lang === lang)?.name ?? lang;
+  const homeHref = `${p}/`;
+  // The name is the way home, so the header lists the other pages.
+  const links = [
+    { href: `${p}/about/`, label: dict.nav.about },
+    { href: `${p}/playground/`, label: dict.nav.playground },
+    { href: `${p}/stack/`, label: dict.nav.stack },
+    { href: '/cv.pdf', label: dict.nav.cv, file: true },
+  ];
 
   return (
     <div className="lv-page">
+      <PhoneMenu
+        lang={lang}
+        homeHref={homeHref}
+        pages={[
+          { href: homeHref, label: 'Home' },
+          ...links.map((l) => (l.file ? { ...l, label: `${l.label} ↓` } : l)),
+        ]}
+        index={{ label: index?.label ?? dict.nav.onThisPage, items, follow: !index, fixedCurrent: index?.current }}
+        labels={{
+          menu: dict.nav.menu,
+          close: dict.nav.close,
+          pages: dict.nav.pages,
+          language: dict.nav.language,
+          languageName,
+          version: dict.mode.version,
+          plain: dict.mode.plain,
+          lively: dict.mode.toggle,
+        }}
+      />
       <div className="lv-stage">
         <LivelyHeader
           lang={lang}
-          homeHref={`${p}/`}
+          homeHref={homeHref}
           // "home" reads the same in Italian ("Torna alla home").
           homeLabel="Mattia Callegher, home"
-          links={[
-            { href: `${p}/about/`, label: dict.nav.about },
-            { href: `${p}/playground/`, label: dict.nav.playground },
-            { href: `${p}/stack/`, label: dict.nav.stack },
-            { href: '/cv.pdf', label: dict.nav.cv, file: true },
-          ]}
+          links={links}
           labels={{
             pages: dict.nav.pages,
             menu: dict.nav.menu,
