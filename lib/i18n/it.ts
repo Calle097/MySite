@@ -32,7 +32,7 @@ export const it: Dict = {
     fullHistory: 'Percorso completo —',
     cvLabel: 'CV (PDF)',
   },
-  contact: { header: 'Contatti' },
+  contact: { header: 'Contatti', copy: 'Copia', copied: 'Copiato' },
   playground: {
     title: 'Playground',
     intro:
@@ -183,6 +183,14 @@ export const it: Dict = {
     aiLine: "Costruito con l'aiuto di Claude Code, rivisto riga per riga",
   },
   notFound: { text: 'Pagina non trovata —', back: 'Torna alla home' },
+  nav: { about: 'Chi sono', playground: 'Playground', stack: 'Stack', cv: 'CV', menu: 'Menu' },
+  mode: {
+    plainNote: 'Questa è la versione semplice.',
+    showLively: 'Mostra quella vivace →',
+    navLively: '/lively',
+    toggle: 'Vivace',
+    toPlain: 'Versione semplice',
+  },
   footer: { location: 'Mattia Callegher — Italia', email: 'Email', github: 'GitHub', source: 'Codice' },
   skipToContent: 'Vai al contenuto',
 };

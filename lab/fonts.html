@@ -1,0 +1,176 @@
+<!doctype html>
+<!--
+  Font sampler for the lively version. Standalone: open this file directly
+  in a browser (double-click). Not part of the site build.
+  Each specimen sets the real headline, a work row, body text, the nav and
+  the email in one candidate. Excluded on purpose (rejected before): serifs,
+  Instrument Sans, Bricolage Grotesque, Archivo, Onest.
+-->
+<html lang="en" data-palette="indigo">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Font sampler</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400..700&family=Wix+Madefor+Text:wght@400..700&family=Geist:wght@400..700&family=Manrope:wght@400..700&family=Sora:wght@400..700&family=Schibsted+Grotesk:wght@400..700&family=Funnel+Display:wght@400..700&family=Host+Grotesk:wght@400..700&family=Unbounded:wght@400..700&family=Syne:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    />
+    <style>
+      :root {
+        --mono: 'IBM Plex Mono', ui-monospace, monospace;
+      }
+      [data-palette='indigo'] { --bg: #121a40; --fg: #eef2fb; --muted: #a7b4d0; --accent: #6fd3bd; }
+      [data-palette='plum'] { --bg: #23142d; --fg: #f4eaf2; --muted: #c2acbd; --accent: #ff9474; }
+      [data-palette='forest'] { --bg: #0f2a22; --fg: #e9f1ea; --muted: #a3bcae; --accent: #cfe57c; }
+      [data-palette='ink'] { --bg: #161514; --fg: #f2eadb; --muted: #b3a998; --accent: #e3a857; }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--text, system-ui);
+        -webkit-font-smoothing: antialiased;
+      }
+      .bar {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem 2rem;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem clamp(1.25rem, 5vw, 5rem);
+        border-bottom: 1px solid color-mix(in srgb, var(--fg) 12%, transparent);
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        backdrop-filter: blur(12px);
+        font: 500 0.72rem/1.4 var(--mono);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .bar button {
+        all: unset;
+        cursor: pointer;
+        margin-left: 0.9rem;
+      }
+      .bar button[aria-pressed='true'] { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+      .spec {
+        display: grid;
+        grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+        gap: 1.5rem 3rem;
+        padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.25rem, 5vw, 5rem);
+        border-bottom: 1px solid color-mix(in srgb, var(--fg) 12%, transparent);
+      }
+      @media (max-width: 760px) {
+        .spec { grid-template-columns: minmax(0, 1fr); }
+      }
+      .name {
+        font: 500 0.75rem/1.6 var(--mono);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+      .note {
+        margin-top: 0.6rem;
+        font: 400 0.8rem/1.6 var(--mono);
+        color: var(--muted);
+      }
+      h2 {
+        margin: 0;
+        font-family: var(--display);
+        font-size: clamp(2.3rem, 5.6vw, 5.4rem);
+        font-weight: 600;
+        line-height: 0.98;
+        letter-spacing: -0.035em;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) minmax(0, 1.3fr);
+        gap: 0.5rem 2rem;
+        align-items: baseline;
+        margin-top: 2.5rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid color-mix(in srgb, var(--fg) 12%, transparent);
+      }
+      @media (max-width: 760px) {
+        .row { grid-template-columns: minmax(0, 1fr); }
+      }
+      .when { font: 400 0.75rem/1.4 var(--mono); letter-spacing: 0.14em; color: var(--muted); }
+      .title { font-family: var(--display); font-size: 1.55rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
+      .text { margin: 0; font-size: 1rem; line-height: 1.6; color: var(--muted); }
+      .extras {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem 2.5rem;
+        align-items: baseline;
+        margin-top: 2rem;
+        color: var(--muted);
+      }
+      .nav { display: flex; gap: 1.6rem; font-size: 0.95rem; }
+      .nav span:first-child { color: var(--fg); }
+      .email { font-family: var(--display); font-size: 1.45rem; letter-spacing: -0.02em; color: var(--fg); }
+      .nums { font-family: var(--display); font-size: 1.45rem; font-variant-numeric: tabular-nums; }
+    </style>
+  </head>
+  <body>
+    <div class="bar">
+      <span>Font sampler — lively version</span>
+      <span id="palettes">Palette</span>
+    </div>
+    <main id="specs"></main>
+
+    <script>
+      const FONTS = [
+        { name: 'Wix Madefor Display', text: 'Wix Madefor Text', note: 'Today’s font. Reference.' },
+        { name: 'Geist', note: 'Precise, neutral-modern grotesk. Very clean at every size.' },
+        { name: 'Manrope', note: 'Geometric grotesk, open and calm. Distinct numerals.' },
+        { name: 'Sora', note: 'Geometric and slightly wide. Technical, confident.' },
+        { name: 'Schibsted Grotesk', note: 'Editorial grotesk with character in the details.' },
+        { name: 'Funnel Display', text: 'Geist', note: 'Contemporary display with quirky joins. Body set in Geist.' },
+        { name: 'Host Grotesk', note: 'Crisp, compact, modern. Works hard as body text too.' },
+        { name: 'Unbounded', text: 'Geist', note: 'Wide and bold, very distinctive. Headings only; body in Geist.' },
+        { name: 'Syne', text: 'Geist', note: 'Artful and unusual. Headings only; body in Geist.' },
+      ];
+
+      document.getElementById('specs').innerHTML = FONTS.map(
+        (f) => `
+        <section class="spec" style="--display:'${f.name}'; --text:'${f.text ?? f.name}'">
+          <div>
+            <div class="name">${f.name}</div>
+            <div class="note">${f.note}</div>
+          </div>
+          <div>
+            <h2>Frontend developer<br />&amp; QA engineer.</h2>
+            <div class="row">
+              <span class="when">2020 — 2024</span>
+              <span class="title">Frontend developer &amp; IT consultant</span>
+              <p class="text">Employed at an IT company. React + TypeScript web apps, including a management system for a gym franchise used by 500+ people.</p>
+            </div>
+            <div class="extras">
+              <span class="nav"><span>About</span><span>Playground</span><span>Stack</span><span>CV</span></span>
+              <span class="email">callegher.mattia00@gmail.com</span>
+              <span class="nums">2020 — 2024 · 07 · 14:32</span>
+            </div>
+          </div>
+        </section>`,
+      ).join('');
+
+      const palettes = ['indigo', 'plum', 'forest', 'ink'];
+      const holder = document.getElementById('palettes');
+      for (const p of palettes) {
+        const b = document.createElement('button');
+        b.textContent = p;
+        b.onclick = () => {
+          document.documentElement.dataset.palette = p;
+          holder.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        };
+        b.setAttribute('aria-pressed', String(p === 'indigo'));
+        holder.append(b);
+      }
+    </script>
+  </body>
+</html>

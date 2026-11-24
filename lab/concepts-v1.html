@@ -1,0 +1,674 @@
+<!doctype html>
+<!--
+  Lively version — layout concepts. Standalone mockup: open this file
+  directly in a browser (double-click). Not part of the site build.
+
+  Two layouts (mosaic, split) over a living background (liquid light or
+  contour lines, WebGL, follows mouse and touch). Palette and font are
+  switchable from the bar at the bottom. Settings can also come from the
+  URL: ?layout=split&bg=contours&palette=plum&font=sora
+-->
+<html lang="en" data-layout="mosaic" data-bg="liquid" data-palette="indigo" data-font="geist">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lively concepts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400..700&family=Geist:wght@400..700&family=Manrope:wght@400..700&family=Sora:wght@400..700&family=Schibsted+Grotesk:wght@400..700&family=Funnel+Display:wght@400..700&family=Host+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    />
+    <style>
+      /* ---- tokens ------------------------------------------------------- */
+      :root {
+        --gutter: clamp(0.75rem, 2.4vw, 2rem);
+        --pad: clamp(1.1rem, 1.8vw, 1.75rem);
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        --mono: 'IBM Plex Mono', ui-monospace, monospace;
+        --line: color-mix(in srgb, var(--fg) 12%, transparent);
+        --pane: color-mix(in srgb, var(--bg) 58%, transparent);
+        --pane-hover: color-mix(in srgb, var(--bg) 42%, transparent);
+      }
+      [data-palette='indigo'] { --bg: #121a40; --fg: #eef2fb; --muted: #a7b4d0; --accent: #6fd3bd; --light: #2b3c8a; }
+      [data-palette='ink'] { --bg: #161514; --fg: #f2eadb; --muted: #b3a998; --accent: #e3a857; --light: #3a2f22; }
+      [data-palette='forest'] { --bg: #0f2a22; --fg: #e9f1ea; --muted: #a3bcae; --accent: #cfe57c; --light: #1f4a3b; }
+      [data-palette='plum'] { --bg: #23142d; --fg: #f4eaf2; --muted: #c2acbd; --accent: #ff9474; --light: #48264f; }
+      [data-palette='petrol'] { --bg: #0c2a33; --fg: #e3f2f3; --muted: #9fbec3; --accent: #ffd166; --light: #164a57; }
+      [data-palette='oxblood'] { --bg: #2a1215; --fg: #f6e8e2; --muted: #caa9a2; --accent: #f2c14e; --light: #4f2025; }
+      [data-palette='slate'] { --bg: #1b1e2a; --fg: #edecff; --muted: #b1b3cc; --accent: #b9a7ff; --light: #353b60; }
+
+      [data-font='geist'] { --display: 'Geist'; --text: 'Geist'; }
+      [data-font='manrope'] { --display: 'Manrope'; --text: 'Manrope'; }
+      [data-font='sora'] { --display: 'Sora'; --text: 'Sora'; }
+      [data-font='schibsted'] { --display: 'Schibsted Grotesk'; --text: 'Schibsted Grotesk'; }
+      [data-font='funnel'] { --display: 'Funnel Display'; --text: 'Geist'; }
+      [data-font='host'] { --display: 'Host Grotesk'; --text: 'Host Grotesk'; }
+      [data-font='wix'] { --display: 'Wix Madefor Display'; --text: 'Wix Madefor Display'; }
+
+      /* ---- page --------------------------------------------------------- */
+      * { box-sizing: border-box; }
+      html { background: var(--bg); }
+      body {
+        margin: 0;
+        color: var(--fg);
+        font-family: var(--text), system-ui, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: inherit; text-decoration: none; }
+      button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+      .mono {
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .display { font-family: var(--display), var(--text), sans-serif; font-weight: 600; letter-spacing: -0.025em; }
+
+      #bg {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      [data-bg='off'] #bg { display: none; }
+
+      /* ---- header (mosaic) --------------------------------------------- */
+      .top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        padding: 0.95rem calc(var(--gutter) + var(--pad));
+        background: color-mix(in srgb, var(--bg) 70%, transparent);
+        backdrop-filter: blur(16px) saturate(140%);
+        border-bottom: 1px solid var(--line);
+      }
+      .brand { font-size: 1.02rem; }
+      .nav { display: flex; align-items: center; gap: clamp(1rem, 2.2vw, 2rem); font-size: 0.92rem; color: var(--muted); }
+      .nav a, .nav button { transition: color 0.3s ease; }
+      .nav a:hover, .nav button:hover { color: var(--fg); }
+      .nav .lang { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em; }
+      .nav .plain { border-bottom: 1px solid var(--line); padding-bottom: 1px; }
+      @media (max-width: 760px) {
+        .nav a:not(.keep) { display: none; }
+      }
+      [data-layout='split'] .top { display: none; }
+
+      /* ---- mosaic ------------------------------------------------------- */
+      .mosaic {
+        display: none;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        margin: var(--gutter);
+        border-top: 1px solid var(--line);
+        border-left: 1px solid var(--line);
+      }
+      [data-layout='mosaic'] .mosaic { display: grid; }
+
+      .tile {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1.5rem;
+        min-width: 0;
+        padding: var(--pad);
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: var(--pane);
+        backdrop-filter: blur(22px) saturate(140%);
+        text-align: left;
+        transition: background-color 0.4s ease;
+      }
+      .tile.open { cursor: pointer; }
+      .tile.open:hover { background: var(--pane-hover); }
+      /* A line of accent light runs along the top edge on hover. */
+      .tile.open::before {
+        content: '';
+        position: absolute;
+        left: -1px;
+        right: -1px;
+        top: -1px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.6s var(--ease);
+      }
+      .tile.open:hover::before { transform: scaleX(1); }
+      .tile-head { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+      .arrow { display: inline-block; color: var(--accent); transition: transform 0.4s var(--ease); }
+      .tile.open:hover .arrow { transform: translate(3px, -3px); }
+
+      .t-hero { grid-column: 1 / 9; grid-row: 1 / 3; min-height: min(64svh, 640px); background: transparent; backdrop-filter: none; }
+      .t-play { grid-column: 9 / 13; grid-row: 1; }
+      .t-now { grid-column: 9 / 13; grid-row: 2; }
+      .t-work { grid-column: 1 / 6; }
+      .t-proj { grid-column: 6 / 13; }
+      .t-about { grid-column: 1 / 7; }
+      .t-contact { grid-column: 7 / 13; }
+
+      @media (max-width: 1099px) {
+        .mosaic { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+        .t-hero { grid-column: 1 / -1; grid-row: auto; min-height: 56svh; }
+        .t-play, .t-now { grid-row: auto; }
+        .t-play, .t-about { grid-column: 1 / 4; }
+        .t-now, .t-contact { grid-column: 4 / 7; }
+        .t-work, .t-proj { grid-column: 1 / -1; }
+      }
+      @media (max-width: 699px) {
+        .mosaic { grid-template-columns: minmax(0, 1fr); }
+        .mosaic > .tile { grid-column: 1 / -1; }
+        .t-hero { min-height: 70svh; }
+      }
+
+      h1 {
+        margin: 0;
+        font-family: var(--display), var(--text), sans-serif;
+        font-size: clamp(2.4rem, 5.4vw, 5.4rem);
+        font-weight: 600;
+        line-height: 0.97;
+        letter-spacing: -0.04em;
+      }
+      .blurb { max-width: 44ch; margin: 1.25rem 0 0; color: var(--muted); font-size: clamp(1rem, 1.15vw, 1.1rem); line-height: 1.6; }
+
+      .list { list-style: none; margin: 0; padding: 0; }
+      .list li {
+        display: grid;
+        grid-template-columns: 7.5rem minmax(0, 1fr);
+        gap: 0.25rem 1rem;
+        align-items: baseline;
+        padding: 0.7rem 0;
+        border-top: 1px solid var(--line);
+      }
+      .list li:first-child { border-top: 0; }
+      .list .row-title { font-family: var(--display), var(--text), sans-serif; font-size: 1.12rem; font-weight: 600; letter-spacing: -0.015em; line-height: 1.25; }
+      .list .row-sub { grid-column: 2; color: var(--muted); font-size: 0.92rem; }
+      @media (max-width: 460px) {
+        .list li { grid-template-columns: minmax(0, 1fr); }
+        .list .row-sub { grid-column: 1; }
+      }
+
+      .clock { font-family: var(--display), var(--text), sans-serif; font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; line-height: 1; }
+      .about-text { margin: 0; font-size: clamp(1.05rem, 1.4vw, 1.3rem); line-height: 1.45; max-width: 34ch; }
+      .email { font-family: var(--display), var(--text), sans-serif; font-size: clamp(1.1rem, 1.6vw, 1.45rem); font-weight: 600; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+      .actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+      .chip {
+        padding: 0.5rem 0.85rem;
+        border: 1px solid var(--line);
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        transition: color 0.3s ease, border-color 0.3s ease;
+      }
+      .chip:hover { color: var(--fg); border-color: var(--accent); }
+
+      /* The playground tile's live specimen: the golden spiral. */
+      .spiral { width: min(100%, 220px); aspect-ratio: 1; align-self: center; color: var(--accent); }
+      .spiral g { transform-origin: 50% 50%; animation: turn 90s linear infinite; }
+      .spiral circle { transform-box: fill-box; transform-origin: center; animation: pulse 3s ease-in-out infinite; animation-delay: var(--d); }
+      @keyframes turn { to { transform: rotate(360deg); } }
+      @keyframes pulse { 0%, 100% { transform: scale(0.45); opacity: 0.25; } 50% { transform: scale(1.25); opacity: 1; } }
+
+      /* ---- split -------------------------------------------------------- */
+      .split { display: none; }
+      [data-layout='split'] .split { display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
+      .split-left {
+        position: sticky;
+        top: 0;
+        height: 100svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: clamp(1.5rem, 3vw, 3rem);
+      }
+      .split-left .nav { flex-wrap: wrap; }
+      .split-right {
+        min-height: 100svh;
+        padding: clamp(1.5rem, 3vw, 3rem) clamp(1.5rem, 4vw, 4rem) 6rem;
+        background: color-mix(in srgb, var(--bg) 72%, transparent);
+        backdrop-filter: blur(26px) saturate(140%);
+        border-left: 1px solid var(--line);
+      }
+      .split section + section { margin-top: clamp(3rem, 8vh, 5rem); }
+      .split h2 { margin: 0 0 1.25rem; font-family: var(--display), var(--text), sans-serif; font-size: clamp(1.6rem, 2.4vw, 2.2rem); font-weight: 600; letter-spacing: -0.03em; }
+      .split .entry { padding: 1.1rem 0; border-top: 1px solid var(--line); }
+      .split .entry p { margin: 0.4rem 0 0; color: var(--muted); max-width: 58ch; }
+      .split .entry .row-title { font-family: var(--display), var(--text), sans-serif; font-size: 1.2rem; font-weight: 600; letter-spacing: -0.015em; }
+      .split .entry .meta { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+      @media (max-width: 899px) {
+        [data-layout='split'] .split { grid-template-columns: minmax(0, 1fr); }
+        .split-left { position: relative; height: auto; min-height: 78svh; gap: 3rem; }
+        .split-right { border-left: 0; border-top: 1px solid var(--line); }
+      }
+
+      /* ---- opened tile (morphs out of the tile) -------------------------- */
+      .sheet {
+        position: fixed;
+        z-index: 20;
+        inset: calc(var(--gutter) + 3.5rem) var(--gutter) var(--gutter);
+        overflow: auto;
+        padding: clamp(1.5rem, 3vw, 3rem);
+        border: 1px solid var(--line);
+        background: color-mix(in srgb, var(--bg) 94%, transparent);
+        backdrop-filter: blur(26px) saturate(140%);
+      }
+      .sheet[hidden] { display: none; }
+      .sheet-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 1.5rem; }
+      .sheet h2 { margin: 0; font-family: var(--display), var(--text), sans-serif; font-size: clamp(2rem, 4vw, 3.6rem); font-weight: 600; letter-spacing: -0.035em; line-height: 1; }
+      .sheet .entry { display: grid; grid-template-columns: 9rem minmax(0, 1fr) minmax(0, 1.3fr); gap: 0.5rem 2rem; padding: 1.4rem 0; border-top: 1px solid var(--line); align-items: baseline; }
+      .sheet .entry p { margin: 0; color: var(--muted); }
+      .sheet .entry .row-title { font-family: var(--display), var(--text), sans-serif; font-size: 1.35rem; font-weight: 600; letter-spacing: -0.02em; }
+      .sheet .para { max-width: 60ch; font-size: 1.15rem; line-height: 1.6; margin: 0 0 1rem; }
+      @media (max-width: 760px) { .sheet .entry { grid-template-columns: minmax(0, 1fr); } }
+      ::view-transition-group(sheet) { animation-duration: 0.6s; animation-timing-function: var(--ease); }
+
+      /* ---- entrance ------------------------------------------------------ */
+      @media (prefers-reduced-motion: no-preference) {
+        .tile, .split-left > *, .split section { animation: rise 0.9s var(--ease) both; animation-delay: calc(var(--i, 0) * 70ms); }
+        @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+      }
+
+      /* ---- lab bar (not part of any design) ------------------------------ */
+      .lab {
+        position: fixed;
+        left: 50%;
+        bottom: 0.75rem;
+        translate: -50% 0;
+        z-index: 30;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem 1.2rem;
+        width: max-content;
+        max-width: calc(100vw - 1.5rem);
+        padding: 0.55rem 0.9rem;
+        border: 1px solid var(--line);
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        backdrop-filter: blur(12px);
+        font: 500 10.5px/1.6 var(--mono);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .lab .group { display: flex; flex-wrap: wrap; gap: 0.2rem 0.55rem; }
+      .lab .label { color: var(--fg); }
+      .lab button { text-transform: uppercase; letter-spacing: inherit; }
+      .lab button[aria-pressed='true'] { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+      .lab.closed .group { display: none; }
+    </style>
+  </head>
+  <body>
+    <canvas id="bg" aria-hidden="true"></canvas>
+
+    <header class="top">
+      <a class="brand display" href="#">Mattia Callegher</a>
+      <nav class="nav">
+        <a href="#">About</a>
+        <a href="#">Playground</a>
+        <a href="#">Stack</a>
+        <a href="#">CV</a>
+        <span class="lang keep">EN / IT</span>
+        <button class="plain">Plain version</button>
+      </nav>
+    </header>
+
+    <main>
+      <div class="mosaic" id="mosaic"></div>
+      <div class="split" id="split"></div>
+    </main>
+
+    <div class="sheet" id="sheet" hidden></div>
+    <div class="lab" id="lab"></div>
+
+    <script>
+      /* ---- content (from lib/i18n/en.ts) ------------------------------- */
+      const C = {
+        line1: 'Frontend developer',
+        line2: '& QA engineer.',
+        meta: ['Based in Italy', 'Interested in working in Japan'],
+        stack: 'React · Next.js · TypeScript · Tailwind · Playwright',
+        blurb: 'I build web apps with React, Next.js and TypeScript. I started in QA, so I also test what I build. I dabble in backend too: TypeScript, Python, SQL.',
+        work: [
+          { when: '2024 — now', title: 'Freelance', text: 'Web apps with Next.js and React, TypeScript backends, Python automation and bots.' },
+          { when: '2020 — 2024', title: 'Frontend developer & IT consultant', text: 'Employed at an IT company. React + TypeScript web apps, including a management system for a gym franchise used by 500+ people.' },
+          { when: '2020 — 2023', title: 'QA engineer, on dispatch', text: 'Dispatched by the same company to work as QA on a smart metering platform in the energy sector, later as test manager.' },
+        ],
+        projects: [
+          { title: 'Travel-planning platform', short: 'Large Next.js 15 app: AI chat, maps, bookings', text: 'Frontend and some backend on a large Next.js 15 app: streaming AI chat over SSE, a persistent MapLibre map in a parallel route that survives navigation, modals as real URLs via intercepting routes, Stripe checkout, REST integrations for transit and hotel booking, six locales, IndexedDB-persisted query cache.', stack: 'TypeScript · Tailwind · Zustand · TanStack Query · react-map-gl · Firebase auth · Playwright' },
+          { title: 'Camper-van rental site', short: 'Marketing and booking, where the vans began', text: 'Marketing and booking site for a camper-van rental service. The playground vans started here, though they did not end up in the result.', stack: 'Next.js · Tailwind · Framer Motion' },
+        ],
+        about: [
+          'I studied film and media at university. Then I taught myself how to program, and it stuck.',
+          'My first tech job was at an IT company: frontend work with React, while also being dispatched as QA on a large smart metering system, where I went from manual testing to Playwright automation and eventually coordinated the QA side.',
+          'Now I freelance from Italy, and I would like to move to Japan for work.',
+        ],
+        play: 'Simple things I built and found too interesting, or too silly, to throw away.',
+        email: 'callegher.mattia00@gmail.com',
+      };
+
+      const workList = () =>
+        C.work.map((w) => `<li><span class="mono">${w.when}</span><span class="row-title">${w.title}</span></li>`).join('');
+      const projList = () =>
+        C.projects.map((p, i) => `<li><span class="mono">0${i + 1}</span><span class="row-title">${p.title}</span><span class="row-sub">${p.short}</span></li>`).join('');
+
+      const spiral = (() => {
+        const n = 150, golden = Math.PI * (3 - Math.sqrt(5));
+        let dots = '';
+        for (let i = 0; i < n; i++) {
+          const f = (i + 0.5) / n, r = Math.sqrt(f) * 46, a = (i + 0.5) * golden;
+          dots += `<circle cx="${(50 + r * Math.cos(a)).toFixed(2)}" cy="${(50 + r * Math.sin(a)).toFixed(2)}" r="1.4" fill="currentColor" style="--d:${(-f * 3).toFixed(2)}s"/>`;
+        }
+        return `<svg class="spiral" viewBox="0 0 100 100" aria-hidden="true"><g>${dots}</g></svg>`;
+      })();
+
+      /* ---- mosaic ------------------------------------------------------ */
+      document.getElementById('mosaic').innerHTML = `
+        <section class="tile t-hero" style="--i:0">
+          <div class="tile-head mono"><span>${C.meta.join(' · ')}</span></div>
+          <div>
+            <h1>${C.line1}<br />${C.line2}</h1>
+            <p class="blurb">${C.blurb}</p>
+            <p class="mono" style="margin:1rem 0 0">${C.stack}</p>
+          </div>
+        </section>
+        <a class="tile open t-play" href="#" style="--i:1">
+          <div class="tile-head mono"><span>Playground · 07</span><span class="arrow">↗</span></div>
+          ${spiral}
+          <p class="blurb" style="margin:0">${C.play}</p>
+        </a>
+        <section class="tile t-now" style="--i:2">
+          <div class="tile-head mono"><span>Now</span><span>Local time, Italy</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap">
+            <div><div class="display" style="font-size:1.35rem">Freelance</div><div class="mono" style="margin-top:.35rem">Open to work in Japan</div></div>
+            <div class="clock" id="clock">--:--</div>
+          </div>
+        </section>
+        <button class="tile open t-work" data-open="work" style="--i:3">
+          <div class="tile-head mono"><span>Work · 03</span><span class="arrow">↗</span></div>
+          <ul class="list">${workList()}</ul>
+        </button>
+        <button class="tile open t-proj" data-open="projects" style="--i:4">
+          <div class="tile-head mono"><span>Recent projects · 02</span><span class="arrow">↗</span></div>
+          <ul class="list">${projList()}</ul>
+        </button>
+        <button class="tile open t-about" data-open="about" style="--i:5">
+          <div class="tile-head mono"><span>About</span><span class="arrow">↗</span></div>
+          <p class="about-text">${C.about[0]}</p>
+        </button>
+        <section class="tile t-contact" style="--i:6">
+          <div class="tile-head mono"><span>Contact</span></div>
+          <div>
+            <div class="email">${C.email}</div>
+            <div class="actions" style="margin-top:1rem">
+              <button class="chip" data-copy>Copy</button>
+              <a class="chip" href="mailto:${C.email}">Write ↗</a>
+              <a class="chip" href="#">GitHub ↗</a>
+              <a class="chip" href="#">CV ↓</a>
+            </div>
+          </div>
+        </section>`;
+
+      /* ---- split ------------------------------------------------------- */
+      document.getElementById('split').innerHTML = `
+        <aside class="split-left">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;--i:0">
+            <span class="display" style="font-size:1.05rem">Mattia Callegher</span>
+            <span class="mono">${C.meta[0]}</span>
+          </div>
+          <div style="--i:1">
+            <h1>${C.line1}<br />${C.line2}</h1>
+            <p class="blurb">${C.blurb}</p>
+          </div>
+          <nav class="nav" style="--i:2">
+            <a href="#" class="keep">About</a><a href="#" class="keep">Playground</a><a href="#" class="keep">Stack</a><a href="#" class="keep">CV</a>
+            <span class="lang">EN / IT</span><button class="plain">Plain version</button>
+          </nav>
+        </aside>
+        <div class="split-right">
+          <section style="--i:3"><h2>Work</h2>${C.work.map((w) => `<div class="entry"><div class="meta"><span class="row-title">${w.title}</span><span class="mono">${w.when}</span></div><p>${w.text}</p></div>`).join('')}</section>
+          <section style="--i:4"><h2>Recent projects</h2>${C.projects.map((p) => `<div class="entry"><span class="row-title">${p.title}</span><p>${p.text}</p><p class="mono" style="margin-top:.7rem">${p.stack}</p></div>`).join('')}</section>
+          <section style="--i:5"><h2>Playground</h2><div class="entry" style="display:grid;grid-template-columns:minmax(0,1fr) 140px;gap:1.5rem;align-items:center"><p style="margin:0">${C.play}</p>${spiral}</div></section>
+          <section style="--i:6"><h2>About</h2>${C.about.map((a) => `<p style="max-width:58ch;color:var(--muted);margin:0 0 1rem">${a}</p>`).join('')}</section>
+          <section style="--i:7"><h2>Contact</h2><div class="entry"><div class="email">${C.email}</div><div class="actions" style="margin-top:1rem"><button class="chip" data-copy>Copy</button><a class="chip" href="mailto:${C.email}">Write ↗</a><a class="chip" href="#">GitHub ↗</a></div></div></section>
+        </div>`;
+
+      /* ---- opened tiles: the tile morphs into a sheet ------------------- */
+      const sheet = document.getElementById('sheet');
+      const SHEETS = {
+        work: () => `<h2>Work</h2>` + C.work.map((w) => `<div class="entry"><span class="mono">${w.when}</span><span class="row-title">${w.title}</span><p>${w.text}</p></div>`).join(''),
+        projects: () => `<h2>Recent projects</h2>` + C.projects.map((p, i) => `<div class="entry"><span class="mono">0${i + 1}</span><span class="row-title">${p.title}</span><p>${p.text}<br /><span class="mono" style="display:block;margin-top:.7rem">${p.stack}</span></p></div>`).join(''),
+        about: () => `<h2>About</h2><div style="margin-top:1.5rem">` + C.about.map((a) => `<p class="para">${a}</p>`).join('') + `</div>`,
+      };
+      const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const morph = (update) => (document.startViewTransition && !reduce() ? document.startViewTransition(update) : update());
+      let openedFrom = null;
+
+      function openSheet(tile) {
+        openedFrom = tile;
+        tile.style.viewTransitionName = 'sheet';
+        morph(() => {
+          tile.style.viewTransitionName = '';
+          const label = tile.querySelector('.tile-head span')?.textContent ?? '';
+          sheet.innerHTML = `<div class="sheet-head"><span class="mono">${label}</span><button class="chip" data-close>Close ×</button></div>${SHEETS[tile.dataset.open]()}`;
+          sheet.hidden = false;
+          sheet.style.viewTransitionName = 'sheet';
+        });
+      }
+      function closeSheet() {
+        if (sheet.hidden) return;
+        morph(() => {
+          sheet.style.viewTransitionName = '';
+          sheet.hidden = true;
+          if (openedFrom) openedFrom.style.viewTransitionName = 'sheet';
+        });
+        setTimeout(() => openedFrom && (openedFrom.style.viewTransitionName = ''), 700);
+      }
+      document.addEventListener('click', (e) => {
+        const t = e.target.closest('[data-open]');
+        if (t) return openSheet(t);
+        if (e.target.closest('[data-close]')) return closeSheet();
+        const c = e.target.closest('[data-copy]');
+        if (c) navigator.clipboard?.writeText(C.email).then(() => { c.textContent = 'Copied'; setTimeout(() => (c.textContent = 'Copy'), 1600); });
+      });
+      addEventListener('keydown', (e) => e.key === 'Escape' && closeSheet());
+
+      /* ---- clock ------------------------------------------------------- */
+      const fmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome' });
+      const tick = () => { const el = document.getElementById('clock'); if (el) el.textContent = fmt.format(new Date()); };
+      tick();
+      setInterval(tick, 15000);
+
+      /* ---- living background ------------------------------------------- */
+      const NOISE = `
+        float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+        float noise(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 u = f * f * (3.0 - 2.0 * f);
+          return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y); }
+        float fbm(vec2 p){ float v = 0.0, a = 0.5; mat2 r = mat2(0.8, -0.6, 0.6, 0.8);
+          for (int i = 0; i < 5; i++){ v += a * noise(p); p = r * p * 2.0 + 0.11; a *= 0.5; } return v; }`;
+      const HEAD = `precision highp float;
+        uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse; uniform float uMouseOn;
+        uniform vec3 uBg; uniform vec3 uLight; uniform vec3 uAccent; uniform vec3 uFg;`;
+
+      // Liquid light: domain-warped noise in the palette's own colours; the
+      // field leans toward the pointer and brightens softly under it.
+      const LIQUID = `${HEAD}${NOISE}
+        void main(){
+          float aspect = uRes.x / uRes.y;
+          vec2 uv = gl_FragCoord.xy / uRes;
+          vec2 p = vec2(uv.x * aspect, uv.y);
+          vec2 dm = p - vec2(uMouse.x * aspect, uMouse.y);
+          float pull = exp(-dot(dm, dm) * 5.0) * uMouseOn;
+          float t = uTime * 0.035;
+          p -= dm * pull * 0.35;
+          vec2 q = vec2(fbm(p * 1.3 + vec2(0.0, t)), fbm(p * 1.3 + vec2(5.2, -t)));
+          vec2 r = vec2(fbm(p * 1.5 + 1.8 * q + vec2(1.7, 9.2) + t * 0.8), fbm(p * 1.5 + 1.8 * q + vec2(8.3, 2.8) - t * 0.6));
+          float f = fbm(p * 1.25 + 2.2 * r);
+          // Two tiers of light: the palette's light colour over most of the
+          // field, a brighter lift of it in the peaks, a trace of accent.
+          vec3 col = mix(uBg, uLight, smoothstep(0.22, 0.68, f));
+          col = mix(col, uLight * 1.45, smoothstep(0.55, 0.85, f) * 0.55);
+          col = mix(col, uAccent, smoothstep(0.5, 0.9, f * r.y) * 0.18);
+          col += (uLight - uBg) * pull * 0.6;
+          float vig = smoothstep(1.35, 0.3, length(uv - vec2(0.62, 0.62)));
+          gl_FragColor = vec4(mix(uBg, col, 0.7 + 0.3 * vig), 1.0);
+        }`;
+
+      // Contours: topographic lines of a slowly shifting field. The pointer
+      // raises a hill, so the lines crowd and bend around it.
+      const CONTOURS = (derivatives) => `${derivatives ? '#extension GL_OES_standard_derivatives : enable\n' : ''}${HEAD}${NOISE}
+        void main(){
+          float aspect = uRes.x / uRes.y;
+          vec2 uv = gl_FragCoord.xy / uRes;
+          vec2 p = vec2(uv.x * aspect, uv.y);
+          vec2 dm = p - vec2(uMouse.x * aspect, uMouse.y);
+          float hill = exp(-dot(dm, dm) * 9.0) * uMouseOn;
+          float t = uTime * 0.03;
+          float h = fbm(p * 1.15 + vec2(t, -t * 0.7)) + 0.45 * hill;
+          float g = h * 18.0;
+          float w = ${derivatives ? 'max(fwidth(g), 1e-4)' : '0.06'};
+          float d = abs(fract(g - 0.5) - 0.5) / w;
+          float line = 1.0 - clamp(d - 0.3, 0.0, 1.0);
+          float major = 1.0 - step(0.5, mod(floor(g + 0.5), 5.0));
+          vec3 base = mix(uBg, uLight, smoothstep(1.3, 0.15, length(uv - vec2(0.72, 0.78))) * 0.6);
+          vec3 ink = mix(uFg, uAccent, clamp(hill * 1.4, 0.0, 1.0));
+          float alpha = (0.09 + 0.09 * major + 0.3 * hill) * line;
+          gl_FragColor = vec4(mix(base, ink, alpha), 1.0);
+        }`;
+
+      const canvas = document.getElementById('bg');
+      const gl = canvas.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+      const bg = { programs: {}, mouse: { x: 0.7, y: 0.6, tx: 0.7, ty: 0.6, on: 0, ton: 0 }, colors: {}, raf: 0, born: performance.now() };
+
+      function compile(src) {
+        const vs = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vs, 'attribute vec2 a; void main(){ gl_Position = vec4(a, 0.0, 1.0); }');
+        gl.compileShader(vs);
+        const fs = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fs, src);
+        gl.compileShader(fs);
+        if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(fs));
+        const p = gl.createProgram();
+        gl.attachShader(p, vs);
+        gl.attachShader(p, fs);
+        gl.linkProgram(p);
+        const u = (n) => gl.getUniformLocation(p, n);
+        return { p, a: gl.getAttribLocation(p, 'a'), uRes: u('uRes'), uTime: u('uTime'), uMouse: u('uMouse'), uMouseOn: u('uMouseOn'), uBg: u('uBg'), uLight: u('uLight'), uAccent: u('uAccent'), uFg: u('uFg') };
+      }
+
+      if (gl) {
+        const derivatives = !!gl.getExtension('OES_standard_derivatives');
+        bg.programs.liquid = compile(LIQUID);
+        bg.programs.contours = compile(CONTOURS(derivatives));
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      } else {
+        canvas.style.display = 'none';
+      }
+
+      const hex = (v) => { const h = v.trim().replace('#', ''); return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16) / 255); };
+      function readColors() {
+        const s = getComputedStyle(document.documentElement);
+        for (const k of ['bg', 'light', 'accent', 'fg']) bg.colors[k] = hex(s.getPropertyValue(`--${k}`));
+      }
+
+      function resize() {
+        // Liquid is soft by nature: half resolution is invisible and cheap.
+        // Contour lines need the pixels to stay crisp.
+        const scale = document.documentElement.dataset.bg === 'liquid' ? 0.5 : Math.min(devicePixelRatio || 1, 1.5);
+        canvas.width = Math.round(innerWidth * scale);
+        canvas.height = Math.round(innerHeight * scale);
+        if (gl) gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+
+      function draw(now) {
+        const mode = document.documentElement.dataset.bg;
+        const prog = bg.programs[mode];
+        if (!gl || !prog) return;
+        const m = bg.mouse;
+        m.x += (m.tx - m.x) * 0.06;
+        m.y += (m.ty - m.y) * 0.06;
+        m.on += (m.ton - m.on) * 0.05;
+        gl.useProgram(prog.p);
+        gl.enableVertexAttribArray(prog.a);
+        gl.vertexAttribPointer(prog.a, 2, gl.FLOAT, false, 0, 0);
+        gl.uniform2f(prog.uRes, canvas.width, canvas.height);
+        gl.uniform1f(prog.uTime, reduce() ? 12 : (now - bg.born) / 1000 + 12);
+        gl.uniform2f(prog.uMouse, m.x, m.y);
+        gl.uniform1f(prog.uMouseOn, reduce() ? 0 : m.on);
+        gl.uniform3fv(prog.uBg, bg.colors.bg);
+        gl.uniform3fv(prog.uLight, bg.colors.light);
+        gl.uniform3fv(prog.uAccent, bg.colors.accent);
+        gl.uniform3fv(prog.uFg, bg.colors.fg);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      }
+
+      function loop(now) {
+        draw(now);
+        bg.raf = !reduce() && !document.hidden && document.documentElement.dataset.bg !== 'off' ? requestAnimationFrame(loop) : 0;
+      }
+      const restart = () => { cancelAnimationFrame(bg.raf); bg.raf = requestAnimationFrame(loop); };
+
+      const point = (x, y) => { bg.mouse.tx = x / innerWidth; bg.mouse.ty = 1 - y / innerHeight; bg.mouse.ton = 1; };
+      addEventListener('pointermove', (e) => point(e.clientX, e.clientY), { passive: true });
+      addEventListener('touchmove', (e) => point(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+      document.documentElement.addEventListener('pointerleave', () => (bg.mouse.ton = 0));
+      addEventListener('resize', () => { resize(); restart(); });
+      document.addEventListener('visibilitychange', restart);
+
+      /* ---- settings + lab bar ------------------------------------------ */
+      const OPTIONS = {
+        layout: ['mosaic', 'split'],
+        bg: ['liquid', 'contours', 'off'],
+        palette: ['indigo', 'ink', 'forest', 'plum', 'petrol', 'oxblood', 'slate'],
+        font: ['geist', 'manrope', 'sora', 'schibsted', 'funnel', 'host', 'wix'],
+      };
+      const html = document.documentElement;
+      const params = new URLSearchParams(location.search);
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem('lively-concepts') || '{}'); } catch {}
+      for (const k of Object.keys(OPTIONS)) {
+        const v = params.get(k) || saved[k];
+        if (OPTIONS[k].includes(v)) html.dataset[k] = v;
+      }
+
+      const lab = document.getElementById('lab');
+      function renderLab() {
+        lab.innerHTML =
+          `<button data-toggle>${lab.classList.contains('closed') ? 'Lab ▴' : 'Lab ▾'}</button>` +
+          Object.entries(OPTIONS)
+            .map(([k, vals]) => `<span class="group"><span class="label">${k}</span>${vals.map((v) => `<button data-k="${k}" data-v="${v}" aria-pressed="${html.dataset[k] === v}">${v}</button>`).join('')}</span>`)
+            .join('');
+      }
+      lab.addEventListener('click', (e) => {
+        if (e.target.closest('[data-toggle]')) { lab.classList.toggle('closed'); return renderLab(); }
+        const b = e.target.closest('[data-k]');
+        if (!b) return;
+        html.dataset[b.dataset.k] = b.dataset.v;
+        try { localStorage.setItem('lively-concepts', JSON.stringify(Object.fromEntries(Object.keys(OPTIONS).map((k) => [k, html.dataset[k]])))); } catch {}
+        readColors();
+        resize();
+        restart();
+        renderLab();
+      });
+      if (innerWidth < 760) lab.classList.add('closed');
+
+      renderLab();
+      readColors();
+      resize();
+      restart();
+      // Fonts arrive after first paint; nothing to redo for the canvas.
+    </script>
+  </body>
+</html>

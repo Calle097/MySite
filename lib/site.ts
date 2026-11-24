@@ -2,3 +2,6 @@
 // Set NEXT_PUBLIC_SITE_URL in the deploy workflow once the domain exists;
 // the fallback keeps local builds working.
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
+
+// Public on purpose: the contact section and the footer both show it.
+export const EMAIL = 'callegher.mattia00@gmail.com';

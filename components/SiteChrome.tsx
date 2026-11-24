@@ -1,18 +1,32 @@
 import Link from 'next/link';
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
+import { EMAIL } from '@/lib/site';
 import { LangSwitcher } from './LangSwitcher';
+import { LightBand } from './LightBand';
 import { MobileMenu } from './MobileMenu';
+import { ModeSwitch } from './ModeSwitch';
+import { NavLink } from './NavLink';
+import { RevealObserver } from './RevealObserver';
+import { TuneBar } from './lab/TuneBar';
 
 export function SiteChrome({ lang, children }: { lang: Lang; children: React.ReactNode }) {
   const dict = DICTS[lang];
   const p = prefix(lang);
 
-  const links = [
+  // Plain header: file-path labels.
+  const pathLinks = [
     { href: `${p}/`, label: '/home' },
     { href: `${p}/about/`, label: '/about' },
     { href: `${p}/playground/`, label: '/playground' },
     { href: `${p}/stack/`, label: '/stack' },
     { href: '/cv.pdf', label: '/cv ↓' },
+  ];
+
+  // Lively header: plain words, translated. Home is the name on the left.
+  const wordLinks = [
+    { href: `${p}/about/`, label: dict.nav.about },
+    { href: `${p}/playground/`, label: dict.nav.playground },
+    { href: `${p}/stack/`, label: dict.nav.stack },
   ];
 
   return (
@@ -23,24 +37,22 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
       >
         {dict.skipToContent}
       </a>
-      <header
-        className="site-chrome gutter sticky top-0 z-40 flex items-baseline justify-between gap-x-6 border-b py-5 backdrop-blur-md"
-        style={{
-          background:
-            'linear-gradient(color-mix(in srgb, var(--color-foreground) 9%, transparent), color-mix(in srgb, var(--color-foreground) 5%, transparent))',
-          borderColor: 'color-mix(in srgb, var(--color-foreground) 14%, transparent)',
-          boxShadow: '0 1px 0 color-mix(in srgb, var(--color-foreground) 7%, transparent) inset',
-        }}
-      >
-        <Link href={`${p}/`} className="font-display text-lg font-semibold tracking-tight">
+
+      {/* Both headers are in the page; only-plain / only-lively show the one
+          for the current mode, so neither flashes on load. */}
+      <header className="site-chrome site-header gutter sticky top-0 z-40 flex items-baseline justify-between gap-x-6 border-b py-5 backdrop-blur-md">
+        <Link href={`${p}/`} className="only-plain font-display text-lg font-semibold tracking-tight">
+          Mattia Callegher
+        </Link>
+        <Link href={`${p}/`} className="only-lively wordmark">
           Mattia Callegher
         </Link>
 
         {/* Desktop nav. The CV is a file, not a route — a Next <Link> would
             prefetch it as an RSC payload (cv.pdf.txt → 404), so it gets a
             plain <a>. */}
-        <nav className="hidden items-baseline gap-6 font-mono text-sm sm:flex text-muted-foreground">
-          {links.map((l) =>
+        <nav className="only-plain hidden items-baseline gap-6 font-mono text-sm nav:flex text-muted-foreground">
+          {pathLinks.map((l) =>
             l.href.endsWith('.pdf') ? (
               <a key={l.href} href={l.href} className="transition-colors hover:text-brand-accent">
                 {l.label}
@@ -51,17 +63,54 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
               </Link>
             ),
           )}
+          <ModeSwitch className="needs-js cursor-pointer transition-colors hover:text-brand-accent">
+            {dict.mode.navLively}
+          </ModeSwitch>
           <LangSwitcher lang={lang} />
+        </nav>
+
+        <nav className="only-lively lively-nav hidden nav:flex">
+          {wordLinks.map((l) => (
+            <NavLink key={l.href} href={l.href} className="lively-link">
+              {l.label}
+            </NavLink>
+          ))}
+          <a href="/cv.pdf" className="lively-link">
+            {dict.nav.cv}
+          </a>
+          <span className="lively-lang">
+            <LangSwitcher lang={lang} />
+          </span>
+          <ModeSwitch on className="lively-mode">
+            <span className="lively-mode-track" aria-hidden />
+            {dict.mode.toggle}
+          </ModeSwitch>
         </nav>
 
         {/* Mobile nav — plain <a> links so navigation is a document load and
             the menu closes on selection. */}
-        <MobileMenu label="menu ▾">
-          {links.map((l) => (
-            <a key={l.href} href={l.href} className="transition-colors hover:text-brand-accent">
+        <MobileMenu
+          label={
+            <>
+              <span className="only-plain">menu ▾</span>
+              <span className="only-lively">{dict.nav.menu}</span>
+            </>
+          }
+        >
+          {pathLinks.map((l) => (
+            <a key={l.href} href={l.href} className="only-plain transition-colors hover:text-brand-accent">
               {l.label}
             </a>
           ))}
+          {[...wordLinks, { href: '/cv.pdf', label: dict.nav.cv }].map((l) => (
+            <a key={l.href} href={l.href} className="only-lively lively-link">
+              {l.label}
+            </a>
+          ))}
+          <ModeSwitch className="needs-js cursor-pointer text-left transition-colors hover:text-brand-accent">
+            <span className="only-plain">{dict.mode.navLively}</span>
+            <span className="only-lively">{dict.mode.toPlain}</span>
+          </ModeSwitch>
           <LangSwitcher lang={lang} />
         </MobileMenu>
       </header>
@@ -73,7 +122,7 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
       >
         <span>{dict.footer.location}</span>
         <span className="flex gap-6">
-          <a href="mailto:callegher.mattia00@gmail.com" className="transition-colors hover:text-brand-accent">
+          <a href={`mailto:${EMAIL}`} className="transition-colors hover:text-brand-accent">
             {dict.footer.email}
           </a>
           <a href="https://github.com/Calle097" className="transition-colors hover:text-brand-accent">
@@ -84,6 +133,10 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
           </a>
         </span>
       </footer>
+
+      <RevealObserver />
+      <LightBand />
+      <TuneBar />
     </div>
   );
 }

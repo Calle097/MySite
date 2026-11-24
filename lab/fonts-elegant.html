@@ -1,0 +1,109 @@
+<!doctype html>
+<!--
+  Font sampler, round 2: elegant candidates for the lively version, each at
+  two weights (light and regular), on the forest palette. Standalone: open
+  this file directly in a browser. Not part of the site build.
+  Fontshare fonts (Satoshi, General Sans, Switzer) are free for commercial
+  use and would be self-hosted on the real site.
+-->
+<html lang="en" data-palette="forest">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Font sampler — elegant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@300..600&family=Urbanist:wght@300..600&family=Outfit:wght@300..600&family=Figtree:wght@300..600&family=Albert+Sans:wght@300..600&family=Geist:wght@300..600&family=Manrope:wght@300..600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    />
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500&display=swap" />
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500&display=swap" />
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@300,400,500&display=swap" />
+    <style>
+      :root { --mono: 'IBM Plex Mono', ui-monospace, monospace; }
+      [data-palette='forest'] { --bg: #0f2a22; --fg: #e9f1ea; --muted: #a3bcae; --accent: #cfe57c; }
+      [data-palette='indigo'] { --bg: #121a40; --fg: #eef2fb; --muted: #a7b4d0; --accent: #6fd3bd; }
+      [data-palette='ink'] { --bg: #161514; --fg: #f2eadb; --muted: #b3a998; --accent: #e3a857; }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; }
+      .bar {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.75rem 2rem;
+        padding: 1rem clamp(1.25rem, 5vw, 5rem);
+        border-bottom: 1px solid color-mix(in srgb, var(--fg) 12%, transparent);
+        background: color-mix(in srgb, var(--bg) 90%, transparent);
+        backdrop-filter: blur(12px);
+        font: 500 0.72rem/1.4 var(--mono);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .bar button { all: unset; cursor: pointer; margin-left: 0.9rem; }
+      .bar button[aria-pressed='true'] { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+      .spec {
+        display: grid;
+        grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) minmax(0, 1fr);
+        gap: 2rem 3rem;
+        padding: clamp(2.5rem, 5vw, 4rem) clamp(1.25rem, 5vw, 5rem);
+        border-bottom: 1px solid color-mix(in srgb, var(--fg) 12%, transparent);
+        font-family: var(--f), system-ui;
+      }
+      @media (max-width: 1000px) { .spec { grid-template-columns: minmax(0, 1fr); } }
+      .name { font: 500 0.75rem/1.6 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+      .note { margin-top: 0.5rem; font: 400 0.8rem/1.6 var(--mono); color: var(--muted); }
+      .weight { font: 400 0.68rem/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+      .h { margin: 0; font-size: clamp(2.2rem, 3.8vw, 3.9rem); line-height: 1; letter-spacing: -0.035em; }
+      .section { margin-top: 1.6rem; font-size: 1.9rem; letter-spacing: -0.03em; }
+      .title { margin-top: 1.2rem; font-size: 1.4rem; font-weight: 500; letter-spacing: -0.02em; }
+      .body { margin: 0.5rem 0 0; max-width: 46ch; font-size: 1rem; line-height: 1.6; color: var(--muted); font-weight: 400; }
+      .small { margin-top: 1rem; display: flex; gap: 1.4rem; font-size: 0.92rem; color: var(--muted); font-weight: 400; }
+    </style>
+  </head>
+  <body>
+    <div class="bar"><span>Elegant round — light and regular</span><span id="palettes">Palette</span></div>
+    <main id="specs"></main>
+    <script>
+      const FONTS = [
+        ['Satoshi', 'Modern grotesk, crisp and quietly geometric. Fontshare.'],
+        ['General Sans', 'Clean grotesk with a confident, editorial feel. Fontshare.'],
+        ['Switzer', 'Neutral Swiss-style grotesk, very even. Fontshare.'],
+        ['Jost', 'Futura-like geometric: the classic kind of elegance.'],
+        ['Urbanist', 'Geometric and airy, at its best in light weights.'],
+        ['Outfit', 'Soft geometric, friendly and smooth.'],
+        ['Figtree', 'Clean and warm, very readable.'],
+        ['Albert Sans', 'Scandinavian-style grotesk, calm and precise.'],
+        ['Geist', 'Precise, neutral-modern. Tried before in semibold.'],
+        ['Manrope', 'Open geometric grotesk. Tried before in semibold.'],
+      ];
+      const specimen = (weight) => `
+        <div style="font-weight:${weight}">
+          <div class="weight">${weight === 300 ? 'Light 300' : 'Regular 400'}</div>
+          <h2 class="h" style="font-weight:${weight}">Frontend developer<br />&amp; QA engineer.</h2>
+          <div class="section" style="font-weight:${weight}">Recent projects</div>
+          <div class="title">Travel-planning platform</div>
+          <p class="body">Frontend and some backend on a large Next.js 15 app: streaming AI chat over SSE, a persistent map, Stripe checkout, six locales.</p>
+          <div class="small"><span style="color:var(--fg)">About</span><span>Playground</span><span>Stack</span><span>CV</span></div>
+        </div>`;
+      document.getElementById('specs').innerHTML = FONTS.map(
+        ([f, note]) => `<section class="spec" style="--f:'${f}'"><div><div class="name">${f}</div><div class="note">${note}</div></div>${specimen(300)}${specimen(400)}</section>`,
+      ).join('');
+      const holder = document.getElementById('palettes');
+      for (const p of ['forest', 'indigo', 'ink']) {
+        const b = document.createElement('button');
+        b.textContent = p;
+        b.setAttribute('aria-pressed', String(p === 'forest'));
+        b.onclick = () => {
+          document.documentElement.dataset.palette = p;
+          holder.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        };
+        holder.append(b);
+      }
+    </script>
+  </body>
+</html>

@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import { fontVariables } from '@/lib/fonts';
 import { DICTS } from '@/lib/i18n';
+import { MODE_SCRIPT } from '@/lib/mode';
 import { SITE_URL } from '@/lib/site';
 import '../globals.css';
+import '../lively.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -39,8 +41,13 @@ location.replace('/it'+(path==='/'?'/':path)+location.search);}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={fontVariables}>
+    // MODE_SCRIPT sets data-mode, data-js and the tuning attributes on <html>
+    // before React loads, on purpose, so the page never paints in the wrong
+    // mode. suppressHydrationWarning tells React those extra attributes are
+    // expected; it covers this element's own attributes only, nothing inside.
+    <html lang="en" className={fontVariables} suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: MODE_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: LOCALE_SCRIPT }} />
       </head>
       <body>{children}</body>

@@ -8,7 +8,7 @@ import { useEffect, useRef } from 'react';
  * closing on a tap outside. suppressHydrationWarning because the user can
  * toggle it before hydration, which legitimately changes the `open` attribute.
  */
-export function MobileMenu({ label, children }: { label: string; children: React.ReactNode }) {
+export function MobileMenu({ label, children }: { label: React.ReactNode; children: React.ReactNode }) {
   const ref = useRef<HTMLDetailsElement>(null);
 
   useEffect(() => {
@@ -23,22 +23,14 @@ export function MobileMenu({ label, children }: { label: string; children: React
   }, []);
 
   return (
-    <details ref={ref} suppressHydrationWarning className="sm:hidden">
+    <details ref={ref} suppressHydrationWarning className="nav:hidden">
       <summary
         className="cursor-pointer list-none font-mono text-sm select-none [&::-webkit-details-marker]:hidden text-muted-foreground">
         {label}
       </summary>
       {/* Positioned against the sticky header (nearest positioned ancestor),
           so it spans the full width just below the glass. */}
-      <div
-        className="menu-panel absolute inset-x-0 top-full z-50 flex flex-col gap-5 border-b p-6 font-mono text-sm"
-        style={{
-          background: 'var(--color-background)',
-          borderColor: 'var(--color-secondary-darker)',
-          color: 'var(--color-muted-foreground)',
-          boxShadow: '0 18px 30px rgba(0, 0, 0, 0.25)',
-        }}
-      >
+      <div className="menu-panel absolute inset-x-0 top-full z-50 flex flex-col gap-5 border-b p-6 font-mono text-sm">
         {children}
       </div>
     </details>

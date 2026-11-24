@@ -21,7 +21,7 @@ export interface Dict {
     fullHistory: string;
     cvLabel: string;
   };
-  contact: { header: string };
+  contact: { header: string; copy: string; copied: string };
   playground: {
     title: string;
     intro: string;
@@ -86,6 +86,19 @@ export interface Dict {
     aiLine: string;
   };
   notFound: { text: string; back: string };
+  /** Lively mode's header uses plain words instead of the /path labels. */
+  nav: { about: string; playground: string; stack: string; cv: string; menu: string };
+  mode: {
+    /** Hero line in plain mode: "{plainNote} {showLively}". */
+    plainNote: string;
+    showLively: string;
+    /** The switch in the plain header, shaped like the other /path items. */
+    navLively: string;
+    /** The switch in the lively header: a toggle, shown on, with this label. */
+    toggle: string;
+    /** Mobile menu item in lively mode, back to plain. */
+    toPlain: string;
+  };
   footer: { location: string; email: string; github: string; source: string };
   skipToContent: string;
 }

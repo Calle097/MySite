@@ -32,7 +32,7 @@ export const en: Dict = {
     fullHistory: 'Full history —',
     cvLabel: 'CV (PDF)',
   },
-  contact: { header: 'Contact' },
+  contact: { header: 'Contact', copy: 'Copy', copied: 'Copied' },
   playground: {
     title: 'Playground',
     intro:
@@ -183,6 +183,14 @@ export const en: Dict = {
     aiLine: 'Built with help from Claude Code, reviewed line by line',
   },
   notFound: { text: 'Page not found —', back: 'Back home' },
+  nav: { about: 'About', playground: 'Playground', stack: 'Stack', cv: 'CV', menu: 'Menu' },
+  mode: {
+    plainNote: 'This is the plain version.',
+    showLively: 'Show the lively one →',
+    navLively: '/lively',
+    toggle: 'Lively',
+    toPlain: 'Plain version',
+  },
   footer: { location: 'Mattia Callegher — Italy', email: 'Email', github: 'GitHub', source: 'Source' },
   skipToContent: 'Skip to content',
 };

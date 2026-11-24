@@ -29,7 +29,13 @@ export function SectionHeader({
   as?: 'h2' | 'span';
 }) {
   return (
-    <div className="gutter label flex items-baseline justify-between border-b border-secondary-darker pb-3 text-muted-foreground">
+    // data-rule: a styling hook for lively mode (app/lively.css), where the
+    // label also reveals as a "rule" (lib/reveal.ts).
+    <div
+      data-rule
+      data-reveal="rule"
+      className="gutter label flex items-baseline justify-between border-b border-secondary-darker pb-3 text-muted-foreground"
+    >
       <span>{String(index).padStart(2, '0')}</span>
       <Title>{title}</Title>
     </div>

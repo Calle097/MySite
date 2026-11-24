@@ -32,35 +32,44 @@ interface Demo {
   height: string;
   /** File the "Source ↗" link opens. */
   source: string;
+  /** What it is built with, for the label under lively mode's display case. */
+  tech: string;
 }
 
 export const DEMOS: Record<DemoSlug, Demo> = {
   'drive-in': {
     height: 'h-[400px] sm:h-[540px]',
     source: `${REPO}/components/demos/DriveInCards.tsx`,
+    tech: 'SVG · Framer Motion',
   },
   spiral: {
     height: 'h-[380px] sm:h-[420px]',
     source: `${REPO}/components/demos/SpiralDots.tsx`,
+    tech: 'SVG',
   },
   'css-effects': {
     height: 'h-[340px]',
     source: `${REPO}/components/demos/css-effects.css`,
+    tech: 'CSS',
   },
   sakura: {
     height: 'h-[260px]',
     source: `${REPO}/components/demos/SakuraBadge.tsx`,
+    tech: 'React · CSS',
   },
   'time-picker': {
     height: 'h-[420px]',
     source: `${REPO}/components/demos/TimePicker.tsx`,
+    tech: 'React',
   },
   'chip-composer': {
     height: 'h-[480px]',
     source: `${REPO}/components/demos/ChipComposer.tsx`,
+    tech: 'DOM Ranges',
   },
   'transit-drag': {
     height: 'h-[560px] sm:h-[640px]',
     source: `${REPO}/components/demos/TransitDragDemo.tsx`,
+    tech: 'Drag and drop',
   },
 };

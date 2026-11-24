@@ -1,5 +1,17 @@
 @import 'tailwindcss';
 
+/* lab/ holds standalone design mockups, not site code: keep Tailwind from
+   harvesting class names out of them. */
+@source not "../lab";
+
+/* Cascade order, lowest to highest. Tailwind declares the first four;
+   `lively` comes last, so lively mode (app/lively.css) wins over every plain
+   style and utility by layer order alone — no specificity contests, no
+   !important. All site CSS lives in a layer: unlayered rules would beat
+   every layer and break that guarantee. (Demo-only stylesheets under
+   components/demos keep to their own class names.) */
+@layer theme, base, components, utilities, lively;
+
 /* Map the next/font variables to Tailwind font utilities. One family
    (Wix Madefor Text) for display and body; IBM Plex Mono for small labels.
    `inline` because next/font sets these on <html> at runtime — the utility
@@ -12,7 +24,8 @@
 
 /* Palette: dark navy, one theme for everyone. Light text; hairlines sit
    LIGHTER than the background (on dark themes darker hairlines vanish).
-   These six variables are also the contract DriveInCards relies on.
+   These six variables are also the contract DriveInCards relies on, and the
+   tokens lively mode redefines.
 
    Declared in @theme, NOT `@theme inline`, which matters: plain @theme both
    generates the colour utilities (bg-background, text-muted-foreground,
@@ -20,6 +33,14 @@
    below and the remaining dynamic color-mix() styles in components can go on
    reading var(--color-*). `inline` would bake the values into the utilities
    and leave every one of those var() references undefined. */
+/* Where the header's full nav takes over from the mobile menu. One name
+   used by both (nav:flex on the nav, nav:hidden on the menu), so they can
+   never disagree. 56rem: below it the full nav no longer fits on one line —
+   at the old 40rem (sm) the name wrapped and "/cv ↓" broke apart. */
+@theme {
+  --breakpoint-nav: 56rem;
+}
+
 @theme {
   --color-background: #182454;
   --color-background-edge: #17224f;
@@ -27,32 +48,6 @@
   --color-muted-foreground: #9fb3c8;
   --color-secondary-darker: #3d476f;
   --color-brand-accent: #46a08e;
-}
-
-body {
-  background-color: var(--color-background);
-  background-image: linear-gradient(180deg, var(--color-background) 0%, var(--color-background-edge) 100%);
-  background-attachment: fixed;
-  color: var(--color-foreground);
-  font-family: var(--font-wix), ui-sans-serif, system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-::selection {
-  background: color-mix(in srgb, var(--color-brand-accent) 24%, transparent);
-}
-
-/* Work rows warm up under the pointer. */
-.row-hover {
-  transition: background-color 0.3s ease;
-}
-.row-hover:hover {
-  background-color: color-mix(in srgb, var(--color-brand-accent) 5%, transparent);
-}
-
-/* Full-width pages share one fluid gutter instead of a centered max-width. */
-.gutter {
-  padding-inline: clamp(1.25rem, 4vw, 4.5rem);
 }
 
 /* The mono micro-label the whole site is built on: nav, footer, section
@@ -68,7 +63,159 @@ body {
   letter-spacing: 0.15em;
 }
 
-/* CSS-only entrance — runs without JavaScript. */
+@layer base {
+  /* Full-width pages share one fluid gutter instead of a centered max-width. */
+  :root {
+    --gutter: clamp(1.25rem, 4vw, 4.5rem);
+  }
+
+  body {
+    background-color: var(--color-background);
+    background-image: linear-gradient(180deg, var(--color-background) 0%, var(--color-background-edge) 100%);
+    background-attachment: fixed;
+    color: var(--color-foreground);
+    font-family: var(--font-wix), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-brand-accent) 24%, transparent);
+  }
+}
+
+@layer components {
+  .gutter {
+    padding-inline: var(--gutter);
+  }
+
+  /* Work rows warm up under the pointer. */
+  .row-hover {
+    transition: background-color 0.3s ease;
+  }
+
+  .row-hover:hover {
+    background-color: color-mix(in srgb, var(--color-brand-accent) 5%, transparent);
+  }
+
+  /* Type sizes that lively mode resizes, so they are classes rather than
+     inline styles (an inline style would beat every layer). */
+  .hero-title {
+    font-size: clamp(2.25rem, 4.5vw, 4.25rem);
+  }
+
+  .contact-email {
+    font-size: clamp(1.35rem, 2.8vw, 2.5rem);
+    overflow-wrap: anywhere;
+  }
+
+  /* The sticky glass header. */
+  .site-header {
+    background: linear-gradient(
+      color-mix(in srgb, var(--color-foreground) 9%, transparent),
+      color-mix(in srgb, var(--color-foreground) 5%, transparent)
+    );
+    border-color: color-mix(in srgb, var(--color-foreground) 14%, transparent);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--color-foreground) 7%, transparent) inset;
+  }
+
+  /* Mobile menu panel, positioned under the header. It slides in each time
+     the <details> opens (display:none → block re-triggers the animation).
+     Opening only — <details> hides content instantly on close, and that's
+     fine. */
+  .menu-panel {
+    background: var(--color-background);
+    border-color: var(--color-secondary-darker);
+    color: var(--color-muted-foreground);
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.25);
+    animation: menu-drop 0.22s ease both;
+  }
+
+  /* Plain / lively (see lib/mode.ts). Anything that differs between the two
+     is in the page twice, and these show the one for the current mode, so
+     neither flashes on load. needs-js hides controls that cannot work without
+     JavaScript; the pre-paint script sets data-js. !important because a
+     visibility switch has to beat the display utilities on the same
+     element (flex, sm:flex…). */
+  html[data-mode='lively'] .only-plain,
+  html:not([data-mode='lively']) .only-lively,
+  html:not([data-js]) .needs-js {
+    display: none !important;
+  }
+
+  /* Playground frame parts that only lively mode shows. */
+  [data-frame-bar],
+  [data-frame-plate] {
+    display: none;
+  }
+
+  /* CSS-only entrance — runs without JavaScript. */
+  .rise {
+    animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .rise-late {
+    animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+  }
+
+  /* Demo pages embedded by the playground load with a #embed fragment
+     (<iframe src=".../#embed">), making the EmbedMarker element the :target.
+     Hide the scrollbar rail then — scrolling still works — while standalone
+     visits (no fragment) keep their scrollbar. Pure CSS, no JS. */
+  html:has(#embed:target) {
+    scrollbar-width: none;
+  }
+
+  html:has(#embed:target)::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Embedded demos also hide the site chrome — standalone visits (no
+     fragment) keep header and footer so nobody gets stranded on a bare page.
+     !important for the same reason as the mode switches above. */
+  html:has(#embed:target) .site-chrome {
+    display: none !important;
+  }
+
+  /* Entity chips inside the ChipComposer demo. */
+  .composer-editor[data-empty]::before {
+    content: attr(data-placeholder);
+    color: var(--color-muted-foreground);
+    pointer-events: none;
+  }
+
+  .composer-chip {
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, var(--color-brand-accent) 60%, transparent);
+    background: color-mix(in srgb, var(--color-brand-accent) 18%, transparent);
+    color: var(--color-foreground);
+  }
+
+  .composer-chip-x {
+    color: var(--color-brand-accent);
+  }
+
+  .composer-chip-x:hover {
+    color: var(--color-foreground);
+  }
+
+  /* Petals inside the SakuraBadge component. */
+  .sakura-petal {
+    animation: sakura-fall 2s ease-in infinite;
+  }
+
+  /* Every decorative animation in this file opts out together. Keep new
+     ones listed here. SpiralDots can't be covered from CSS (SMIL ignores
+     media queries) so it checks the same preference in JS. */
+  @media (prefers-reduced-motion: reduce) {
+    .rise,
+    .rise-late,
+    .menu-panel,
+    .sakura-petal {
+      animation: none;
+    }
+  }
+}
+
 @keyframes rise {
   from {
     opacity: 0;
@@ -80,35 +227,6 @@ body {
   }
 }
 
-.rise {
-  animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.rise-late {
-  animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
-}
-
-/* Every decorative animation in this file opts out together. Keep new
-   keyframes listed here — the menu panel and the sakura petals were both
-   defined below this block and quietly kept animating. SpiralDots can't be
-   covered from CSS (SMIL ignores media queries) so it checks the same
-   preference in JS. */
-@media (prefers-reduced-motion: reduce) {
-  .rise,
-  .rise-late,
-  .menu-panel,
-  .sakura-petal {
-    animation: none;
-  }
-}
-
-/* Mobile menu panel slides in each time the <details> opens (display:none →
-   block re-triggers the animation). Opening only — <details> hides content
-   instantly on close, and that's fine. */
-.menu-panel {
-  animation: menu-drop 0.22s ease both;
-}
-
 @keyframes menu-drop {
   from {
     opacity: 0;
@@ -118,51 +236,6 @@ body {
     opacity: 1;
     transform: none;
   }
-}
-
-/* Demo pages embedded by the playground load with a #embed fragment
-   (<iframe src=".../#embed">), making the EmbedMarker element the :target.
-   Hide the scrollbar rail then — scrolling still works — while standalone
-   visits (no fragment) keep their scrollbar. Pure CSS, no JS. */
-html:has(#embed:target) {
-  scrollbar-width: none;
-}
-
-/* Embedded demos also hide the site chrome — standalone visits (no
-   fragment) keep header and footer so nobody gets stranded on a bare page. */
-html:has(#embed:target) .site-chrome {
-  display: none;
-}
-
-html:has(#embed:target)::-webkit-scrollbar {
-  display: none;
-}
-
-/* Entity chips inside the ChipComposer demo. */
-.composer-editor[data-empty]::before {
-  content: attr(data-placeholder);
-  color: var(--color-muted-foreground);
-  pointer-events: none;
-}
-
-.composer-chip {
-  border-radius: 9999px;
-  border: 1px solid color-mix(in srgb, var(--color-brand-accent) 60%, transparent);
-  background: color-mix(in srgb, var(--color-brand-accent) 18%, transparent);
-  color: var(--color-foreground);
-}
-
-.composer-chip-x {
-  color: var(--color-brand-accent);
-}
-
-.composer-chip-x:hover {
-  color: var(--color-foreground);
-}
-
-/* Petals inside the SakuraBadge component. */
-.sakura-petal {
-  animation: sakura-fall 2s ease-in infinite;
 }
 
 @keyframes sakura-fall {

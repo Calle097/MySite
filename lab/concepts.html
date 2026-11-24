@@ -1,0 +1,1157 @@
+<!doctype html>
+<!--
+  Lively version — split v2. Standalone mockup: open this file directly in a
+  browser (double-click). Not part of the site build. (The earlier round,
+  with the mosaic and contour lines, is kept in concepts-v1.html.)
+
+  Left: a stage that holds still — name, pages and language on top, the
+  headline in the middle, a live index of the sections at the bottom (the
+  current one lit, a counter rolling as you scroll), the version switch
+  under it. When the column is too narrow for the page links, they fold
+  into a Menu. Right: the content, floating on the living background; the
+  light gathers behind the entry you hover and the others step back.
+
+  Narrow screens: one bar (name · Menu) and a full-screen menu that opens as
+  a circle from its button.
+
+  The bar at the bottom switches palette, font, display weight and the
+  background. Settings can also come from the URL:
+  ?palette=forest&font=satoshi&weight=light&bg=liquid
+-->
+<html lang="en" data-palette="forest" data-font="satoshi" data-weight="light" data-bg="liquid" data-langs="2">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lively concepts — split v2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@300..600&family=Urbanist:wght@300..600&family=Outfit:wght@300..600&family=Figtree:wght@300..600&family=Albert+Sans:wght@300..600&family=Geist:wght@300..600&family=Manrope:wght@300..600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    />
+    <!-- Fontshare serves one family per request reliably; a combined request returned only the first. -->
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500&display=swap" />
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500&display=swap" />
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@300,400,500&display=swap" />
+    <style>
+      /* ---- tokens ------------------------------------------------------- */
+      :root {
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        --mono: 'IBM Plex Mono', ui-monospace, monospace;
+        --line: color-mix(in srgb, var(--fg) 13%, transparent);
+        /* The phone bar and menu: a step lighter than the page, toward the
+           light, so they don't read as a dark slab. (Forest: secondary text
+           on it stays above 6:1, and about 5:1 inside the menu's glow.) */
+        --surface: color-mix(in srgb, var(--bg), var(--light) 40%);
+      }
+      [data-palette='forest'] { --bg: #0f2a22; --fg: #e9f1ea; --muted: #a3bcae; --accent: #cfe57c; --light: #1f4a3b; }
+      [data-palette='indigo'] { --bg: #121a40; --fg: #eef2fb; --muted: #a7b4d0; --accent: #6fd3bd; --light: #2b3c8a; }
+      [data-palette='ink'] { --bg: #161514; --fg: #f2eadb; --muted: #b3a998; --accent: #e3a857; --light: #3a2f22; }
+      [data-palette='plum'] { --bg: #23142d; --fg: #f4eaf2; --muted: #c2acbd; --accent: #ff9474; --light: #48264f; }
+      [data-palette='petrol'] { --bg: #0c2a33; --fg: #e3f2f3; --muted: #9fbec3; --accent: #ffd166; --light: #164a57; }
+      [data-palette='slate'] { --bg: #1b1e2a; --fg: #edecff; --muted: #b1b3cc; --accent: #b9a7ff; --light: #353b60; }
+
+      [data-font='satoshi'] { --font: 'Satoshi'; }
+      [data-font='general'] { --font: 'General Sans'; }
+      [data-font='switzer'] { --font: 'Switzer'; }
+      [data-font='jost'] { --font: 'Jost'; }
+      [data-font='urbanist'] { --font: 'Urbanist'; }
+      [data-font='outfit'] { --font: 'Outfit'; }
+      [data-font='figtree'] { --font: 'Figtree'; }
+      [data-font='albert'] { --font: 'Albert Sans'; }
+      [data-font='geist'] { --font: 'Geist'; }
+      [data-font='manrope'] { --font: 'Manrope'; }
+      [data-weight='light'] { --wd: 300; }
+      [data-weight='regular'] { --wd: 400; }
+
+      /* ---- page --------------------------------------------------------- */
+      * { box-sizing: border-box; }
+      html { background: var(--bg); scroll-behavior: smooth; }
+      /* Locked while the menu is open. Where scrollbars take space (desktop),
+         the script puts the scrollbar's width back as padding, so the layout
+         doesn't nudge sideways and the menu still covers the whole window. */
+      html.menu-open { overflow: hidden; padding-right: var(--scrollbar-w, 0px); }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+      body {
+        margin: 0;
+        color: var(--fg);
+        font-family: var(--font), system-ui, sans-serif;
+        font-size: 16px;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: inherit; text-decoration: none; }
+      button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+      /* Touch screens: no flash or lit state when a menu item is tapped. Its
+         hovers sit behind (hover: hover) so a tap doesn't leave them stuck on;
+         keyboard focus keeps its outline. */
+      .menu a, .menu button, .menu summary { -webkit-tap-highlight-color: transparent; }
+      ::selection { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+      .mono { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+      .name { font-size: 1.02rem; font-weight: 500; letter-spacing: -0.01em; }
+
+      #bg { position: fixed; inset: 0; z-index: -1; width: 100%; height: 100%; display: block; }
+      [data-bg='off'] #bg { display: none; }
+
+      /* ---- shared controls ---------------------------------------------- */
+      /* Language options: each language written in its own name. The accent
+         dash means "selected" and nothing else; pointing at another option
+         draws a pale dash, so the two never get confused. */
+      .lang-options { list-style: none; margin: 0; padding: 0; }
+      .lang-options a { display: flex; align-items: center; gap: 0.75rem; padding: 0.3rem 0; color: var(--muted); transition: color 0.3s ease; }
+      .lang-options a::before { content: ''; width: 0; height: 1px; background: color-mix(in srgb, var(--fg) 40%, transparent); transition: width 0.6s var(--ease); }
+      .lang-options a[aria-current='true'] { color: var(--fg); }
+      .lang-options a[aria-current='true']::before { width: 1.25rem; background: var(--accent); }
+      @media (hover: hover) {
+        .lang-options a:hover { color: var(--fg); }
+        .lang-options a:hover::before { width: 1.25rem; }
+      }
+
+      /* A fixed zone, however many languages: about five and a half rows, so a
+         half-cut last row shows there's more, then the list scrolls itself. */
+      .langs-scroll {
+        max-height: 13.5rem;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--line) transparent;
+      }
+
+      /* The "EN ▾" toggle (header and menu): a button that shows its list. */
+      [data-lang-toggle] { color: var(--muted); transition: color 0.3s ease; }
+      [data-lang-toggle] .caret { display: inline-block; transition: transform 0.5s var(--ease); }
+      [data-lang-toggle][aria-expanded='true'] { color: var(--fg); }
+      [data-lang-toggle][aria-expanded='true'] .caret { transform: rotate(180deg); }
+      @media (hover: hover) { [data-lang-toggle]:hover { color: var(--fg); } }
+
+      /* Version (placeholder): the two words, the current one lit. */
+      .version { display: inline-flex; align-items: baseline; gap: 0.15rem; }
+      .version button {
+        position: relative;
+        padding: 0.2rem 0.4rem;
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        transition: color 0.3s ease;
+      }
+      @media (hover: hover) { .version button:hover { color: var(--fg); } }
+      .version button[aria-pressed='true'] { color: var(--fg); }
+      .version button[aria-pressed='true']::after {
+        content: '';
+        position: absolute;
+        left: 0.4rem;
+        right: 0.4rem;
+        bottom: -0.1rem;
+        height: 1px;
+        background: var(--accent);
+      }
+      .version .sep { color: var(--line); }
+
+      /* ---- layout ------------------------------------------------------- */
+      /* overflow-x: clip keeps the extended header (it reaches the window's
+         right edge) from adding a sideways scrollbar. */
+      .layout { display: grid; grid-template-columns: minmax(0, 42fr) minmax(0, 58fr); overflow-x: clip; }
+
+      /* The stage holds still while the content scrolls past. It is a size
+         container, so its header adapts to the column, not the window. It sits
+         above the content (z-index), so the extended header covers it. */
+      .stage {
+        container: stage / inline-size;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        height: 100svh;
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto auto;
+        /* Named, because the extended header reaches past it to the page's
+           top and left edges. */
+        --pad-x: clamp(1.5rem, 3vw, 3rem);
+        --pad-y: var(--pad-x);
+        padding: var(--pad-y) var(--pad-x);
+      }
+
+      /* Top: name (home) · pages · language. A hairline underneath frames the
+         stage, mirroring the index below. */
+      .stage-top {
+        position: relative;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.75rem 1.5rem;
+        padding-bottom: 1.1rem;
+        border-bottom: 1px solid var(--line);
+      }
+      .stage-nav { justify-self: center; display: flex; gap: 1.25rem; font-size: 0.92rem; color: var(--muted); }
+      .stage-nav a { transition: color 0.3s ease; }
+      .stage-nav a:hover { color: var(--fg); }
+      /* Always the last column, so it stays right even when the nav folds away. */
+      .tools { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: 1.25rem; }
+      .menu-btn, .stage-more { display: none; }
+      /* Too narrow for the page links: they fold into the Menu. */
+      @container stage (max-width: 31.5rem) {
+        .stage-nav { display: none; }
+        .menu-btn { display: inline; }
+        .stage-more { display: flex; }
+      }
+
+      /* Menu (when the column is too narrow for the page links): the header
+         grows sideways out of its column, across the whole window, as one
+         solid surface (like the phone bar) from the top of the page down to
+         its line. The links appear in the middle, and EN and Close travel to
+         the right end. The script measures --full (the window's width) and
+         --reach (from the column's edge to the window's). */
+      .stage-top::before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top: calc(-1 * var(--pad-y));
+        bottom: -1px;
+        left: calc(-1 * var(--pad-x));
+        width: var(--full, 100vw);
+        border-bottom: 1px solid var(--line);
+        background: color-mix(in srgb, var(--surface) 70%, transparent);
+        backdrop-filter: blur(14px);
+        pointer-events: none;
+        visibility: hidden;
+        opacity: 0;
+        /* At rest: exactly the column's width. */
+        clip-path: inset(0 var(--reach, 58%) 0 0);
+      }
+      .stage-top.extended::before { visibility: visible; opacity: 1; clip-path: inset(0); }
+      /* One line at a time: while grown, the surface's line replaces the column's. */
+      .stage-top.extended { border-bottom-color: transparent; }
+      .stage-top.extended .tools { transform: translateX(var(--reach, 0px)); }
+
+      /* The page links, centred in the window like the links of the unfolded
+         header are centred in the column. */
+      .stage-more {
+        position: absolute;
+        top: 0;
+        /* The header's bottom padding: centred on its row. */
+        bottom: 1.1rem;
+        left: calc(var(--full, 100vw) / 2 - var(--pad-x));
+        translate: -50% 0;
+        align-items: center;
+        gap: 1.5rem;
+        font-size: 0.92rem;
+        color: var(--muted);
+        white-space: nowrap;
+        visibility: hidden;
+      }
+      .stage-top.extended .stage-more { visibility: visible; }
+      .stage-more a { transition: color 0.3s ease; }
+      .stage-more a:hover { color: var(--fg); }
+
+      /* Language (desktop): EN opens a short list hanging from the header's
+         line, flush with the line's right end (under EN, also when the header
+         has grown sideways). Behind it a soft frosted haze: crisp along the
+         line, fading out to the left and at the bottom, and fading to nothing
+         exactly where the line ends on the right, never past it. */
+      .header-langs {
+        position: absolute;
+        top: calc(100% + 1px);
+        right: 0;
+        z-index: 5;
+        min-width: 12rem;
+        padding: 0.9rem 0 1.1rem;
+        visibility: hidden;
+      }
+      .stage-top.langs-open .header-langs { visibility: visible; }
+      .stage-top.extended .header-langs { translate: var(--reach, 0px) 0; }
+      .header-langs::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 -3.5rem -5rem;
+        z-index: -1;
+        pointer-events: none;
+        background: color-mix(in srgb, var(--bg) 55%, transparent);
+        backdrop-filter: blur(24px);
+        mask-image:
+          linear-gradient(90deg, transparent, #000 5rem, #000 calc(100% - 1.5rem), transparent),
+          linear-gradient(180deg, #000 calc(100% - 5rem), transparent);
+        mask-composite: intersect;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        /* Grows out with the motion; on the way back the column's line fades
+           in just as the surface fades out, at the same place. */
+        .stage-top::before { transition: clip-path 0.6s var(--ease), opacity 0.25s ease 0.45s, visibility 0s linear 0.7s; }
+        .stage-top.extended::before { transition: clip-path 0.7s var(--ease), opacity 0.25s ease, visibility 0s; }
+        .tools { transition: transform 0.7s var(--ease); }
+        .stage-more { transition: visibility 0s linear 0.4s; }
+        .stage-top.extended .stage-more { transition: visibility 0s; }
+        /* The links arrive one by one after the surface; they leave together. */
+        .stage-more a { opacity: 0; transform: translateX(-0.75rem); transition: color 0.3s ease, opacity 0.3s ease, transform 0.5s var(--ease); }
+        .stage-top.extended .stage-more a {
+          opacity: 1;
+          transform: none;
+          transition: color 0.3s ease, opacity 0.5s ease, transform 0.7s var(--ease);
+          transition-delay: 0s, calc(var(--i, 0) * 50ms + 150ms), calc(var(--i, 0) * 50ms + 150ms);
+        }
+
+        /* The list opens downward from the line, the options following one by
+           one, the haze fading in under them; it folds back up on close. */
+        .header-langs { transition: visibility 0s linear 0.35s, translate 0.7s var(--ease); }
+        .stage-top.langs-open .header-langs { transition: visibility 0s, translate 0.7s var(--ease); }
+        .header-langs::before { opacity: 0; transition: opacity 0.3s ease; }
+        .stage-top.langs-open .header-langs::before { opacity: 1; transition-duration: 0.5s; }
+        .header-langs ul { clip-path: inset(0 0 100% 0); transition: clip-path 0.35s var(--ease); }
+        .stage-top.langs-open .header-langs ul { clip-path: inset(0); transition-duration: 0.6s; }
+        .header-langs li { opacity: 0; transform: translateY(-0.4rem); transition: opacity 0.3s ease, transform 0.5s var(--ease); }
+        .stage-top.langs-open .header-langs li {
+          opacity: 1;
+          transform: none;
+          transition: opacity 0.5s ease, transform 0.7s var(--ease);
+          transition-delay: calc(var(--i, 0) * 60ms + 120ms);
+        }
+      }
+
+      /* Middle: the headline, sized to the column so it holds two lines. */
+      .stage-mid { display: flex; flex-direction: column; justify-content: center; padding-block: 2rem; }
+      h1 { margin: 0; font-size: clamp(2.3rem, 3.7vw, 5rem); font-weight: var(--wd); line-height: 1.02; letter-spacing: -0.035em; }
+      .blurb { max-width: 42ch; margin: 1.4rem 0 0; color: var(--muted); font-size: clamp(1rem, 1.1vw, 1.1rem); }
+      .hero .mono { display: block; margin-top: 1.2rem; }
+
+      /* Bottom: the index, always there; the current section is lit and the
+         counter rolls as you move through the page. */
+      .index-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.7rem; }
+      .count { display: flex; align-items: baseline; gap: 0.5rem; }
+      .roll { height: 1em; overflow: hidden; font-size: clamp(2.2rem, 2.8vw, 3rem); font-weight: var(--wd); line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+      .roll-inner { display: block; transition: transform 0.9s var(--ease); transform: translateY(calc(var(--n, 0) * -1em)); }
+      .roll-inner span { display: block; height: 1em; }
+      .sections { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+      .sections li a {
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--line);
+        color: var(--muted);
+        transition: color 0.4s ease;
+      }
+      .sections li a::before {
+        content: '';
+        align-self: center;
+        width: 0;
+        height: 1px;
+        background: var(--accent);
+        transition: width 0.6s var(--ease);
+      }
+      .sections li a[aria-current='true'] { color: var(--fg); }
+      @media (hover: hover) { .sections li a:hover { color: var(--fg); } }
+      .sections li a[aria-current='true']::before { width: 1.5rem; }
+      .sections .t { font-size: 1.02rem; }
+
+      .stage-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-top: 1rem; }
+
+      /* Shorter windows: tighten the stage so everything still fits. */
+      @media (min-width: 900px) and (max-height: 820px) {
+        .stage { --pad-y: 1.25rem; }
+        h1 { font-size: clamp(2.2rem, 3.2vw, 3.8rem); }
+        .blurb { margin-top: 1rem; }
+        .sections li a { padding: 0.36rem 0; }
+        .stage-foot { padding-top: 0.6rem; }
+      }
+
+      /* ---- the flow: content straight on the light ----------------------- */
+      .flow {
+        padding: 18vh clamp(1.5rem, 5vw, 6rem) 2.5rem clamp(2rem, 4vw, 4.5rem);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          color-mix(in srgb, var(--bg) 30%, transparent) 16%,
+          color-mix(in srgb, var(--bg) 30%, transparent)
+        );
+      }
+      /* Centred in its column, so wide screens keep even space either side. */
+      .flow section { max-width: 48rem; margin-inline: auto; }
+      .flow section + section { margin-top: clamp(6rem, 16vh, 10rem); }
+      /* Jumping to a section leaves a little air above its title. */
+      [data-section] { scroll-margin-top: 3rem; }
+
+      /* Footer: closes the page instead of leaving it to trail off. */
+      .foot {
+        max-width: 48rem;
+        margin: clamp(6rem, 14vh, 9rem) auto 0;
+        padding-top: 1.4rem;
+        border-top: 1px solid var(--line);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 0.75rem 2rem;
+      }
+      .foot-links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; }
+      .foot-links a { color: var(--muted); transition: color 0.3s ease; }
+      .foot-links a:hover { color: var(--fg); }
+      h2 { display: flex; align-items: baseline; gap: 1.25rem; margin: 0 0 2rem; font-size: clamp(2.2rem, 3.4vw, 3.4rem); font-weight: var(--wd); line-height: 1.05; letter-spacing: -0.035em; }
+      h2 .mono { font-size: 0.72rem; }
+
+      .entry { position: relative; display: block; padding: 1.5rem 0 1.6rem; transition: opacity 0.5s ease; }
+      /* Hairline above each entry: draws in, turns to accent on hover. */
+      .entry::before, .entry::after { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; transform-origin: left; }
+      .entry::before { background: var(--line); }
+      .entry::after { background: var(--accent); transform: scaleX(0); transition: transform 0.7s var(--ease); }
+      .entry:hover::after { transform: scaleX(1); }
+      .entry-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.6rem; }
+      .go { color: var(--accent); opacity: 0; transform: translateX(-0.5rem); transition: opacity 0.4s ease, transform 0.6s var(--ease); }
+      .entry:hover .go { opacity: 1; transform: none; }
+      .entry-title { margin: 0; font-size: clamp(1.3rem, 1.7vw, 1.6rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; transition: transform 0.6s var(--ease); }
+      .entry:hover .entry-title { transform: translateX(0.4rem); }
+      .entry-text { margin: 0.6rem 0 0; max-width: 58ch; color: var(--muted); }
+      .entry .mono.stack { display: block; margin-top: 0.9rem; line-height: 1.7; }
+      /* Spotlight: the hovered entry stays lit, its neighbours step back. */
+      @media (hover: hover) {
+        .flow section:has(.entry:hover) .entry:not(:hover) { opacity: 0.42; }
+      }
+
+      .lead { margin: 0 0 1.5rem; font-size: clamp(1.3rem, 1.9vw, 1.7rem); font-weight: var(--wd); line-height: 1.4; letter-spacing: -0.015em; }
+      .para { margin: 0 0 1rem; max-width: 58ch; color: var(--muted); }
+      .email { font-size: clamp(1.4rem, 2.2vw, 2rem); font-weight: var(--wd); letter-spacing: -0.02em; overflow-wrap: anywhere; }
+      .actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.25rem; }
+      .chip { padding: 0.5rem 0.85rem; border: 1px solid var(--line); font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); transition: color 0.3s ease, border-color 0.3s ease; }
+      .chip:hover { color: var(--fg); border-color: var(--accent); }
+      .play { display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 2rem; align-items: center; }
+      .spiral { width: 100%; aspect-ratio: 1; color: var(--accent); }
+      .spiral g { transform-origin: 50% 50%; animation: turn 90s linear infinite; }
+      .spiral circle { transform-box: fill-box; transform-origin: center; animation: pulse 3s ease-in-out infinite; animation-delay: var(--d); }
+      @keyframes turn { to { transform: rotate(360deg); } }
+      @keyframes pulse { 0%, 100% { transform: scale(0.45); opacity: 0.25; } 50% { transform: scale(1.25); opacity: 1; } }
+
+      /* ---- the menu (narrow screens, or a narrow stage) ------------------ */
+      .menu {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        display: flex;
+        flex-direction: column;
+        /* Fits the screen without scrolling, down to a small phone with its
+           browser bars showing: spacing and the page names scale with the
+           height (svh = the viewport with the bars shown, the smallest case). */
+        gap: clamp(1rem, 3.6svh, 2.25rem);
+        padding: 1rem 1.25rem clamp(1rem, 3svh, 2rem);
+        /* Only a last resort (a phone held sideways): it scrolls itself, and
+           the page behind never moves. */
+        overflow: auto;
+        overscroll-behavior: contain;
+        /* Solid, so nothing moves behind it; one still glow from where the
+           circle opened (--ox/--oy, set when it opens). */
+        background:
+          radial-gradient(110vmax 90vmax at var(--ox, 100%) var(--oy, 0%), var(--light), transparent 70%),
+          var(--surface);
+      }
+      .menu[hidden] { display: none; }
+      @media (min-width: 900px) { .menu { padding: clamp(1.5rem, 3vw, 3rem); } }
+      .menu-top { display: flex; justify-content: space-between; align-items: baseline; }
+      .menu-group > .mono { display: block; margin-bottom: clamp(0.4rem, 1.4svh, 0.75rem); }
+      .pages { list-style: none; margin: 0; padding: 0; }
+      .pages a {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        padding-block: clamp(0.1rem, 0.5svh, 0.25rem);
+        font-size: clamp(1.55rem, min(9vw, 4.7svh), 3.4rem);
+        font-weight: var(--wd);
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        color: var(--muted);
+        transition: color 0.3s ease;
+      }
+      .pages a[aria-current='page'] { color: var(--fg); }
+      @media (hover: hover) { .pages a:hover { color: var(--fg); } }
+      .pages a::before { content: ''; width: 0; height: 1px; background: var(--accent); transition: width 0.6s var(--ease); }
+      .pages a[aria-current='page']::before { width: 1.5rem; }
+      .menu .sections li a { padding-block: clamp(0.25rem, 1svh, 0.5rem); line-height: 1.35; }
+
+      /* "On this page" and the languages share one slot: EN swaps one for the
+         other, so the menu never grows and nothing gets covered. The slot is
+         all the free space between the pages and the bottom row (at least the
+         section list's height), on every page, with or without sections; the
+         languages fill it and scroll inside it if there are many. */
+      .menu-swap { position: relative; flex: 1 0 auto; }
+      .menu-langs { position: absolute; inset: 0; display: flex; flex-direction: column; }
+      /* The slot's height can end exactly between two rows, hiding that there
+         are more: the bottom edge fades, and the padding lets the last one
+         scroll clear of the fade. */
+      .menu-langs ul { flex: 1 1 auto; min-height: 0; max-height: none; padding-bottom: 1.5rem; mask-image: linear-gradient(#000 calc(100% - 1.5rem), transparent); }
+      .menu-swap.langs-open .menu-index, .menu-langs { visibility: hidden; opacity: 0; }
+      .menu-swap.langs-open .menu-langs { visibility: visible; opacity: 1; }
+      /* On wide screens the section list is already on the stage: its slot
+         stays, empty, for the languages. */
+      @media (min-width: 900px) { .menu-index { visibility: hidden; } }
+      @media (prefers-reduced-motion: no-preference) {
+        .menu-index, .menu-langs { transition: opacity 0.35s ease, visibility 0s linear 0.35s; }
+        .menu-swap.langs-open .menu-langs, .menu-swap:not(.langs-open) .menu-index { transition: opacity 0.35s ease 0.15s, visibility 0s; }
+        .menu-langs li { opacity: 0; transform: translateY(0.5rem); transition: opacity 0.5s ease, transform 0.7s var(--ease); transition-delay: calc(var(--i, 0) * 60ms + 150ms); }
+        .menu-swap.langs-open .menu-langs li { opacity: 1; transform: none; }
+      }
+
+      /* Bottom of the menu: one row, language left, version right. */
+      .menu-foot {
+        margin-top: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 1rem;
+      }
+
+      /* ---- narrow screens ------------------------------------------------ */
+      .mbar { display: none; }
+      @media (max-width: 899px) {
+        .layout { grid-template-columns: minmax(0, 1fr); }
+        .stage { position: relative; height: auto; padding-top: 4.5rem; }
+        /* The bar and the menu take over the stage's header, index and switch. */
+        .stage-top, .index, .stage-foot { display: none; }
+        .stage-mid { padding-block: 1.5rem 0; }
+        h1 { font-size: clamp(2.2rem, 9vw, 3.2rem); }
+        .flow { padding: 4rem 1.5rem 2rem; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--bg) 34%, transparent) 14rem); }
+        /* Clear the pinned bar when jumping to a section. */
+        [data-section] { scroll-margin-top: 5rem; }
+        .play { grid-template-columns: minmax(0, 1fr) 110px; }
+
+        /* Always there, always a little solid: text never runs under it bare. */
+        .mbar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 10;
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          padding: 1rem 1.25rem;
+          border-bottom: 1px solid var(--line);
+          background: color-mix(in srgb, var(--surface) 70%, transparent);
+          backdrop-filter: blur(14px);
+        }
+      }
+
+      /* ---- motion ------------------------------------------------------- */
+      /* Masked lines rise from behind a clean edge. */
+      .mask { display: block; overflow: clip; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+      .mask > span { display: inline-block; }
+      @media (prefers-reduced-motion: no-preference) {
+        .mask > span { transform: translateY(108%); transition: transform 1.2s var(--ease); transition-delay: calc(var(--i, 0) * 90ms); }
+        .in .mask > span, .ready .hero .mask > span, .menu.open .mask > span { transform: none; }
+        [data-reveal] .fade { opacity: 0; transform: translateY(0.75rem); transition: opacity 0.9s ease, transform 1.1s var(--ease); transition-delay: calc(var(--i, 0) * 90ms + 150ms); }
+        [data-reveal].in .fade { opacity: 1; transform: none; }
+        .entry::before { transform: scaleX(0); transition: transform 1.2s var(--ease); transition-delay: calc(var(--i, 0) * 90ms); }
+        .entry.in::before { transform: scaleX(1); }
+        .hero .fade, .stage-top, .index, .stage-foot { opacity: 0; transition: opacity 1.2s ease 0.5s; }
+        .ready .hero .fade, .ready .stage-top, .ready .index, .ready .stage-foot { opacity: 1; }
+        /* The header's own line hides at once when it grows out, and fades back
+           as the surface fades away (see .stage-top::before). */
+        .stage-top { transition: opacity 1.2s ease 0.5s, border-color 0.25s ease 0.45s; }
+        .stage-top.extended { transition: opacity 1.2s ease 0.5s, border-color 0s; }
+        /* The menu's items arrive one after another once the circle opens. */
+        .menu .menu-index li, .menu .menu-foot { opacity: 0; transform: translateY(0.6rem); transition: opacity 0.7s ease, transform 0.9s var(--ease); transition-delay: calc(var(--i, 0) * 60ms + 250ms); }
+        .menu.open .menu-index li, .menu.open .menu-foot { opacity: 1; transform: none; }
+      }
+
+      /* ---- lab bar (not part of any design) ------------------------------ */
+      .lab {
+        position: fixed;
+        left: 50%;
+        bottom: 0.75rem;
+        translate: -50% 0;
+        z-index: 30;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem 1.2rem;
+        width: max-content;
+        max-width: calc(100vw - 1.5rem);
+        padding: 0.55rem 0.9rem;
+        border: 1px solid var(--line);
+        background: color-mix(in srgb, var(--bg) 90%, transparent);
+        backdrop-filter: blur(12px);
+        font: 500 10.5px/1.6 var(--mono);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .lab .group { display: flex; flex-wrap: wrap; gap: 0.2rem 0.55rem; }
+      .lab .label { color: var(--fg); }
+      .lab button { text-transform: uppercase; letter-spacing: inherit; }
+      .lab button[aria-pressed='true'] { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+      .lab.closed .group { display: none; }
+    </style>
+  </head>
+  <body>
+    <canvas id="bg" aria-hidden="true"></canvas>
+
+    <!-- Narrow screens only. -->
+    <header class="mbar">
+      <a class="name" href="#">Mattia Callegher</a>
+      <button class="mono" data-menu-open aria-controls="menu" aria-expanded="false">Menu</button>
+    </header>
+
+    <div class="menu" id="menu" hidden>
+      <div class="menu-top"><a class="name" href="#">Mattia Callegher</a><button class="mono" id="menu-close">Close</button></div>
+      <nav class="menu-group" aria-label="Pages">
+        <span class="mono">Pages</span>
+        <ul class="pages">
+          <li><a href="#" aria-current="page"><span class="mask"><span style="--i: 0">Home</span></span></a></li>
+          <li><a href="#"><span class="mask"><span style="--i: 1">About</span></span></a></li>
+          <li><a href="#"><span class="mask"><span style="--i: 2">Playground</span></span></a></li>
+          <li><a href="#"><span class="mask"><span style="--i: 3">Stack</span></span></a></li>
+          <li><a href="#"><span class="mask"><span style="--i: 4">CV ↓</span></span></a></li>
+        </ul>
+      </nav>
+      <!-- One slot: the sections, or the languages while EN is open. -->
+      <div class="menu-swap">
+        <nav class="menu-group menu-index" aria-label="On this page">
+          <span class="mono">On this page</span>
+          <ol class="sections" id="menu-list"></ol>
+        </nav>
+        <nav class="menu-group menu-langs" id="menu-langs" aria-label="Language" inert>
+          <span class="mono">Language</span>
+          <ul class="lang-options langs-scroll" data-lang-list></ul>
+        </nav>
+      </div>
+      <div class="menu-foot" style="--i: 6">
+        <button class="mono" data-lang-toggle aria-controls="menu-langs" aria-expanded="false" aria-label="Language: English"><span class="code">EN</span> <span class="caret" aria-hidden="true">▾</span></button>
+        <div class="version" role="group" aria-label="Version"><button aria-pressed="false">Plain</button><span class="sep">·</span><button aria-pressed="true">Lively</button></div>
+      </div>
+    </div>
+
+    <div class="layout">
+      <aside class="stage">
+        <header class="stage-top">
+          <a class="name" href="#" aria-label="Mattia Callegher, home">Mattia Callegher</a>
+          <nav class="stage-nav" aria-label="Pages">
+            <a href="#">About</a><a href="#">Playground</a><a href="#">Stack</a><a href="#">CV</a>
+          </nav>
+          <div class="tools">
+            <button class="mono" data-lang-toggle aria-controls="header-langs" aria-expanded="false" aria-label="Language: English"><span class="code">EN</span> <span class="caret" aria-hidden="true">▾</span></button>
+            <button class="mono menu-btn" aria-controls="stage-more" aria-expanded="false">Menu</button>
+          </div>
+          <nav class="stage-more" id="stage-more" aria-label="Pages" inert>
+            <a href="#" style="--i: 0">About</a><a href="#" style="--i: 1">Playground</a><a href="#" style="--i: 2">Stack</a><a href="#" style="--i: 3">CV</a>
+          </nav>
+          <nav class="header-langs" id="header-langs" aria-label="Language" inert>
+            <ul class="lang-options langs-scroll" data-lang-list></ul>
+          </nav>
+        </header>
+        <div class="stage-mid">
+          <div class="hero">
+            <h1>
+              <span class="mask"><span style="--i: 0">Frontend developer</span></span>
+              <span class="mask"><span style="--i: 1">&amp; QA engineer.</span></span>
+            </h1>
+            <p class="blurb fade">I build web apps with React, Next.js and TypeScript. I started in QA, so I also test what I build. I dabble in backend too: TypeScript, Python, SQL.</p>
+            <span class="mono fade">Based in Italy · Interested in working in Japan</span>
+          </div>
+        </div>
+        <nav class="index" aria-label="Sections">
+          <div class="index-head">
+            <span class="mono">Index</span>
+            <span class="count" aria-hidden="true">
+              <span class="roll"><span class="roll-inner" id="roll"></span></span>
+              <span class="mono">/ 05</span>
+            </span>
+          </div>
+          <ol class="sections" id="index-list"></ol>
+        </nav>
+        <div class="stage-foot">
+          <span class="mono">Version</span>
+          <div class="version" role="group" aria-label="Version"><button aria-pressed="false">Plain</button><span class="sep">·</span><button aria-pressed="true">Lively</button></div>
+        </div>
+      </aside>
+
+      <main class="flow" id="flow"></main>
+    </div>
+
+    <div class="lab" id="lab"></div>
+
+    <script>
+      /* ---- content (from lib/i18n/en.ts) ------------------------------- */
+      const C = {
+        work: [
+          { when: '2024 — now', title: 'Freelance', text: 'Web apps with Next.js and React, TypeScript backends, Python automation and bots.' },
+          { when: '2020 — 2024', title: 'Frontend developer & IT consultant', text: 'Employed at an IT company. React + TypeScript web apps, including a management system for a gym franchise used by 500+ people.' },
+          { when: '2020 — 2023', title: 'QA engineer, on dispatch', text: 'Dispatched by the same company to work as QA on a smart metering platform in the energy sector, later as test manager.' },
+        ],
+        projects: [
+          { title: 'Travel-planning platform', text: 'Frontend and some backend on a large Next.js 15 app: streaming AI chat over SSE, a persistent MapLibre map in a parallel route that survives navigation, modals as real URLs via intercepting routes, Stripe checkout, REST integrations for transit and hotel booking, six locales, IndexedDB-persisted query cache.', stack: 'TypeScript · Tailwind · Zustand · TanStack Query · react-map-gl · Firebase auth · Playwright' },
+          { title: 'Camper-van rental site', text: 'Marketing and booking site for a camper-van rental service. The playground vans started here, though they did not end up in the result.', stack: 'Next.js · Tailwind · Framer Motion' },
+        ],
+        about: [
+          'I studied film and media at university. Then I taught myself how to program, and it stuck.',
+          'My first tech job was at an IT company: frontend work with React, while also being dispatched as QA on a large smart metering system, where I went from manual testing to Playwright automation and eventually coordinated the QA side.',
+          'Now I freelance from Italy, and I would like to move to Japan for work.',
+        ],
+        play: 'Simple things I built and found too interesting, or too silly, to throw away. Some shipped, some never left the sketchbook.',
+        email: 'callegher.mattia00@gmail.com',
+      };
+      const SECTIONS = [
+        { id: 'work', name: 'Work' },
+        { id: 'projects', name: 'Recent projects' },
+        { id: 'playground', name: 'Playground' },
+        { id: 'about', name: 'About' },
+        { id: 'contact', name: 'Contact' },
+      ];
+      const nn = (i) => String(i + 1).padStart(2, '0');
+      const mask = (text, i = 0) => `<span class="mask"><span style="--i:${i}">${text}</span></span>`;
+      const go = '<span class="go" aria-hidden="true">→</span>';
+
+      const spiral = (() => {
+        const n = 150, golden = Math.PI * (3 - Math.sqrt(5));
+        let dots = '';
+        for (let i = 0; i < n; i++) {
+          const f = (i + 0.5) / n, r = Math.sqrt(f) * 46, a = (i + 0.5) * golden;
+          dots += `<circle cx="${(50 + r * Math.cos(a)).toFixed(2)}" cy="${(50 + r * Math.sin(a)).toFixed(2)}" r="1.4" fill="currentColor" style="--d:${(-f * 3).toFixed(2)}s"/>`;
+        }
+        return `<svg class="spiral" viewBox="0 0 100 100" aria-hidden="true"><g>${dots}</g></svg>`;
+      })();
+
+      const heading = (i) => `<h2 data-reveal><span class="mono">${nn(i)}</span>${mask(SECTIONS[i].name)}</h2>`;
+      document.getElementById('flow').innerHTML = `
+        <section id="work" data-section>${heading(0)}
+          ${C.work.map((w, i) => `<article class="entry" data-reveal data-focus style="--i:${i}"><div class="entry-meta fade"><span class="mono">${w.when}</span>${go}</div><h3 class="entry-title">${mask(w.title, i)}</h3><p class="entry-text fade">${w.text}</p></article>`).join('')}
+        </section>
+        <section id="projects" data-section>${heading(1)}
+          ${C.projects.map((p, i) => `<article class="entry" data-reveal data-focus style="--i:${i}"><div class="entry-meta fade"><span class="mono">${nn(i)}</span>${go}</div><h3 class="entry-title">${mask(p.title, i)}</h3><p class="entry-text fade">${p.text}</p><span class="mono stack fade">${p.stack}</span></article>`).join('')}
+        </section>
+        <section id="playground" data-section>${heading(2)}
+          <a class="entry play" href="#" data-reveal data-focus><div><p class="entry-text fade" style="margin:0">${C.play}</p><span class="mono fade" style="display:block;margin-top:1rem;color:var(--fg)">Open the playground · 07 →</span></div><div class="fade">${spiral}</div></a>
+        </section>
+        <section id="about" data-section>${heading(3)}
+          <div data-reveal data-focus class="entry"><p class="lead fade">${C.about[0]}</p>${C.about.slice(1).map((a) => `<p class="para fade">${a}</p>`).join('')}</div>
+        </section>
+        <section id="contact" data-section>${heading(4)}
+          <div data-reveal data-focus class="entry"><div class="email fade">${C.email}</div><div class="actions fade"><button class="chip" data-copy>Copy</button><a class="chip" href="mailto:${C.email}">Write ↗</a><a class="chip" href="#">GitHub ↗</a><a class="chip" href="#">CV ↓</a></div></div>
+        </section>
+        <footer class="foot">
+          <span class="mono">Mattia Callegher · Italy</span>
+          <nav class="foot-links" aria-label="Elsewhere"><a href="mailto:${C.email}">Email</a><a href="#">GitHub</a><a href="#">Source</a></nav>
+        </footer>`;
+
+      const listHTML = SECTIONS.map((s, i) => `<li style="--i:${i}"><a href="#${s.id}" data-goto="${i}" data-focus><span class="mono">${nn(i)}</span><span class="t">${s.name}</span></a></li>`).join('');
+      document.getElementById('index-list').innerHTML = listHTML;
+      document.getElementById('menu-list').innerHTML = listHTML;
+      document.getElementById('roll').innerHTML = SECTIONS.map((_, i) => `<span>${nn(i)}</span>`).join('');
+
+      const html = document.documentElement;
+      const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ---- which section is in the middle of the view ------------------- */
+      let current = -1;
+      function setCurrent(i) {
+        if (i === current) return;
+        current = i;
+        document.getElementById('roll').style.setProperty('--n', i);
+        document.querySelectorAll('[data-goto]').forEach((a) => a.setAttribute('aria-current', String(Number(a.dataset.goto) === i)));
+      }
+      const sections = [...document.querySelectorAll('[data-section]')];
+      const spy = new IntersectionObserver(
+        (entries) => { for (const e of entries) if (e.isIntersecting) setCurrent(sections.indexOf(e.target)); },
+        { rootMargin: '-45% 0px -50% 0px' },
+      );
+      sections.forEach((s) => spy.observe(s));
+      setCurrent(0);
+      // The last section may never reach the middle of the view on a short
+      // page end; at the very bottom, it is the current one.
+      addEventListener('scroll', () => {
+        if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) setCurrent(sections.length - 1);
+      }, { passive: true });
+
+      /* ---- the menu: opens as a circle from whichever button opened it --- */
+      const menu = document.getElementById('menu');
+      let opener = null;
+      function circle(from, opening) {
+        const r = from.getBoundingClientRect();
+        const x = r.left + r.width / 2, y = r.top + r.height / 2;
+        menu.style.setProperty('--ox', `${x}px`);
+        menu.style.setProperty('--oy', `${y}px`);
+        if (reduce()) return null;
+        const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        const frames = [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`];
+        return menu.animate({ clipPath: opening ? frames : frames.reverse() }, { duration: 650, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+      }
+      const closeButton = document.getElementById('menu-close');
+      function openMenu(button) {
+        opener = button;
+        menu.hidden = false;
+        // The page underneath stays put while the menu is open.
+        html.style.setProperty('--scrollbar-w', `${innerWidth - html.clientWidth}px`);
+        html.classList.add('menu-open');
+        document.querySelectorAll('[data-menu-open]').forEach((b) => b.setAttribute('aria-expanded', 'true'));
+        circle(button, true);
+        requestAnimationFrame(() => requestAnimationFrame(() => menu.classList.add('open')));
+        closeButton.focus({ preventScroll: true });
+      }
+      function closeMenu() {
+        if (menu.hidden) return;
+        // Unlock first: a section link can start scrolling the page right
+        // away, while the circle is still closing over it.
+        html.classList.remove('menu-open');
+        document.querySelectorAll('[data-menu-open]').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+        const done = () => {
+          menu.hidden = true;
+          menu.classList.remove('open');
+          setMenuLangs(false);
+          opener?.focus({ preventScroll: true });
+        };
+        const anim = circle(opener ?? menu, false);
+        if (anim) anim.finished.then(done);
+        else done();
+      }
+      document.querySelectorAll('[data-menu-open]').forEach((b) => b.addEventListener('click', () => openMenu(b)));
+      closeButton.addEventListener('click', closeMenu);
+      addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        // An open language list goes first, then the extended header, then the menu.
+        const toggle = openLangToggle();
+        if (toggle) {
+          closeLangs();
+          toggle.focus();
+        } else if (headerExtended()) {
+          setExtended(false);
+          stageMenu.focus();
+        } else closeMenu();
+      });
+
+      /* ---- the header growing out of its column ------------------------ */
+      const stageTop = document.querySelector('.stage-top');
+      // What the CSS needs to grow it: the window's width, and how far the
+      // column's edge is from the window's.
+      function measureHeader() {
+        const width = document.documentElement.clientWidth;
+        const columnEdge = stageTop.closest('.stage').getBoundingClientRect().right;
+        stageTop.style.setProperty('--full', `${width}px`);
+        stageTop.style.setProperty('--reach', `${width - columnEdge}px`);
+      }
+
+      // Sideways, with Menu (wide screen, column too narrow for the links).
+      const stageMore = document.getElementById('stage-more');
+      const stageMenu = stageTop.querySelector('.menu-btn');
+      const headerExtended = () => stageTop.classList.contains('extended');
+      function setExtended(open) {
+        if (headerExtended() === open) return;
+        if (open) measureHeader();
+        stageTop.classList.toggle('extended', open);
+        stageMore.inert = !open;
+        stageMenu.setAttribute('aria-expanded', String(open));
+        stageMenu.textContent = open ? 'Close' : 'Menu';
+      }
+      stageMenu.addEventListener('click', () => setExtended(!headerExtended()));
+
+      // EN: the language list hanging from the header's line.
+      const headerLangs = document.getElementById('header-langs');
+      const headerLangsToggle = stageTop.querySelector('[aria-controls="header-langs"]');
+      const headerLangsOpen = () => stageTop.classList.contains('langs-open');
+      function setHeaderLangs(open) {
+        if (headerLangsOpen() === open) return;
+        stageTop.classList.toggle('langs-open', open);
+        headerLangs.inert = !open;
+        headerLangsToggle.setAttribute('aria-expanded', String(open));
+        if (open) showCurrent(headerLangs.querySelector('[data-lang-list]'));
+      }
+      headerLangsToggle.addEventListener('click', () => setHeaderLangs(!headerLangsOpen()));
+
+      // A new window size means new measurements (and maybe no folding).
+      addEventListener('resize', () => {
+        setExtended(false);
+        setHeaderLangs(false);
+      });
+
+      /* ---- language ----------------------------------------------------- */
+      // The mockup's text stays English: picking a language only moves the
+      // selection, so "selected" vs "pointed at" can be judged. The lab bar's
+      // "langs 8" fills the list to try the scrolling zone.
+      const LANGUAGES = [
+        ['en', 'English'], ['it', 'Italiano'], ['ja', '日本語'], ['de', 'Deutsch'],
+        ['fr', 'Français'], ['es', 'Español'], ['pt', 'Português'], ['ko', '한국어'],
+      ];
+      let currentLang = 'en';
+      function renderLangs() {
+        const shown = LANGUAGES.slice(0, Number(html.dataset.langs) || 2);
+        if (!shown.some(([code]) => code === currentLang)) currentLang = 'en';
+        const items = shown
+          .map(([code, name], i) => `<li style="--i:${i}"><a href="#" lang="${code}" hreflang="${code}" data-lang="${code}"${code === currentLang ? ' aria-current="true"' : ''}>${name}</a></li>`)
+          .join('');
+        const name = shown.find(([code]) => code === currentLang)[1];
+        document.querySelectorAll('[data-lang-list]').forEach((ul) => (ul.innerHTML = items));
+        document.querySelectorAll('[data-lang-toggle]').forEach((t) => {
+          t.querySelector('.code').textContent = currentLang.toUpperCase();
+          t.setAttribute('aria-label', `Language: ${name}`);
+        });
+      }
+      // Opening a long list brings the selected language into view.
+      function showCurrent(list) {
+        const current = list.querySelector('[aria-current="true"]');
+        if (!current) return;
+        const top = current.getBoundingClientRect().top - list.getBoundingClientRect().top + list.scrollTop;
+        list.scrollTop = top - (list.clientHeight - current.offsetHeight) / 2;
+      }
+
+      // Menu: EN swaps "On this page" for the languages, in the same slot.
+      const menuSwap = document.querySelector('.menu-swap');
+      const menuIndex = menuSwap.querySelector('.menu-index');
+      const menuLangs = document.getElementById('menu-langs');
+      const menuLangsToggle = document.querySelector('[aria-controls="menu-langs"]');
+      const menuLangsOpen = () => menuSwap.classList.contains('langs-open');
+      function setMenuLangs(open) {
+        if (menuLangsOpen() === open) return;
+        menuSwap.classList.toggle('langs-open', open);
+        // Only the one showing can be reached with the keyboard.
+        menuLangs.inert = !open;
+        menuIndex.inert = open;
+        menuLangsToggle.setAttribute('aria-expanded', String(open));
+        if (open) showCurrent(menuLangs.querySelector('[data-lang-list]'));
+      }
+      menuLangsToggle.addEventListener('click', () => setMenuLangs(!menuLangsOpen()));
+
+      // Whichever list is open, by its toggle (for Escape and picking).
+      const openLangToggle = () => (headerLangsOpen() ? headerLangsToggle : menuLangsOpen() ? menuLangsToggle : null);
+      function closeLangs() {
+        setHeaderLangs(false);
+        setMenuLangs(false);
+      }
+
+      document.addEventListener('click', (e) => {
+        const pick = e.target.closest('[data-lang]');
+        if (pick) {
+          e.preventDefault();
+          const toggle = openLangToggle();
+          currentLang = pick.dataset.lang;
+          renderLangs();
+          closeLangs();
+          toggle?.focus({ preventScroll: true });
+        }
+        // A section link in the menu: close it, then glide to the section.
+        const goto = e.target.closest('#menu [data-goto]');
+        if (goto) {
+          e.preventDefault();
+          const target = document.getElementById(SECTIONS[Number(goto.dataset.goto)].id);
+          closeMenu();
+          target.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block: 'start' });
+          history.replaceState(null, '', `#${target.id}`);
+        }
+        // The extended header closes on a click outside it, or on one of its links.
+        if (!stageTop.contains(e.target) || e.target.closest('#stage-more a')) setExtended(false);
+        // Language lists close on any click outside them.
+        if (!headerLangs.contains(e.target) && !headerLangsToggle.contains(e.target)) setHeaderLangs(false);
+        if (!menuLangs.contains(e.target) && !menuLangsToggle.contains(e.target)) setMenuLangs(false);
+        const c = e.target.closest('[data-copy]');
+        if (c) navigator.clipboard?.writeText(C.email).then(() => { c.textContent = 'Copied'; setTimeout(() => (c.textContent = 'Copy'), 1600); });
+      });
+
+      /* ---- reveals ------------------------------------------------------- */
+      const revealer = new IntersectionObserver(
+        (entries) => { for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); revealer.unobserve(e.target); } },
+        { rootMargin: '0px 0px -10% 0px' },
+      );
+      document.querySelectorAll('[data-reveal]').forEach((el) => revealer.observe(el));
+      // Entrance: wait for the fonts, so lines rise with their real shapes.
+      (document.fonts?.ready ?? Promise.resolve()).then(() => requestAnimationFrame(() => html.classList.add('ready')));
+
+      /* ---- living background: liquid light ------------------------------ */
+      // Smooth, isotropic noise. 2D simplex noise by Ian McEwan / Ashima Arts,
+      // MIT licence (github.com/ashima/webgl-noise).
+      const SIMPLEX = `
+        vec3 permute(vec3 x){ return mod(((x * 34.0) + 1.0) * x, 289.0); }
+        float snoise(vec2 v){
+          const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+          vec2 i = floor(v + dot(v, C.yy));
+          vec2 x0 = v - i + dot(i, C.xx);
+          vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+          vec4 x12 = x0.xyxy + C.xxzz;
+          x12.xy -= i1;
+          i = mod(i, 289.0);
+          vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
+          vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.0);
+          m = m * m; m = m * m;
+          vec3 x = 2.0 * fract(p * C.www) - 1.0;
+          vec3 h = abs(x) - 0.5;
+          vec3 ox = floor(x + 0.5);
+          vec3 a0 = x - ox;
+          m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);
+          vec3 g;
+          g.x = a0.x * x0.x + h.x * x0.y;
+          g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+          return 130.0 * dot(m, g);
+        }
+        // Three octaves only: broad, silky shapes, nothing fine enough to shimmer.
+        float fbm(vec2 p){ float v = 0.0, a = 0.5; for (int i = 0; i < 3; i++){ v += a * snoise(p); p = p * 2.0 + vec2(17.0, 11.0); a *= 0.5; } return v; }`;
+
+      const LIQUID = `
+        #ifdef GL_FRAGMENT_PRECISION_HIGH
+        precision highp float;
+        #else
+        precision mediump float;
+        #endif
+        uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse; uniform float uMouseOn;
+        uniform vec4 uFocus; uniform float uFocusOn; uniform float uIntro;
+        uniform vec3 uBg; uniform vec3 uLight; uniform vec3 uAccent;
+        ${SIMPLEX}
+        void main(){
+          float aspect = uRes.x / uRes.y;
+          vec2 uv = gl_FragCoord.xy / uRes;
+          vec2 p = vec2(uv.x * aspect, uv.y);
+          float t = uTime * 0.022;
+
+          // The pointer: the field leans toward it and lifts softly around it.
+          vec2 dm = p - vec2(uMouse.x * aspect, uMouse.y);
+          float pull = exp(-dot(dm, dm) * 4.0) * uMouseOn;
+          // A hovered entry: light gathers behind its whole shape.
+          vec2 fd = (p - vec2(uFocus.x * aspect, uFocus.y)) / max(uFocus.zw * 1.6, vec2(0.04));
+          float focus = exp(-dot(fd, fd) * 1.2) * uFocusOn;
+          p -= dm * pull * 0.22;
+
+          vec2 w = vec2(fbm(p * 0.9 + vec2(t, -t)), fbm(p * 0.9 + vec2(-t, t) + 4.3));
+          float f = fbm(p * 0.7 + w * 0.85 + vec2(t * 0.5, 0.0)) * 0.5 + 0.5;
+
+          vec3 col = mix(uBg, uLight, smoothstep(0.22, 0.82, f));
+          col = mix(col, uLight * 1.4, smoothstep(0.62, 0.95, f) * 0.45);
+          col = mix(col, uAccent, smoothstep(0.75, 1.0, f) * 0.07);
+          col += (uLight * 1.3 - uBg) * (pull * 0.3 + focus * 1.0);
+          col = mix(uBg, col, uIntro);
+
+          // Dither by under one step of 8-bit colour: dark gradients no longer band.
+          float n = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453);
+          gl_FragColor = vec4(col + (n - 0.5) / 255.0, 1.0);
+        }`;
+
+      const canvas = document.getElementById('bg');
+      const gl = canvas.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+      const S = {
+        mouse: { x: 0.65, y: 0.55, tx: 0.65, ty: 0.55, on: 0, ton: 0 },
+        focus: { v: [0.5, 0.5, 0.1, 0.05], t: [0.5, 0.5, 0.1, 0.05], on: 0, ton: 0, el: null },
+        colors: {},
+        born: performance.now(),
+        raf: 0,
+      };
+      let prog = null;
+
+      if (gl) {
+        const vs = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vs, 'attribute vec2 a; void main(){ gl_Position = vec4(a, 0.0, 1.0); }');
+        gl.compileShader(vs);
+        const fs = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fs, LIQUID);
+        gl.compileShader(fs);
+        if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(fs));
+        const p = gl.createProgram();
+        gl.attachShader(p, vs);
+        gl.attachShader(p, fs);
+        gl.linkProgram(p);
+        gl.useProgram(p);
+        const u = (n) => gl.getUniformLocation(p, n);
+        prog = { p, a: gl.getAttribLocation(p, 'a'), uRes: u('uRes'), uTime: u('uTime'), uMouse: u('uMouse'), uMouseOn: u('uMouseOn'), uFocus: u('uFocus'), uFocusOn: u('uFocusOn'), uIntro: u('uIntro'), uBg: u('uBg'), uLight: u('uLight'), uAccent: u('uAccent') };
+        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(prog.a);
+        gl.vertexAttribPointer(prog.a, 2, gl.FLOAT, false, 0, 0);
+      } else {
+        canvas.style.display = 'none';
+      }
+
+      const hex = (v) => { const h = v.trim().replace('#', ''); return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16) / 255); };
+      function readColors() {
+        const s = getComputedStyle(html);
+        for (const k of ['bg', 'light', 'accent']) S.colors[k] = hex(s.getPropertyValue(`--${k}`));
+      }
+      function resize() {
+        // Full CSS-pixel resolution: smooth gradients need no more, and the
+        // dither works at this scale.
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        if (gl) gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+      function focusTarget() {
+        const el = S.focus.el;
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        S.focus.t = [(r.left + r.width / 2) / innerWidth, 1 - (r.top + r.height / 2) / innerHeight, r.width / 2 / innerHeight, r.height / 2 / innerHeight];
+      }
+
+      function draw(now) {
+        if (!prog) return;
+        const m = S.mouse, f = S.focus, still = reduce();
+        m.x += (m.tx - m.x) * 0.05;
+        m.y += (m.ty - m.y) * 0.05;
+        m.on += (m.ton - m.on) * 0.04;
+        focusTarget();
+        for (let i = 0; i < 4; i++) f.v[i] += (f.t[i] - f.v[i]) * 0.07;
+        f.on += (f.ton - f.on) * 0.06;
+        const age = (now - S.born) / 1000;
+        gl.uniform2f(prog.uRes, canvas.width, canvas.height);
+        gl.uniform1f(prog.uTime, still ? 20 : age + 20);
+        gl.uniform2f(prog.uMouse, m.x, m.y);
+        gl.uniform1f(prog.uMouseOn, still ? 0 : m.on);
+        gl.uniform4f(prog.uFocus, f.v[0], f.v[1], f.v[2], f.v[3]);
+        gl.uniform1f(prog.uFocusOn, still ? 0 : f.on);
+        gl.uniform1f(prog.uIntro, still ? 1 : Math.min(1, age / 1.6));
+        gl.uniform3fv(prog.uBg, S.colors.bg);
+        gl.uniform3fv(prog.uLight, S.colors.light);
+        gl.uniform3fv(prog.uAccent, S.colors.accent);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      }
+      function loop(now) {
+        draw(now);
+        S.raf = !reduce() && !document.hidden && html.dataset.bg !== 'off' ? requestAnimationFrame(loop) : 0;
+      }
+      const restart = () => { cancelAnimationFrame(S.raf); S.raf = requestAnimationFrame(loop); };
+
+      const point = (x, y) => { S.mouse.tx = x / innerWidth; S.mouse.ty = 1 - y / innerHeight; S.mouse.ton = 1; };
+      addEventListener('pointermove', (e) => point(e.clientX, e.clientY), { passive: true });
+      addEventListener('touchmove', (e) => point(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+      html.addEventListener('pointerleave', () => { S.mouse.ton = 0; S.focus.ton = 0; });
+      document.addEventListener('pointerover', (e) => {
+        const el = e.target.closest?.('[data-focus]');
+        S.focus.el = el ?? S.focus.el;
+        S.focus.ton = el ? 1 : 0;
+      });
+      addEventListener('resize', () => { resize(); restart(); });
+      document.addEventListener('visibilitychange', restart);
+
+      /* ---- settings + lab bar ------------------------------------------ */
+      const OPTIONS = {
+        palette: ['forest', 'indigo', 'ink', 'plum', 'petrol', 'slate'],
+        font: ['satoshi', 'general', 'switzer', 'jost', 'urbanist', 'outfit', 'figtree', 'albert', 'geist', 'manrope'],
+        weight: ['light', 'regular'],
+        bg: ['liquid', 'off'],
+        langs: ['2', '8'],
+      };
+      const params = new URLSearchParams(location.search);
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem('lively-split-v2') || '{}'); } catch {}
+      for (const k of Object.keys(OPTIONS)) {
+        const v = params.get(k) || saved[k];
+        if (OPTIONS[k].includes(v)) html.dataset[k] = v;
+      }
+      const lab = document.getElementById('lab');
+      function renderLab() {
+        lab.innerHTML =
+          `<button data-toggle>${lab.classList.contains('closed') ? 'Lab ▴' : 'Lab ▾'}</button>` +
+          Object.entries(OPTIONS)
+            .map(([k, vals]) => `<span class="group"><span class="label">${k}</span>${vals.map((v) => `<button data-k="${k}" data-v="${v}" aria-pressed="${html.dataset[k] === v}">${v}</button>`).join('')}</span>`)
+            .join('');
+      }
+      lab.addEventListener('click', (e) => {
+        if (e.target.closest('[data-toggle]')) { lab.classList.toggle('closed'); return renderLab(); }
+        const b = e.target.closest('[data-k]');
+        if (!b) return;
+        html.dataset[b.dataset.k] = b.dataset.v;
+        try { localStorage.setItem('lively-split-v2', JSON.stringify(Object.fromEntries(Object.keys(OPTIONS).map((k) => [k, html.dataset[k]])))); } catch {}
+        readColors();
+        restart();
+        renderLab();
+        renderLangs();
+      });
+      // Out of the way by default; open it when you want to switch things.
+      lab.classList.add('closed');
+
+      renderLab();
+      renderLangs();
+      readColors();
+      resize();
+      restart();
+    </script>
+  </body>
+</html>
