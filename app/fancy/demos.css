@@ -1,7 +1,6 @@
-/* The crop marks' length and colour animate, so they're registered
-   properties: global names, so outside the layer. An initial value must
-   not depend on font size (1rem would void the whole rule), so the length
-   starts at 0px and the frame sets it. */
+/* The crop marks' length and colour animate, so they are registered
+   (outside the layer: global names). The initial length is 0px because an
+   initial value can't depend on font size. */
 @property --fc-mark {
   syntax: '<length>';
   inherits: false;
@@ -17,10 +16,8 @@
 @layer fancy {
   /* --- Demos: the frame, the playground, demo pages --------------------- */
   [data-mode='fancy'] {
-    /* The frame for a demo (playground and demo pages): no box, no title
-       bar, only crop marks at the four corners, like a print plate, around a
-       quiet ground. The marks draw in when the demo arrives (Motion), step
-       outward and turn to the accent when you point at it. */
+    /* A demo's frame (playground and demo pages): crop marks at the four
+       corners, stepping out and lighting up on hover. */
     [data-frame] {
       --gap: 0.65rem;
       position: relative;

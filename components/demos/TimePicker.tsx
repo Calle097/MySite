@@ -48,12 +48,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
     the same page from colliding. */
 const optionId = (prefix: string, value: number) => `${prefix}-${value}`;
 
-/**
- * Parse "HH:mm". Number.isFinite, not Number.isNaN: isNaN doesn't coerce, so
- * isNaN(undefined) is false and "12" (no colon) would slip through as
- * { h: 12, m: undefined } and be re-emitted as the string "12:undefined".
- * Out-of-range values are rejected too — "99:99" is not a time.
- */
+/** Parses "HH:mm"; anything else, or out of range, is null. (isFinite, since
+    "12" with no colon gives an undefined minute, which isNaN lets through.) */
 function parseHHmm(v?: string | null): { h: number; m: number } | null {
   if (!v) return null;
   const parts = v.split(':');
@@ -103,9 +99,7 @@ function ScrollColumn({
     e.preventDefault();
     const { start, step } = move;
 
-    // Walk past disabled rows instead of stopping on the first one — landing
-    // on a blocked slot and refusing to move left the arrows wedged there,
-    // with the native scroll suppressed too.
+    // Walk past disabled rows, so the arrows never stop on a blocked slot.
     for (let i = start + step; i >= 0 && i < items.length; i += step) {
       const value = items[i];
       if (!isDisabled?.(value)) {
@@ -163,9 +157,7 @@ function ScrollColumn({
               type="button"
               tabIndex={-1}
               onClick={() => !disabled && onSelect(v)}
-              // aria-disabled:, not disabled:, to match the attribute above —
-              // the disabled: variants stopped applying the moment the real
-              // attribute came off, leaving blocked slots looking available.
+              // aria-disabled: variants, to match the attribute above.
               className={`w-full cursor-pointer text-center text-sm tabular-nums transition-colors aria-disabled:cursor-not-allowed aria-disabled:opacity-30 ${
                 active && !disabled ? 'font-semibold' : ''
               }`}
@@ -220,10 +212,8 @@ export function TimePicker({
     left = Math.min(left, window.innerWidth - margin - POPOVER_WIDTH);
     left = Math.max(left, margin);
 
-    // Flip above the trigger when there isn't room below. The popover is
-    // position: fixed, so an overflowing one can't be scrolled into view —
-    // it would simply be unreachable. Horizontal was already clamped; this
-    // is the matching vertical case.
+    // Flip above the trigger when there isn't room below: the popover is
+    // fixed, so an overflowing one could never be scrolled into view.
     const height = ITEM_HEIGHT * VISIBLE_ITEMS + COLUMN_HEADER_HEIGHT + FOOTER_HEIGHT;
     const below = rect.bottom + 4;
     const top = below + height + margin > window.innerHeight ? Math.max(margin, rect.top - 4 - height) : below;
@@ -244,18 +234,14 @@ export function TimePicker({
 
   const close = useCallback(() => {
     setOpen(false);
-    // Send focus back where it came from; without this it fell to <body>, and
-    // the popover portals to the end of the document. preventScroll because
-    // this also runs on outside-click: if the trigger has been scrolled out of
-    // view, restoring focus would otherwise yank the page back to it.
+    // Focus goes back to the trigger. preventScroll: this also runs on an
+    // outside click, when the trigger may be scrolled out of view.
     triggerRef.current?.focus({ preventScroll: true });
   }, []);
 
-  // Focus the popover once per opening, so Tab lands on the columns next
-  // rather than walking the rest of the page. Latched: `position` is a
-  // dependency because the portal isn't mounted on the first pass, but it also
-  // changes on every scroll and resize — without the latch, scrolling the page
-  // stole focus back from whichever column the user had tabbed into.
+  // Focus the popover once per opening, so Tab moves into the columns.
+  // Latched: `position` changes on every scroll and resize, and must not
+  // pull focus back from a column.
   const focusedThisOpen = useRef(false);
   useEffect(() => {
     if (!open) {
@@ -299,9 +285,8 @@ export function TimePicker({
 
   const handleNow = () => {
     const now = new Date();
-    // Round to the 5-minute grid the minute column offers. Rounding 58 up
-    // gives 60, which is the next hour — carry it instead of taking % 60,
-    // which silently threw the hour away and turned 10:58 into 10:00.
+    // Round to the 5-minute grid; 58 rounds to 60, which carries to the next
+    // hour.
     const rounded = Math.round(now.getMinutes() / 5) * 5;
     const h = (now.getHours() + Math.floor(rounded / 60)) % 24;
     const m = rounded % 60;

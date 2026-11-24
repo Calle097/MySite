@@ -4,18 +4,13 @@ import { LiquidBackground } from '@/components/fancy/LiquidBackground';
 import { PageLayout } from '@/components/fancy/PageLayout';
 
 /**
- * Rendered by the real routes at /not-found/ and /it/not-found/, which Caddy
- * serves for any unmatched path (see deploy/Caddyfile). It is NOT Next's
- * `not-found.tsx`: with a root layout per language and no `app/layout.tsx`,
- * Next has nothing to wrap `/_not-found` in, so it falls back to its own
- * unstyled page — the previous `app/(en)/not-found.tsx` never rendered on
- * any path.
+ * The 404: real routes at /not-found/ and /it/not-found/, which Caddy serves
+ * for any unmatched path. Not Next's not-found.tsx, which renders unstyled
+ * with one root layout per language.
  *
- * Plain: no site chrome, just "404." and one plain <a> home, so the router
- * starts from a clean URL. The fancier version keeps its column (its links
- * are absolute, so they work under whatever URL was mistyped) and lists
- * where to go on the right, one hint per page. This page has no SiteChrome,
- * so it brings the light itself.
+ * It has no SiteChrome. Plain shows "404." and a link home; the fancier
+ * version keeps its column and lists where to go. Every link is absolute,
+ * so it works under whatever path was mistyped.
  */
 export function NotFoundPage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];

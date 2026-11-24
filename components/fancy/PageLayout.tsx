@@ -12,15 +12,11 @@ import { VersionSwitch } from './VersionSwitch';
 type Section = { id: string; title: string };
 
 /**
- * Every page's frame. Plain mode doesn't style any of its wrappers, so a
- * page renders exactly as before: its hero, then its sections. The fancier
- * version (app/fancy.css) turns them into the split: a column that holds
- * still on the left (header, the hero, the index, the version switch) and
- * the content on the right. The fancier-only parts carry `only-fancy`.
+ * Every page's frame. Plain leaves its wrappers unstyled, so a page reads as
+ * its hero, then its sections; the fancier version makes them the split.
  *
- * `sections` are the page's own, in order, matching the ids of its
- * <section>s: the index lists them and follows the scroll. A page can bring
- * a different `index` instead (a demo page lists every demo, itself lit).
+ * `sections` are the page's own <section> ids, in order: the index lists
+ * them and follows the scroll. A demo page brings its own `index` instead.
  */
 export function PageLayout({
   lang,

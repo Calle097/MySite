@@ -3,28 +3,13 @@ import { DICTS, type Lang } from './i18n';
 import { NAME } from './site';
 
 /**
- * The social card, shared by both language trees — `app/(en)/opengraph-image.tsx`
- * and `app/(it)/opengraph-image.tsx` are two-line files that call this.
+ * The social card for both language trees, rendered to a PNG at build time
+ * from the dictionaries. Satori draws it: flexbox only (`display: flex` on
+ * anything with several children) and no Tailwind, hence the hex values.
  *
- * Rendered to a PNG at build time and written into ./out, so nothing runs in
- * production. Copy comes from the dictionaries, so the card and the hero it
- * mirrors cannot drift apart.
- *
- * Satori (what powers ImageResponse) supports a subset of CSS: flexbox only,
- * `display: flex` spelled out on anything with more than one child, and no
- * Tailwind — hence the literal hex values instead of var(--color-*).
- *
- * Drawn at 2x the 1200x630 the platforms ask for. They all downscale and
- * re-encode to JPEG, and the card is displayed around 600 CSS px wide — which
- * is 1200+ device pixels on any modern screen, leaving a 1200px asset with no
- * headroom at all and turning the small type to mush. Rendering at 2400x1260
- * gives their pipeline something to throw away. Facebook's own guidance says
- * to exceed 1200x630 for high-resolution devices; 2400x1260 is inside
- * LinkedIn's and Twitter's limits, and this is flat colour, so the PNG stays
- * small despite the pixel count.
- *
- * Every dimension below is written at 1x and passed through `px()`, so the
- * layout stays legible and the scale is one number to change.
+ * Drawn at 2x the 1200x630 the platforms ask for, so their downscaling and
+ * re-encoding leaves the small type sharp on high-density screens. Sizes are
+ * written at 1x and go through px().
  */
 const SCALE = 2;
 const px = (n: number) => n * SCALE;

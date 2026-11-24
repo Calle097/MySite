@@ -1,42 +1,29 @@
 @import 'tailwindcss';
 
-/* Cascade order, lowest to highest. Tailwind declares the first four;
-   `fancy` comes last, so the fancier version (app/fancy.css) wins over every plain
-   style and utility by layer order alone — no specificity contests, no
-   !important. All site CSS lives in a layer: unlayered rules would beat
-   every layer and break that guarantee. (Demo-only stylesheets sit
-   next to their demos in components/demos.) */
-@layer theme, base, components, utilities, fancy;
+/* Cascade order, lowest to highest: Tailwind's four, then the fancier
+   version (app/fancy.css), then the visibility switches below. Later layers
+   win by order alone, so all site CSS lives in a layer: an unlayered rule
+   would beat them all. */
+@layer theme, base, components, utilities, fancy, visibility;
 
-/* Map the next/font variables to Tailwind font utilities. One family
-   (Wix Madefor Text) for display and body; IBM Plex Mono for small labels.
-   `inline` because next/font sets these on <html> at runtime — the utility
-   must reference the variable rather than bake in a value. */
+/* next/font's variables as Tailwind font utilities. `inline`: next/font sets
+   them on <html>, so a utility must reference the variable, not its value. */
 @theme inline {
   --font-sans: var(--font-wix);
   --font-display: var(--font-wix);
   --font-mono: var(--font-plex-mono);
 }
 
-/* Where the header's full nav takes over from the mobile menu. One name
-   used by both (nav:flex on the nav, nav:hidden on the menu), so they can
-   never disagree. 56rem: below it the full nav no longer fits on one line —
-   at the old 40rem (sm) the name wrapped and "/cv ↓" broke apart. */
+/* Where plain's full nav takes over from its mobile menu (nav:flex,
+   nav:hidden): below 56rem it no longer fits on one line. */
 @theme {
   --breakpoint-nav: 56rem;
 }
 
-/* Palette: dark navy, one theme for everyone. Light text; hairlines sit
-   LIGHTER than the background (on dark themes darker hairlines vanish).
-   These six variables are also the contract DriveInCards relies on, and the
-   tokens the fancier version redefines.
-
-   Declared in @theme, NOT `@theme inline`, which matters: plain @theme both
-   generates the colour utilities (bg-background, text-muted-foreground,
-   border-secondary-darker) and emits the variables to :root, so the rules
-   below and the remaining dynamic color-mix() styles in components can go on
-   reading var(--color-*). `inline` would bake the values into the utilities
-   and leave every one of those var() references undefined. */
+/* The palette: one dark theme; hairlines lighter than the background. The
+   fancier version redefines these. Plain @theme, not `inline`: the variables
+   must also exist on :root, because styles here and in components read
+   var(--color-*) directly. */
 @theme {
   --color-background: #182454;
   --color-background-edge: #17224f;
@@ -46,11 +33,8 @@
   --color-brand-accent: #46a08e;
 }
 
-/* The mono micro-label the whole site is built on: nav, footer, section
-   indices, demo hints. Colour is deliberately NOT part of it — the same
-   shape is used in muted and accent — so pair it with a text-* utility.
-   @utility (not a plain class) so it lands in Tailwind's utilities layer
-   and variants like sm:label and later text-* overrides still work. */
+/* The small mono label (nav, footer, section numbers, demo hints). No
+   colour: pair it with a text-* utility. A utility, so variants work. */
 @utility label {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -60,7 +44,7 @@
 }
 
 @layer base {
-  /* Full-width pages share one fluid gutter instead of a centered max-width. */
+  /* One fluid gutter for full-width pages. */
   :root {
     --gutter: clamp(1.25rem, 4vw, 4.5rem);
   }
@@ -93,8 +77,8 @@
     background-color: color-mix(in srgb, var(--color-brand-accent) 5%, transparent);
   }
 
-  /* Type sizes that the fancier version resizes, so they are classes rather than
-     inline styles (an inline style would beat every layer). */
+  /* Title sizes: classes, not inline styles, so the fancier version can
+     resize them. */
   .hero-title {
     font-size: clamp(2.25rem, 4.5vw, 4.25rem);
   }
@@ -124,28 +108,13 @@
     box-shadow: 0 1px 0 color-mix(in srgb, var(--color-foreground) 7%, transparent) inset;
   }
 
-  /* Mobile menu panel, positioned under the header. It slides in each time
-     the <details> opens (display:none → block re-triggers the animation).
-     Opening only — <details> hides content instantly on close, and that's
-     fine. */
+  /* The mobile menu's panel slides in each time the <details> opens. */
   .menu-panel {
     background: var(--color-background);
     border-color: var(--color-secondary-darker);
     color: var(--color-muted-foreground);
     box-shadow: 0 18px 30px rgba(0, 0, 0, 0.25);
     animation: menu-drop 0.22s ease both;
-  }
-
-  /* Plain / fancy (see lib/mode.ts). Anything that differs between the two
-     is in the page twice, and these show the one for the current mode, so
-     neither flashes on load. needs-js hides controls that cannot work without
-     JavaScript; the pre-paint script sets data-js. !important because a
-     visibility switch has to beat the display utilities on the same
-     element (flex, sm:flex…). */
-  html[data-mode='fancy'] .only-plain,
-  html:not([data-mode='fancy']) .only-fancy,
-  html:not([data-js]) .needs-js {
-    display: none !important;
   }
 
   /* CSS-only entrance — runs without JavaScript. */
@@ -157,10 +126,8 @@
     animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
   }
 
-  /* Demo pages embedded by the playground load with a #embed fragment
-     (<iframe src=".../#embed">), making the EmbedMarker element the :target.
-     Hide the scrollbar rail then — scrolling still works — while standalone
-     visits (no fragment) keep their scrollbar. Pure CSS, no JS. */
+  /* A demo in the playground's frame (#embed targets its EmbedMarker): no
+     scrollbar rail; scrolling still works. */
   html:has(#embed:target) {
     scrollbar-width: none;
   }
@@ -169,16 +136,7 @@
     display: none;
   }
 
-  /* Embedded demos also hide the site chrome — standalone visits (no
-     fragment) keep header and footer so nobody gets stranded on a bare page.
-     !important for the same reason as the mode switches above. */
-  html:has(#embed:target) .site-chrome {
-    display: none !important;
-  }
-
-  /* Every decorative animation in this file opts out together. Keep new
-     ones listed here. SpiralDots can't be covered from CSS (SMIL ignores
-     media queries) so it checks the same preference in JS. */
+  /* Every animation in this file stops under reduced motion. */
   @media (prefers-reduced-motion: reduce) {
     .rise,
     .rise-late,
@@ -207,5 +165,18 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* What shows: markup that differs between the two looks is in the page
+   twice, so neither flashes on load; controls that need JavaScript show only
+   with it (data-js, set before paint); a demo in the playground's frame
+   leaves out the site's chrome. */
+@layer visibility {
+  html[data-mode='fancy'] .only-plain,
+  html:not([data-mode='fancy']) .only-fancy,
+  html:not([data-js]) .needs-js,
+  html:has(#embed:target) .site-chrome {
+    display: none;
   }
 }

@@ -1,12 +1,9 @@
 @layer fancy {
   /* --- Header ------------------------------------------------------------
-     Name (home) · pages · language, with a hairline under it. When the
-     column is too narrow for the pages (container query), they fold into
-     Menu, which grows the header sideways across the window as one solid
-     surface from the top of the page down to its line (like the phone bar);
-     the pages appear in the middle and EN and Close travel to the right
-     end. FancyHeader measures --full (the window's width) and --reach
-     (from the column's edge to the window's). */
+     Name · pages · language. When the column is too narrow for the pages
+     (a container query), they fold into Menu, which grows the header across
+     the window. FancyHeader measures --full (the window's width) and
+     --reach (from the column's edge to the window's). */
   [data-mode='fancy'] {
     .fc-header {
       position: relative;
@@ -146,12 +143,9 @@
       transform: rotate(180deg);
     }
 
-    /* The list hangs from the header's line, flush with the line's right
-       end (under EN, also when the header has grown sideways), over a soft
-       frosted haze: crisp along the line, fading out to the left and at the
-       bottom, and fading to nothing exactly where the line ends on the
-       right, never past it. A fixed zone of about five and a half rows: a
-       half-cut row shows there's more, then it scrolls. */
+    /* The list hangs from the line's right end, over a haze that fades out
+       before the line ends. About five and a half rows tall: the cut row
+       shows that it scrolls. */
     .fc-header-langs {
       position: absolute;
       top: calc(100% + 1px);

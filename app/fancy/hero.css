@@ -1,8 +1,5 @@
 @layer fancy {
-  /* --- Hero: the page's title, in the column ---------------------------
-     Plain's hero markup, restyled: no gutter (the column pads), the title
-     sized to hold two lines in the column, the blurb and the place under
-     it; plain's meta row and note are plain only. */
+  /* --- Hero: the page's title, in the column --------------------------- */
   [data-mode='fancy'] {
     .fc-stage-mid [data-part='hero'] {
       min-height: 0;

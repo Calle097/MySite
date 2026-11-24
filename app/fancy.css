@@ -1,24 +1,16 @@
-/* ==========================================================================
-   The fancier version ("fancy" in the code)
-   ==========================================================================
-   The split layout: a column that holds still on the left (header, the
-   page's title, its index, the version switch) and the content on the
-   right, over a slow liquid light. Built on the markup plain mode already
-   has: components/fancy/PageLayout.tsx adds the frame, the pages add hooks
-   (data-part, data-entry, data-reveal).
+/* The fancier version: a still column on the left (header, title, index,
+   version switch), the content on the right, over a slow light.
 
-   Every rule sits in the `fancy` cascade layer (declared last in
-   app/globals.css), so it wins over plain styles and utilities by layer
-   order alone: shared markup keeps its utility classes and the fancier
-   version simply restyles it. Every rule is scoped to [data-mode='fancy']
-   on <html>, set by lib/mode.ts; plain matches nothing here but the switch.
+   It restyles plain's markup. Every rule is scoped to [data-mode='fancy']
+   (lib/mode.ts) and sits in the `fancy` layer, declared last in
+   app/globals.css, so it beats plain styles and utilities by layer order.
 
-   One file per part, imported in cascade order (within one layer, later
-   files win ties, so keep the order). A part's own motion sits at the end
-   of its file, behind the reduced-motion gate:
-     base        the view transition, tokens, page, the label, dashed links
+   One file per part, in cascade order: within the layer later files win
+   ties, so keep the order. A part's own motion ends its file, behind the
+   reduced-motion gate.
+     base        view transition, tokens, page, label, dashed links, mask edge
      layout      the column and the content
-     header      its sideways Menu, the language list
+     header      the column's header: sideways Menu, language list
      hero        the page's title, in the column
      index       the index and the version switch
      content     section titles, entries, the lead paragraph
@@ -26,14 +18,11 @@
      demos       the crop-mark frame, the playground, demo pages, embedding
      home        the home page's own parts
      footer
-     narrow      one column on narrow screens, the phone bar
+     narrow      below 900px: one column, the phone bar
      phone-menu  the phone menu
      motion      what runs across parts: the arrival fade, scroll reveals
 
-   Narrow screens start below 900px (narrow.css and the short-screen
-   queries); components/fancy/PhoneMenu.tsx closes the menu at the same
-   width (WIDE), so change them together.
-   ========================================================================== */
+   900px is also WIDE in components/fancy/PhoneMenu.tsx: change both. */
 
 @import './fancy/base.css';
 @import './fancy/layout.css';

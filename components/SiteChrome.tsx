@@ -9,15 +9,13 @@ import { RevealObserver } from './RevealObserver';
 import { LiquidBackground } from './fancy/LiquidBackground';
 
 /**
- * The site's frame around every page: the skip link, and plain mode's
- * header and footer. The fancier version has its own header, index and footer
- * inside each page's layout (components/fancy/PageLayout.tsx), so the two
- * here are plain only.
+ * Around every page: the skip link and plain's header and footer (the
+ * fancier version brings its own, in PageLayout).
  */
 export function SiteChrome({ lang, children }: { lang: Lang; children: React.ReactNode }) {
   const dict = DICTS[lang];
 
-  // File-path labels, plain mode's look.
+  // Plain labels its pages as paths.
   const pathLinks = PAGES.map((page) => ({
     href: pageHref(lang, page),
     label: `/${page}${isFile(page) ? ' ↓' : ''}`,
@@ -35,9 +33,8 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
       </a>
 
       <header className="site-chrome site-header only-plain gutter sticky top-0 z-40 flex items-baseline justify-between gap-x-6 border-b py-5 backdrop-blur-md">
-        {/* The way into the fancier version sits by the name instead of
-            among the pages. Below 360px it would push the header to two
-            lines, so it steps aside there; the hero's line still offers it. */}
+        {/* The way into the fancier version, by the name. Below 360px it
+            would wrap the header; the hero's line still offers it there. */}
         <span className="flex items-baseline gap-4">
           <Link href={pageHref(lang, 'home')} className="font-display text-lg font-semibold tracking-tight">
             {NAME}
@@ -47,9 +44,7 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
           </ModeSwitch>
         </span>
 
-        {/* Desktop nav. The CV is a file, not a route — a Next <Link> would
-            prefetch it as an RSC payload (cv.pdf.txt → 404), so it gets a
-            plain <a>. */}
+        {/* The CV is a file: a plain <a> (see CV_PATH). */}
         <nav className="hidden items-baseline gap-6 font-mono text-sm nav:flex text-muted-foreground">
           {pathLinks.map((l) =>
             l.file ? (
@@ -65,8 +60,7 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
           <LangSwitcher lang={lang} />
         </nav>
 
-        {/* Mobile nav — plain <a> links so navigation is a document load and
-            the menu closes on selection. */}
+        {/* Plain <a>s: a full page load closes the menu. */}
         <MobileMenu label="menu ▾" navLabel={dict.nav.pages}>
           {pathLinks.map((l) => (
             <a key={l.href} href={l.href} className="transition-colors hover:text-brand-accent">

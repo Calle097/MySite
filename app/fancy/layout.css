@@ -1,10 +1,9 @@
 @layer fancy {
   /* --- Layout ------------------------------------------------------------
-     Left: the column, which holds still while the content scrolls past. It
-     is a size container, so its header adapts to the column, not the
-     window, and it sits above the content (z-index) so the header's
-     sideways growth covers it. overflow-x: clip keeps that growth (it
-     reaches the window's right edge) from adding a sideways scrollbar. */
+     The column holds still on the left. It is a size container (its header
+     adapts to it, not to the window) and sits above the content, which the
+     header's sideways growth covers; overflow-x: clip keeps that growth
+     from adding a sideways scrollbar. */
   [data-mode='fancy'] {
     .fc-page {
       display: grid;
@@ -33,10 +32,8 @@
       padding-block: 2rem;
     }
 
-    /* The content: straight on the light, with a soft wash behind the text
-       instead of a panel; centred in its column so wide screens keep even
-       space either side. Section numbers count here, so fancier-only
-       sections number in sequence. */
+    /* The content, over a soft wash. Sections are counted here, so the
+       fancier-only ones number in sequence. */
     .fc-flow {
       min-width: 0;
       padding: 18vh clamp(1.5rem, 5vw, 6rem) 2.5rem clamp(2rem, 4vw, 4.5rem);

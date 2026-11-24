@@ -4,11 +4,9 @@ import { useEffect, useRef } from 'react';
 import { MODE_EVENT } from '@/lib/mode';
 
 /**
- * The canvas for the fancier version's liquid light. The light itself
- * (lib/fancy/liquid-light.ts) is imported only once the fancier version is on, so
- * plain visitors never download it; it stops when the mode goes back to
- * plain. Never inside a frame: the playground embeds each demo's page, and
- * seven copies of the light at once would be heavy.
+ * The canvas for the fancier version's light. The light's code loads only
+ * once that version is on, and stops when it goes back to plain. Never in a
+ * frame: the playground shows seven demo pages at once.
  */
 export function LiquidBackground() {
   const canvas = useRef<HTMLCanvasElement>(null);

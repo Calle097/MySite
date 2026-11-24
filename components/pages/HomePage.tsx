@@ -10,12 +10,7 @@ import { SectionHeader } from '@/components/SectionHeader';
 import { SpiralDots } from '@/components/demos/SpiralDots';
 import { PageLayout } from '@/components/fancy/PageLayout';
 
-/**
- * The same facts the page already states, in the form search engines read:
- * who the site is about, and that it is this person's site. Every value is
- * derived from the dictionary rather than retyped, so the two languages
- * cannot drift from the copy above them.
- */
+/** The page's facts for search engines (schema.org), from the dictionary. */
 function structuredData(lang: Lang) {
   const dict = DICTS[lang];
   const home = `${SITE_URL}${prefix(lang)}/`;
@@ -25,7 +20,7 @@ function structuredData(lang: Lang) {
     '@graph': [
       {
         '@type': 'Person',
-        // Stable across both language trees — one person, described twice.
+        // The same id in both languages: one person.
         '@id': `${SITE_URL}/#person`,
         name: NAME,
         url: home,
@@ -47,11 +42,9 @@ function structuredData(lang: Lang) {
 }
 
 /**
- * Plain mode renders this as it always has. The fancier version lays it out
- * through PageLayout and app/fancy.css, using the hooks here: data-part
- * names a piece, data-entry marks an entry, data-reveal and stagger() set
- * up the scroll reveals (components/RevealObserver.tsx). Two sections are fancier only: the
- * playground teaser and About.
+ * The home page. The fancier version restyles it through its hooks
+ * (data-part, data-entry, data-reveal) and adds two sections of its own:
+ * the playground teaser and About.
  */
 export function HomePage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];

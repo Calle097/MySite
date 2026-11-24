@@ -6,15 +6,10 @@ import { EmbedMarker } from '../EmbedMarker';
 import { PageLayout } from './PageLayout';
 
 /**
- * Every demo page's frame. Plain: the demo as it always was (the column's
- * text is fancier-only). The fancier version keeps its column, with the way
- * back to the playground, the demo's title, caption, what it is built with
- * and its source, and an index of every demo with this one lit; the demo
- * sits on the right in the same crop-mark frame as in the playground.
- *
- * Embedded in the playground (its frames load the page with #embed, which
- * targets the EmbedMarker here) the site's chrome and the column step
- * aside and only the demo shows (app/globals.css, app/fancy/demos.css).
+ * Every demo page. Plain shows the demo alone; the fancier version adds its
+ * column (back to the playground, title, caption, what it's built with, an
+ * index of every demo) and frames the demo with crop marks. In the
+ * playground's frames (#embed) only the demo shows.
  */
 export function DemoLayout({ lang, slug, children }: { lang: Lang; slug: DemoSlug; children: ReactNode }) {
   const dict = DICTS[lang];

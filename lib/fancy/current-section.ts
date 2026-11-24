@@ -1,10 +1,8 @@
 import { useSyncExternalStore } from 'react';
 
 /**
- * Which of the page's sections is in the middle of the view (the fancier version).
- * One value, written by the section index as you scroll and read by every
- * list that shows the sections (the column's index, the phone menu), so the
- * two can never disagree.
+ * Which section is in the middle of the view: one value, written by the
+ * column's index, read by it and by the phone menu, so they always agree.
  */
 let current = 0;
 const listeners = new Set<() => void>();

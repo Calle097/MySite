@@ -1,12 +1,9 @@
 @layer fancy {
   /* --- Phone menu --------------------------------------------------------
-     components/fancy/PhoneMenu.tsx. Solid, so nothing
-     moves behind it, with one still glow from where the circle opened
-     (--ox/--oy). It fits the screen without scrolling down to a small
-     phone with its browser bars showing: spacing and the page names scale
-     with svh (the viewport with the bars shown, the smallest case). Only
-     a phone held sideways scrolls it, as a last resort. While it is open
-     the page is locked, the scrollbar's width put back as padding. */
+     Fits a small phone without scrolling: spacing and the page names scale
+     with svh (the viewport with the browser bars shown). Only a phone held
+     sideways scrolls it. While open, the page is locked, the scrollbar's
+     width put back as padding. */
   [data-mode='fancy'] {
     &.fc-menu-open {
       overflow: hidden;
@@ -74,10 +71,8 @@
       }
     }
 
-    /* The index and the languages share one slot, all the free space
-       between the pages and the bottom row: EN swaps one for the other, so
-       the menu never grows. Whichever shows fills it and scrolls inside it
-       when it holds more than fits, its bottom edge fading so that's clear. */
+    /* The index and the languages share the free space between the pages
+       and the bottom row, and scroll inside it, fading at the bottom. */
     .fc-menu-slot {
       position: relative;
       flex: 1 1 0;

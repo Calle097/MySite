@@ -1,19 +1,9 @@
 import { SOURCE_URL } from './site';
 
 /**
- * The one registry of playground demos.
- *
- * A demo's slug is the join key across four places: the route folder
- * (app/(en)/demos/<slug>/), the dictionary entry that titles and captions it,
- * and the frame height + source link below. It used to be a bare string in
- * three separate `Record<string, …>` maps, where a typo fell back to a default
- * height and silently dropped the "Source ↗" link — the build stayed green.
- *
- * `DemoSlug` is a union, so every lookup is a `Record<DemoSlug, …>` and a
- * missing or misspelled entry is a compile error instead.
- *
- * Order here is display order in the playground, which is also where the
- * section numbers come from — so the two languages can't drift apart.
+ * The playground's demos. The slug joins the route folder, the dictionaries'
+ * entries and the details below; it's a union, so a missing or misspelled
+ * entry anywhere is a compile error. The order here is the playground's.
  */
 export const DEMO_SLUGS = [
   'drive-in',

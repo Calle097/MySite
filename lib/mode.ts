@@ -1,21 +1,12 @@
 /**
- * Plain / fancy: the site's two looks (on screen the fancy one is called
- * "the fancier one").
+ * Plain / fancy, the site's two looks: one attribute on <html>,
+ * data-mode="fancy", which every fancier style is scoped to.
  *
- * The mode is one attribute on <html>: data-mode="fancy" when on, absent
- * when plain. app/fancy.css keys every fancy style off it, so plain mode
- * never matches any of it.
- *
- * MODE_SCRIPT runs inline in <head> before the first paint (both root
- * layouts), so a visitor who chose fancy never sees the plain page first.
- * It also sets data-js, which reveals the switches (they cannot work without
- * JavaScript), and re-applies on the `storage` event: that fires in every
- * other document of the site when the choice changes, so other tabs and the
- * playground's iframes follow the switch live.
- *
- * Components that care (the reveal observer, the light, the menus) listen
- * for MODE_EVENT on window, fired whenever the mode changes in this
- * document.
+ * MODE_SCRIPT runs in <head> before the first paint, so a visitor who chose
+ * fancy never sees plain first. It also sets data-js (the switches need
+ * JavaScript, so they show only with it) and follows the `storage` event, so
+ * other tabs and the playground's iframes switch along. MODE_EVENT fires on
+ * window whenever the mode changes in this document.
  */
 
 import { EASE, circleFrames, reducedMotion } from './motion';
@@ -33,17 +24,12 @@ apply();
 addEventListener('storage',function(e){if(e.key==='${MODE_KEY}'){apply();dispatchEvent(new Event('${MODE_EVENT}'));}});
 }catch(e){}})();`;
 
-/** How long the entrance choreography runs after switching to fancy;
-    app/fancy.css can key entrance delays off data-entering while it lasts. */
-const ENTERING_MS = 1800;
 let switching = false;
-let entering: ReturnType<typeof setTimeout> | undefined;
 
 /**
- * Flip the mode with the circle reveal: the browser snapshots the page, the
- * attribute changes, and the new look grows from (x, y), or, going back to
- * plain, the fancy look shrinks into it. Browsers without View Transitions,
- * and visitors who asked for reduced motion, get the change at once.
+ * Flips the mode with a circle that grows from (x, y) over the old look or,
+ * going back to plain, shrinks the fancy look into it. Without View
+ * Transitions, or with reduced motion, the change is immediate.
  */
 export async function switchMode(x: number, y: number) {
   if (switching) return;
@@ -52,25 +38,15 @@ export async function switchMode(x: number, y: number) {
   const html = document.documentElement;
   const toFancy = html.dataset.mode !== 'fancy';
   const apply = () => {
-    // A quick switch back and forth must not let the first timer cut the
-    // second entrance short.
-    clearTimeout(entering);
-    if (toFancy) {
-      html.dataset.mode = 'fancy';
-      html.dataset.entering = '';
-      entering = setTimeout(() => delete html.dataset.entering, ENTERING_MS);
-    } else {
-      delete html.dataset.mode;
-      delete html.dataset.entering;
-    }
+    if (toFancy) html.dataset.mode = 'fancy';
+    else delete html.dataset.mode;
     try {
       localStorage.setItem(MODE_KEY, toFancy ? 'fancy' : 'plain');
     } catch {
-      /* private mode etc. — switching still works, just not remembered */
+      // Private mode: the switch works, it just isn't remembered.
     }
-    // Synchronous, inside the transition's update: listeners (the reveal
-    // observer) put the page into its "before" state in time for the
-    // browser's snapshot of the new look.
+    // Inside the transition's update, so listeners (the reveal observer) set
+    // the page's "before" state in time for the snapshot of the new look.
     window.dispatchEvent(new Event(MODE_EVENT));
   };
 
@@ -80,9 +56,8 @@ export async function switchMode(x: number, y: number) {
       return;
     }
 
-    // Going back, the old (fancy) picture has to sit on top so it can
-    // shrink away; app/fancy.css reads this attribute.
-    html.dataset.vt = toFancy ? 'in' : 'out';
+    // Going back, the old picture must sit on top to shrink away (base.css).
+    if (!toFancy) html.dataset.vt = 'out';
     const transition = document.startViewTransition(apply);
     await transition.ready;
 
@@ -92,9 +67,8 @@ export async function switchMode(x: number, y: number) {
       {
         duration: 800,
         easing: EASE,
-        // Hold the last frame until the browser tears the transition down.
-        // Without it, the shrinking fancy picture snapped back to full size
-        // for one frame first: the flash when returning to plain.
+        // Holds the last frame until the transition ends; otherwise the
+        // shrunk picture flashes back to full size for one frame.
         fill: 'forwards',
         pseudoElement: toFancy ? '::view-transition-new(root)' : '::view-transition-old(root)',
       },
@@ -102,7 +76,7 @@ export async function switchMode(x: number, y: number) {
     await transition.finished;
     reveal.cancel();
   } catch {
-    // A skipped transition rejects; the change itself has still been applied.
+    // A skipped transition rejects; the change itself is already applied.
   } finally {
     delete html.dataset.vt;
     switching = false;

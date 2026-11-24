@@ -1,9 +1,7 @@
 @layer fancy {
   /* --- Content -----------------------------------------------------------
-     Section titles: plain's rule (number, then name) becomes a large title
-     with its number before it, counted (see .fc-flow). Entries: no rows,
-     a hairline above each that draws in and turns to the accent on hover;
-     the hovered one stays lit while its neighbours step back. */
+     Section titles (numbered by a counter, see .fc-flow) and entries: a
+     hairline above each, lit on hover while the neighbours step back. */
   [data-mode='fancy'] {
     [data-rule] {
       display: flex;

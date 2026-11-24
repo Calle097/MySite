@@ -1,20 +1,16 @@
 import { LANG_KEY, type Lang } from './index';
 
 /**
- * The language redirect each root layout runs in <head>, before the page
- * paints. Both leave the demo pages alone: each playground embeds its own
- * language's demos, and a redirect would drop the #embed fragment those
- * iframes rely on. Both keep the query and the #fragment.
+ * The language redirect each root layout runs before the page paints. Both
+ * keep the query and #fragment, and leave demo pages alone (each playground
+ * frames its own language's demos, with #embed).
  *
- * English tree: a first visit with an Italian browser (and no saved choice),
- * or a saved 'it', goes to the /it mirror. The `/it` guard is load-bearing,
- * not defensive: this tree's layout also renders the 404 page, which Caddy
- * serves under the path the visitor asked for; without it, an Italian
- * visitor hitting /it/typo/ would be sent to /it/it/typo/, another 404,
- * another redirect, forever.
+ * English tree: an Italian browser with no saved choice, or a saved 'it',
+ * goes to /it. It skips /it paths: this layout also renders the 404, which
+ * Caddy serves under any mistyped path, /it/… included, and redirecting
+ * those would loop.
  *
- * Italian tree: a saved 'en' goes back to the English page; otherwise anyone
- * landing on /it stays.
+ * Italian tree: a saved 'en' goes to the English page.
  */
 export const LOCALE_SCRIPT: Record<Lang, string> = {
   en: `(function(){try{

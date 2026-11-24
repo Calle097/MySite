@@ -14,13 +14,10 @@ export const LANGUAGES: readonly { lang: Lang; name: string }[] = [
 ];
 
 /**
- * The current page's path in another language. Strips any /it prefix to get
- * the English path, then builds the Italian one back from it, so both are
- * derived the same way and keep the trailing slash the rest of the site
- * uses (next.config `trailingSlash`); building them independently once
- * handed back a slashless '/it' for home, costing a redirect per switch.
- * The lookahead anchors on '/it' only when the next character ends the
- * segment, so a future '/italy' route would not be mangled.
+ * The current page's path in another language: the English path first (any
+ * /it prefix stripped, and only a whole /it segment, so /italy survives),
+ * then the Italian one built from it, both with the trailing slash the site
+ * uses.
  */
 export function pathIn(lang: Lang, pathname: string) {
   const enPath = pathname.replace(/^\/it(?=\/|$)/, '') || '/';
@@ -71,14 +68,11 @@ export interface Dict {
     open: string;
     /** The fancier playground's line under the intro; counts the demos. */
     summary: string;
-    /** How each demo is listed on the playground page. Keyed by slug rather
-        than ordered, so EN and IT cannot drift apart — display order comes
-        from DEMO_SLUGS. Record<DemoSlug, …> means adding a demo without
-        writing both translations is a compile error. */
+    /** Keyed by slug (order comes from DEMO_SLUGS), so a demo without both
+        translations is a compile error. */
     items: Record<DemoSlug, { title: string; caption: string }>;
   };
-  /** Strings used *inside* the demos themselves, as opposed to
-      `playground.items`, which is how they are listed on the index page. */
+  /** Strings inside the demos themselves. */
   demos: {
     driveIn: {
       scroll: string;
@@ -114,8 +108,8 @@ export interface Dict {
       earlier: string;
       later: string;
       activities: { title: string; minutes: number }[];
-      /** Journey length in minutes — the displayed "1 h 25 min" is derived
-          from this, so the label and the arrival arithmetic cannot disagree. */
+      /** In minutes: the "1 h 25 min" label and the arrival time both come
+          from it. */
       train: { from: string; to: string; minutes: number };
     };
   };
@@ -142,8 +136,8 @@ export interface Dict {
     /** playground counts the demos. */
     hints: { home: string; about: string; playground: string; stack: string; cv: string };
   };
-  /** The fancier version's header uses plain words instead of the /path labels; the
-      rest names the parts of its menu and index. */
+  /** Page names in words (plain's header uses /paths), and the parts of the
+      fancier version's menu and index. */
   nav: {
     home: string;
     about: string;

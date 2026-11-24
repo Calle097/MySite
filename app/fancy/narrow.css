@@ -1,8 +1,7 @@
 @layer fancy {
   /* --- Narrow screens ----------------------------------------------------
-     One column: the hero, then the content. The phone bar and menu take
-     over the column's header, index and switch; on wide screens the bar is
-     not there (this rule comes first, so the narrow one below wins). */
+     One column; the phone bar and menu replace the column's header, index
+     and switch. */
   [data-mode='fancy'] .fc-phone-bar {
     display: none;
   }

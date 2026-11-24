@@ -208,10 +208,9 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
     const live = sel.getRangeAt(0);
     if (!editorRef.current?.contains(live.startContainer)) return null;
 
-    // A caret that has moved *behind* the marker is no longer typing a query.
-    // Range.setEnd would silently collapse in that case and hand back an empty
-    // string, which reads as "empty query" rather than "dismiss me" — so the
-    // palette used to hang around showing the default results forever.
+    // A caret that has moved behind the marker is no longer typing a query:
+    // null, so the palette closes. (Range.setEnd would collapse and return an
+    // empty string, which reads as an empty query.)
     const afterMarker = document.createRange();
     afterMarker.setStartAfter(marker);
     afterMarker.collapse(true);
@@ -335,13 +334,9 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
   const latest = useRef({ open, openPalette, closePalette, readQuery });
   latest.current = { open, openPalette, closePalette, readQuery };
 
-  // The @ trigger listens for the NATIVE beforeinput, not React's onBeforeInput.
-  // React synthesises that one from textInput/keypress/composition events, so
-  // e.nativeEvent is not an InputEvent and on the keypress fallback path it
-  // carries no .data at all — the palette would simply never open there. The
-  // native event always reports the character, which is the whole reason this
-  // lives on beforeinput instead of keydown: mobile virtual keyboards report
-  // keydown as "Unidentified".
+  // The @ trigger listens to the native beforeinput: it always reports the
+  // typed character, where React's synthesised onBeforeInput may carry no
+  // data, and mobile keyboards report keydown as "Unidentified".
   useEffect(() => {
     const el = editorRef.current;
     if (!el) return;
@@ -363,10 +358,7 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
     if (!open) return;
 
     const onSelectionChange = () => {
-      // Arrow keys move the caret without firing `input`, so this is the only
-      // place the query can be re-read. null means the caret has left the
-      // query entirely — dismiss; otherwise track it, since moving the caret
-      // back through the text narrows what was typed.
+      // null: the caret has left the query, so dismiss; otherwise follow it.
       const q = latest.current.readQuery();
       if (q === null) latest.current.closePalette();
       else setQuery(q);
@@ -481,11 +473,9 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
           aria-haspopup="listbox"
           aria-autocomplete="list"
           aria-activedescendant={open && results[activeIndex] ? optionId(uid, results[activeIndex].id) : undefined}
-          // Driven by the parsed segments rather than CSS :empty, because
-          // contenteditable leaves a filler <br> or an empty text node behind
-          // after the first edit and :empty then never matches again. This is
-          // the same emptiness the readout below reports, so the placeholder
-          // and the "plain text" panel can never disagree.
+          // From the parsed segments, not CSS :empty: contenteditable leaves
+          // a filler <br> behind after the first edit, so :empty stops
+          // matching. The readout below uses the same emptiness.
           data-placeholder={strings.empty}
           data-empty={segments.length === 0 || undefined}
           className="composer-editor min-h-24 w-full border p-3 text-sm leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"

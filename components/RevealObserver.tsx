@@ -5,21 +5,17 @@ import { usePathname } from 'next/navigation';
 import { MODE_EVENT } from '@/lib/mode';
 
 /**
- * The fancier version's scroll reveals. The markup opts in with
- * data-reveal="rise" (fades up), "mask" (a heading's [data-line] children
- * rise from behind a clean edge), "rule" (a section title rises out of its
- * own edge) or "frame" (a demo frame's crop marks draw in from the
- * corners); elements that reveal together carry stagger() (lib/motion.ts).
- * This watches every [data-reveal] element on the page and marks it
- * data-shown once it scrolls into view; app/fancy/motion.css animates that
- * change. Each element reveals once. Plain mode ignores all of it.
+ * The fancier version's scroll reveals. Markup opts in with data-reveal:
+ * "rise" (fades up), "mask" (a heading's [data-line] children rise from
+ * behind an edge), "rule" (a section title rises out of its own edge) or
+ * "frame" (a demo frame's crop marks draw in); elements that reveal together
+ * carry stagger(). Each is marked data-shown once it scrolls into view, and
+ * app/fancy/motion.css animates that.
  *
- * Active only in the fancier version. While active it sets data-observing on <html>:
- * the stylesheet's failsafe shows everything after a moment if that never
- * happens (a script error), so content can never stay hidden.
- *
- * Restarts on every navigation (new elements) and on every switch to fancy,
- * clearing data-shown first so whatever is on screen plays its entrance.
+ * Content is hidden only while data-observing is on <html>, which this sets
+ * once it runs: if the script never starts, nothing stays hidden. It
+ * restarts on every navigation and every switch to fancy, so what is on
+ * screen plays its entrance again.
  */
 export function RevealObserver() {
   const pathname = usePathname();

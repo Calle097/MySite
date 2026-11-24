@@ -7,15 +7,9 @@
 
 @layer fancy {
   /* --- Motion -----------------------------------------------------------
-     What runs across the parts: the column's header, index and switch fade
-     in on arrival, and the scroll reveals (components/RevealObserver.tsx
-     marks each [data-reveal] data-shown as it enters the view): the title's
-     lines rise from behind a clean edge, section titles rise out of their
-     own edge, everything else fades up, entries' hairlines draw across, the
-     crop marks draw in. Content is hidden only while the observer runs
-     (data-observing on <html>): if the script never starts, nothing stays
-     hidden. The header's and the phone menu's own motion lives at the end
-     of their files. */
+     What runs across parts: the column fades in on arrival, and the scroll
+     reveals (components/RevealObserver.tsx). Content is hidden only while
+     data-observing is set, so nothing stays hidden without the script. */
   @media (prefers-reduced-motion: no-preference) {
     [data-mode='fancy'] {
       .fc-header,

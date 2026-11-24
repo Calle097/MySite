@@ -18,15 +18,11 @@ import { VersionSwitch } from './VersionSwitch';
 const WIDE = 900;
 
 /**
- * Narrow screens: one bar (name · Menu) and a full-screen menu that opens
- * as a circle from its button. It is a modal dialog: while it is open the
- * page underneath can't move, take focus or be read.
- *
- * Inside: the pages, then one slot that shows either the index or, while
- * EN is open, the languages (so the menu never grows), then EN and the
- * version switch. A section link closes the menu, then glides to the
- * section. Escape closes the language list first, then the menu; switching
- * versions closes both.
+ * Narrow screens: one bar (name · Menu) and a full-screen menu, a modal
+ * dialog that opens as a circle from its button. Inside: the pages, one slot
+ * holding the index or (while EN is open) the languages, so the menu never
+ * grows, then EN and the version switch. Escape closes the languages first,
+ * then the menu.
  */
 export function PhoneMenu({
   lang,
@@ -128,7 +124,6 @@ export function PhoneMenu({
     }
     const frame = requestAnimationFrame(() => requestAnimationFrame(() => setShown(true)));
     return () => cancelAnimationFrame(frame);
-    // Runs once per opening (circle() and the list read refs only).
   }, [open]);
 
   useEffect(() => {

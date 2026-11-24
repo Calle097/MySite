@@ -2,9 +2,8 @@
 
 @layer fancy {
   /* --- The switch --------------------------------------------------------
-     The browser's default crossfade is off; lib/mode.ts animates a growing
-     circle on the new snapshot instead. Going back, the old (fancy)
-     snapshot has to sit on top so it can shrink away. */
+     No crossfade: lib/mode.ts animates the circle. Going back, the old
+     snapshot sits on top so it can shrink away. */
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
