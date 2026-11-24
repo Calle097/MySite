@@ -75,6 +75,12 @@
   [data-mode='lively'] {
     background: var(--lv-bg);
 
+    /* An index link glides to its section instead of jumping there, on
+       every page; not for those who asked for less motion. */
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+
     body {
       background: none;
       color: var(--lv-fg);
