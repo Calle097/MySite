@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 import type { Lang } from '@/lib/i18n';
 import { useCurrentSection } from '@/lib/fancy/current-section';
+import { MODE_EVENT } from '@/lib/mode';
 import { NavLink } from '../NavLink';
 import { LanguageList } from './LanguageList';
 import { SectionList, type IndexItem } from './SectionList';
@@ -23,7 +24,8 @@ const WIDE = 900;
  * Inside: the pages, then one slot that shows either the index or, while
  * EN is open, the languages (so the menu never grows), then EN and the
  * version switch. A section link closes the menu, then glides to the
- * section. Escape closes the language list first, then the menu.
+ * section. Escape closes the language list first, then the menu; switching
+ * versions closes both.
  */
 export function PhoneMenu({
   lang,
@@ -127,11 +129,21 @@ export function PhoneMenu({
     const onResize = () => {
       if (innerWidth >= WIDE) closeMenu();
     };
+    // Switching to plain closes it at once, without the circle (plain never
+    // shows the menu), so switching back finds it closed.
+    const onModeChange = () => {
+      lock(false);
+      setShown(false);
+      setOpen(false);
+      setLangsOpen(false);
+    };
     addEventListener('keydown', onKeyDown);
     addEventListener('resize', onResize);
+    addEventListener(MODE_EVENT, onModeChange);
     return () => {
       removeEventListener('keydown', onKeyDown);
       removeEventListener('resize', onResize);
+      removeEventListener(MODE_EVENT, onModeChange);
     };
   }, [open, langsOpen]);
 

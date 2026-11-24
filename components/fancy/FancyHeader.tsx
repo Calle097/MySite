@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import type { Lang } from '@/lib/i18n';
+import { MODE_EVENT } from '@/lib/mode';
 import { NavLink } from '../NavLink';
 import { LanguageList } from './LanguageList';
 
@@ -14,8 +15,9 @@ export type HeaderLink = { href: string; label: string; /** A file, not a route:
  *
  * Menu grows the header sideways across the whole window (app/fancy.css),
  * with the pages in the middle; EN opens the language list under the line.
- * Both close on Escape (the list first), on a click outside, and when the
- * window changes size (the measurements no longer hold).
+ * Both close on Escape (the list first), on a click outside, when the
+ * window changes size (the measurements no longer hold), and when the
+ * version changes.
  */
 export function FancyHeader({
   lang,
@@ -66,18 +68,20 @@ export function FancyHeader({
         menuButton.current?.focus();
       }
     };
-    const onResize = () => {
+    const closeBoth = () => {
       setExtended(false);
       setLangsOpen(false);
     };
 
     document.addEventListener('pointerdown', onPointerDown);
     addEventListener('keydown', onKeyDown);
-    addEventListener('resize', onResize);
+    addEventListener('resize', closeBoth);
+    addEventListener(MODE_EVENT, closeBoth);
     return () => {
       document.removeEventListener('pointerdown', onPointerDown);
       removeEventListener('keydown', onKeyDown);
-      removeEventListener('resize', onResize);
+      removeEventListener('resize', closeBoth);
+      removeEventListener(MODE_EVENT, closeBoth);
     };
   }, [extended, langsOpen]);
 
