@@ -169,5 +169,6 @@ on a `stats.` subdomain via Caddy, plus one script tag in the site layout.
 
 Pin exact versions and keep lifecycle scripts disabled (`.npmrc`). To update:
 bump deliberately, check the version's publish date and age
-(`npm view <pkg>@<ver> time`), prefer versions at least a week old, reinstall,
-and audit the lockfile before committing.
+(`npm view <pkg>@<ver> time`), prefer versions at least two weeks old (the
+same cooldown Dependabot keeps), reinstall, and audit the lockfile before
+committing.
