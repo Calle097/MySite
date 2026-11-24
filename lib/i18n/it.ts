@@ -162,15 +162,23 @@ export const it: Dict = {
     parts: [
       {
         title: 'Cinema, poi codice',
-        text: "All'università ho studiato cinema e media. Poi ho imparato a programmare da autodidatta, e non ho più smesso.",
+        text: "All'università ho studiato cinema e media. Gli studi mi sono piaciuti ma gli sbocchi lavorativi legati a quel percorso non mi interessavano granché. Così ho imparato a programmare da autodidatta e non solo per lavoro. La tecnologia mi è sempre piaciuta e la programmazione mi incuriosiva già da tempo.",
       },
       {
         title: 'Il primo lavoro',
-        text: "Il mio primo lavoro tech è stato in un'azienda informatica: sviluppo frontend con React e, in parallelo, il distacco come QA su un grande sistema di smart metering, dove sono passato dai test manuali all'automazione con Playwright, fino a coordinare la parte QA.",
+        text: "Il mio primo lavoro tech è stato in un'azienda informatica dove sviluppavo web app in React e TypeScript. Tra queste c'era un gestionale per una catena di palestre usato da più di 500 persone. In parallelo ero in distacco come QA su un grande sistema di smart metering. Lì sono passato dai test manuali all'automazione con Playwright fino a coordinare la parte QA come test manager.",
       },
       {
         title: 'Oggi',
-        text: "Oggi lavoro come freelance dall'Italia e mi piacerebbe trasferirmi in Giappone per lavoro.",
+        text: "Oggi lavoro come freelance dall'Italia. Sviluppo web app con Next.js e React, backend in TypeScript, bot e automazioni in Python. Sono aperto a quasi ogni tipo di lavoro.",
+      },
+      {
+        title: 'Lingue',
+        text: "L'italiano è la mia lingua madre e parlo inglese. Ho anche iniziato a studiare giapponese perché mi piacerebbe trasferirmi in Giappone.",
+      },
+      {
+        title: 'Fuori dal lavoro',
+        text: "Gioco ai videogiochi, soprattutto JRPG. Mi piacciono anche i giochi di carte come Yu-Gi-Oh! e Magic. Per il resto mi piace imparare un po' di tutto dato che sapere non fa mai male.",
       },
     ],
   },

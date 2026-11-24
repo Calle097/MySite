@@ -162,15 +162,23 @@ export const en: Dict = {
     parts: [
       {
         title: 'Film, then code',
-        text: 'I studied film and media at university. Then I taught myself how to program, and it stuck.',
+        text: "I studied film and media at university. I enjoyed the studies but wasn't really interested in the jobs that came with them. So I taught myself how to program, and not only for work. I've always been into technology and programming had already caught my interest.",
       },
       {
         title: 'First job',
-        text: 'My first tech job was at an IT company: frontend work with React, while also being dispatched as QA on a large smart metering system, where I went from manual testing to Playwright automation and eventually coordinated the QA side.',
+        text: 'My first tech job was at an IT company where I built React and TypeScript web apps. One of them was a management system for a gym franchise used by more than 500 people. At the same time I was dispatched as QA on a large smart metering system. There I went from manual testing to Playwright automation and eventually coordinated the QA side as test manager.',
       },
       {
         title: 'Now',
-        text: 'Now I freelance from Italy, and I would like to move to Japan for work.',
+        text: "Now I freelance from Italy. I build web apps with Next.js and React, TypeScript backends and Python bots and automation. I'm open to pretty much any kind of work.",
+      },
+      {
+        title: 'Languages',
+        text: "Italian is my native language and I speak English. I've also started learning Japanese since I'd like to move to Japan.",
+      },
+      {
+        title: 'Outside work',
+        text: 'I play video games, mostly JRPGs. I also like card games such as Yu-Gi-Oh! and Magic. Beyond that I enjoy learning about pretty much anything since knowledge never hurts.',
       },
     ],
   },

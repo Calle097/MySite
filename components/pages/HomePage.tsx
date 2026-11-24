@@ -200,15 +200,11 @@ export function HomePage({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      {/* and the About page, in short. */}
+      {/* and the About page: its opening, then the way to the rest. */}
       <section id="about" data-section data-part="about" className="only-fancy">
         <SectionHeader index={4} title={dict.about.title} />
         <div data-entry data-reveal="rise">
-          {dict.about.parts.map((part, i) => (
-            <p key={part.title} className={i === 0 ? 'fc-lead' : 'fc-para'}>
-              {part.text}
-            </p>
-          ))}
+          <p className="fc-lead">{dict.about.parts[0].text}</p>
           <a href={pageHref(lang, 'about')} className="fc-mono fc-teaser-link">
             {dict.about.open} →
           </a>

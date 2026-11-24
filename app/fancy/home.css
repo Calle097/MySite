@@ -49,14 +49,6 @@
       height: auto;
     }
 
-    /* Home: About, in short: the first part as a lead (content.css), the
-       rest as body text. */
-    .fc-para {
-      max-width: 58ch;
-      margin: 0 0 1rem;
-      color: var(--fc-muted);
-    }
-
     /* Home: contact. The address large enough to read, not to shout. */
     [data-part='email'] {
       padding: 0;
