@@ -1,10 +1,7 @@
-import type { Metadata } from 'next';
 import { SpiralDemoPage } from '@/components/pages/SpiralDemoPage';
+import { demoMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-  title: 'Spirale aurea — demo',
-  robots: { index: false },
-};
+export const metadata = demoMetadata('it', 'spiral');
 
 export default function SpiralDemo() {
   return <SpiralDemoPage lang="it" />;

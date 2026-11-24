@@ -160,7 +160,7 @@ function VehicleCard({ item, index, distance, wide, canHover, progress }: {
       </span>
 
       <div className={`pointer-events-none relative flex h-full flex-col justify-center pb-4 ${facingRight ? 'pl-8 pr-24' : 'pl-24 pr-8'}`}>
-        <h3 className="text-[15px] font-semibold text-foreground">{item.title}</h3>
+        <h2 className="text-[15px] font-semibold text-foreground">{item.title}</h2>
         <p className="mt-1 text-xs leading-snug text-muted-foreground">{item.text}</p>
       </div>
     </motion.div>

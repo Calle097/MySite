@@ -58,7 +58,9 @@ export function PageLayout({
       />
       <div className="fc-stage">
         <FancyHeader lang={lang} homeHref={homeHref} links={pages.filter((p) => p.href !== homeHref)} labels={labels} />
-        <div className="fc-stage-mid">{hero}</div>
+        <div id="content" className="fc-stage-mid">
+          {hero}
+        </div>
         {items.length > 0 && <SectionIndex label={index?.label ?? dict.nav.index} items={items} current={index?.current} />}
         <div className="fc-stage-foot only-fancy">
           <span className="fc-mono">{dict.mode.version}</span>

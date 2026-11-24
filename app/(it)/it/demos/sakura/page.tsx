@@ -1,10 +1,7 @@
-import type { Metadata } from 'next';
 import { SakuraDemoPage } from '@/components/pages/SakuraDemoPage';
+import { demoMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-  title: 'Badge sakura — demo',
-  robots: { index: false },
-};
+export const metadata = demoMetadata('it', 'sakura');
 
 export default function SakuraDemo() {
   return <SakuraDemoPage lang="it" />;

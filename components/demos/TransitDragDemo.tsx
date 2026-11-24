@@ -13,11 +13,8 @@ import type { Dict } from '@/lib/i18n';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
-/**
- * Times are carried as minutes since midnight and formatted only for display.
- * Formatting earlier meant the departure had to be parsed back out of an
- * already-rendered "HH:mm", so any wrap past midnight silently lost a day.
- */
+/** Times are minutes since midnight, formatted only for display, so a wrap
+    past midnight never loses a day. */
 const fmt = (mins: number) => `${pad(Math.floor(mins / 60) % 24)}:${pad(mins % 60)}`;
 
 /** Everything starts at 09:00. */
@@ -189,7 +186,7 @@ export function TransitDragDemo({ strings: dict }: { strings: Dict['demos']['tra
             aria-label={dict.earlier}
             disabled={trainPosition === 0}
             onClick={() => move(trainPosition - 1)}
-            className="cursor-pointer p-0.5 disabled:cursor-not-allowed disabled:opacity-30"
+            className="cursor-pointer p-1 disabled:cursor-not-allowed disabled:opacity-30"
           >
             <ChevronUp className="h-4 w-4" />
           </button>
@@ -198,7 +195,7 @@ export function TransitDragDemo({ strings: dict }: { strings: Dict['demos']['tra
             aria-label={dict.later}
             disabled={trainPosition === items.length}
             onClick={() => move(trainPosition + 1)}
-            className="cursor-pointer p-0.5 disabled:cursor-not-allowed disabled:opacity-30"
+            className="cursor-pointer p-1 disabled:cursor-not-allowed disabled:opacity-30"
           >
             <ChevronDown className="h-4 w-4" />
           </button>

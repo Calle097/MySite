@@ -10,6 +10,11 @@ export const en: Dict = {
   role: 'Frontend Developer & QA Engineer',
   description:
     'Frontend developer & QA engineer. React, Next.js, TypeScript, Playwright. Based in Italy, interested in working in Japan.',
+  pageDescriptions: {
+    about: 'Film studies first, self-taught programmer after.',
+    playground: 'Component experiments.',
+    stack: 'How this site is built and hosted.',
+  },
   hero: {
     line1: 'Frontend developer',
     line2: '& QA engineer',
@@ -205,6 +210,7 @@ export const en: Dict = {
     aiLine: 'Built with help from Claude Code, reviewed line by line',
   },
   notFound: {
+    pageTitle: 'Page not found',
     text: 'Page not found —',
     back: 'Back home',
     title: 'Page not found.',

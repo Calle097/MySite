@@ -1,10 +1,7 @@
-import type { Metadata } from 'next';
 import { CssEffectsDemoPage } from '@/components/pages/CssEffectsDemoPage';
+import { demoMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-  title: 'Effetti solo CSS — demo',
-  robots: { index: false },
-};
+export const metadata = demoMetadata('it', 'css-effects');
 
 export default function CssEffectsDemo() {
   return <CssEffectsDemoPage lang="it" />;

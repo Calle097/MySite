@@ -42,7 +42,10 @@ export function rememberLang(lang: Lang) {
 export interface Dict {
   /** After the name in the page title: "Mattia Callegher — {role}". */
   role: string;
+  /** The site's, and the home page's, description in search results. */
   description: string;
+  /** The other pages' descriptions in search results and link previews. */
+  pageDescriptions: { about: string; playground: string; stack: string };
   hero: {
     line1: string;
     line2: string;
@@ -129,6 +132,8 @@ export interface Dict {
   /** text/back: plain's line. title/where/hints: the fancier version's
       column and its "where to go" list, one hint per page. */
   notFound: {
+    /** The browser tab's title. */
+    pageTitle: string;
     text: string;
     back: string;
     title: string;

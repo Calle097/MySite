@@ -87,11 +87,12 @@ type-check` tells you which. No new CSS is needed for either look.
 ## Adding a page
 
 1. Page component in `components/pages/`, wrapped in `<PageLayout>`
-2. Route files in both trees, as for the others
+2. Route files in both trees, as for the others: their metadata is
+   `pageMetadata(lang, page)` (`lib/metadata.ts`)
 3. Add it to `PAGES` in `lib/pages.ts`: every menu, the 404's list and the
    sitemap follow
-4. Add `nav.<page>` and `notFound.hints.<page>` to both dictionaries (the
-   type checker asks for them)
+4. Add `nav.<page>`, `pageDescriptions.<page>` and `notFound.hints.<page>` to
+   both dictionaries (the type checker asks for them)
 
 ## Dependency policy
 

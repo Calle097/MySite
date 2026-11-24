@@ -1,11 +1,10 @@
-import type { Metadata } from 'next';
+import type { ResolvingMetadata } from 'next';
 import { AboutPage } from '@/components/pages/AboutPage';
+import { pageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-  title: 'About',
-  description: 'Film studies first, self-taught programmer after.',
-  alternates: { canonical: '/about/', languages: { en: '/about/', it: '/it/about/', 'x-default': '/about/' } },
-};
+export function generateMetadata(_props: unknown, parent: ResolvingMetadata) {
+  return pageMetadata('en', 'about', parent);
+}
 
 export default function About() {
   return <AboutPage lang="en" />;

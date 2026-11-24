@@ -1,5 +1,6 @@
 import { DICTS, type Lang } from '@/lib/i18n';
 import { PAGES, isFile, pageHref } from '@/lib/pages';
+import { SkipLink } from '@/components/SkipLink';
 import { LiquidBackground } from '@/components/fancy/LiquidBackground';
 import { PageLayout } from '@/components/fancy/PageLayout';
 
@@ -43,8 +44,9 @@ export function NotFoundPage({ lang }: { lang: Lang }) {
   return (
     <>
       <LiquidBackground />
-      {/* SiteChrome holds <main> on every other page. */}
-      <main id="main">
+      {/* SiteChrome holds these on every other page. */}
+      <SkipLink label={dict.skipToContent} />
+      <main>
         <PageLayout lang={lang} hero={hero}>
           <section data-part="where" className="only-fancy" aria-labelledby="where-to-go">
             <h2 id="where-to-go" className="fc-mono">

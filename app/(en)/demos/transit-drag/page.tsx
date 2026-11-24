@@ -1,10 +1,7 @@
-import type { Metadata } from 'next';
 import { TransitDemoPage } from '@/components/pages/TransitDemoPage';
+import { demoMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-  title: 'Transit drag — demo',
-  robots: { index: false },
-};
+export const metadata = demoMetadata('en', 'transit-drag');
 
 export default function TransitDragDemoPage() {
   return <TransitDemoPage lang="en" />;

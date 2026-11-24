@@ -1,11 +1,10 @@
-import type { Metadata } from 'next';
+import type { ResolvingMetadata } from 'next';
 import { PlaygroundPage } from '@/components/pages/PlaygroundPage';
+import { pageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-  title: 'Playground',
-  description: 'Component experiments.',
-  alternates: { canonical: '/playground/', languages: { en: '/playground/', it: '/it/playground/', 'x-default': '/playground/' } },
-};
+export function generateMetadata(_props: unknown, parent: ResolvingMetadata) {
+  return pageMetadata('en', 'playground', parent);
+}
 
 export default function Playground() {
   return <PlaygroundPage lang="en" />;

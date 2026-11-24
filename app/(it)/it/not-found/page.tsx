@@ -1,13 +1,10 @@
-import type { Metadata } from 'next';
 import { NotFoundPage } from '@/components/pages/NotFoundPage';
+import { notFoundMetadata } from '@/lib/metadata';
 
-// A real route, so it gets the root layout (fonts, palette, locale script).
-// Caddy serves its HTML for every unmatched path under /it/; noindex keeps
-// the URL itself out of search results. Not at /it/404/ — see the EN twin.
-export const metadata: Metadata = {
-  title: 'Pagina non trovata',
-  robots: { index: false },
-};
+// A real route (Caddy serves its HTML for every unmatched path). Not at
+// /404/: Next writes its own unstyled page there, and the clash dropped this
+// route's title.
+export const metadata = notFoundMetadata('it');
 
 export default function NotFound() {
   return <NotFoundPage lang="it" />;

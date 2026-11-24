@@ -1,10 +1,7 @@
-import type { Metadata } from 'next';
 import { TimePickerDemoPage } from '@/components/pages/TimePickerDemoPage';
+import { demoMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-  title: 'Time picker — demo',
-  robots: { index: false },
-};
+export const metadata = demoMetadata('it', 'time-picker');
 
 export default function TimePickerDemo() {
   return <TimePickerDemoPage lang="it" />;
