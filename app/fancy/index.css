@@ -89,30 +89,43 @@
       gap: 0.15rem;
     }
 
-    /* Each option is an .fc-mono label. */
+    /* Each option is an .fc-mono label. Like the language list: the current
+       one has the accent line, pointing at the other draws a pale one. */
     .fc-version-option {
       position: relative;
       padding: 0.2rem 0.4rem;
       transition: color 0.3s ease;
 
-      &[aria-current='true'] {
-        color: var(--fc-fg);
-      }
-
-      &[aria-current='true']::after {
+      &::after {
         content: '';
         position: absolute;
         left: 0.4rem;
         right: 0.4rem;
         bottom: -0.1rem;
         height: 1px;
+        background: color-mix(in srgb, var(--fc-fg) 40%, transparent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.6s var(--fc-ease);
+      }
+
+      &[aria-current='true'] {
+        color: var(--fc-fg);
+      }
+
+      &[aria-current='true']::after {
         background: var(--fc-accent);
+        transform: none;
       }
     }
 
     @media (hover: hover) {
       .fc-version-option:hover {
         color: var(--fc-fg);
+
+        &::after {
+          transform: none;
+        }
       }
     }
 

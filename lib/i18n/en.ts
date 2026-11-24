@@ -26,6 +26,11 @@ export const en: Dict = {
     header: 'Work',
     items: [
       {
+        title: 'Freelance',
+        where: '2024 — now',
+        text: 'Web apps with Next.js and React, TypeScript backends, Python automation and bots.',
+      },
+      {
         title: 'Frontend developer & IT consultant',
         where: '2020 — 2024',
         text: 'Employed at an IT company. React + TypeScript web apps, including a management system for a gym franchise used by 500+ people.',
@@ -34,11 +39,6 @@ export const en: Dict = {
         title: 'QA engineer, on dispatch',
         where: '2020 — 2023',
         text: 'Dispatched by the same company to work as QA on a smart metering platform in the energy sector, later as test manager.',
-      },
-      {
-        title: 'Freelance',
-        where: '2024 — now',
-        text: 'Web apps with Next.js and React, TypeScript backends, Python automation and bots.',
       },
     ],
     fullHistory: 'Full history —',

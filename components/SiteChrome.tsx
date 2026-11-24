@@ -35,7 +35,7 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
           <Link href={pageHref(lang, 'home')} className="font-display text-lg font-semibold tracking-tight">
             {NAME}
           </Link>
-          <ModeSwitch className="needs-js label cursor-pointer whitespace-nowrap text-muted-foreground transition-colors hover:text-brand-accent max-[22.5rem]:hidden">
+          <ModeSwitch className="needs-js label whitespace-nowrap text-muted-foreground transition-colors hover:text-brand-accent max-[22.5rem]:hidden">
             {dict.mode.getFancy}
           </ModeSwitch>
         </span>

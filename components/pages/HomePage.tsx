@@ -105,7 +105,7 @@ export function HomePage({ lang }: { lang: Lang }) {
       {/* Plain only: the fancier version has its switch in the column. */}
       <p className="needs-js only-plain label mt-8 text-muted-foreground">
         {dict.mode.plainNote}{' '}
-        <ModeSwitch className="cursor-pointer uppercase underline underline-offset-4 text-brand-accent transition-colors hover:text-foreground">
+        <ModeSwitch className="uppercase underline underline-offset-4 text-brand-accent transition-colors hover:text-foreground">
           {dict.mode.showFancier}
         </ModeSwitch>
       </p>
@@ -146,9 +146,8 @@ export function HomePage({ lang }: { lang: Lang }) {
           ))}
         </ul>
         <p data-part="aside" data-reveal="rise" className="gutter pt-5 label text-muted-foreground">
-          {dict.work.fullHistory}{' '}
-          <a href={CV_PATH} className="underline underline-offset-4 transition-colors hover:text-brand-accent">
-            {dict.work.cvLabel}
+          <a href={CV_PATH} className="transition-colors hover:text-brand-accent">
+            {dict.work.fullHistory} <span className="underline underline-offset-4">{dict.work.cvLabel}</span> ↓
           </a>
         </p>
       </section>

@@ -44,6 +44,13 @@
 }
 
 @layer base {
+  /* Tailwind's reset leaves buttons with the arrow: what can be pressed
+     shows the hand. */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
   /* One fluid gutter for full-width pages. */
   :root {
     --gutter: clamp(1.25rem, 4vw, 4.5rem);

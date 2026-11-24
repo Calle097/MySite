@@ -26,6 +26,11 @@ export const it: Dict = {
     header: 'Esperienza',
     items: [
       {
+        title: 'Freelance',
+        where: '2024 — oggi',
+        text: 'Web app con Next.js e React, backend in TypeScript, automazioni e bot in Python.',
+      },
+      {
         title: 'Sviluppatore frontend e consulente IT',
         where: '2020 — 2024',
         text: "Dipendente di un'azienda informatica. Web app in React + TypeScript, tra cui un gestionale per una catena di palestre usato da più di 500 persone.",
@@ -34,11 +39,6 @@ export const it: Dict = {
         title: 'QA engineer, in distacco',
         where: '2020 — 2023',
         text: 'In distacco per conto della stessa azienda come QA su una piattaforma di smart metering nel settore energetico, poi come test manager.',
-      },
-      {
-        title: 'Freelance',
-        where: '2024 — oggi',
-        text: 'Web app con Next.js e React, backend in TypeScript, automazioni e bot in Python.',
       },
     ],
     fullHistory: 'Percorso completo —',
