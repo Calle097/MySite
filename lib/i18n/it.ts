@@ -43,7 +43,7 @@ export const it: Dict = {
   playground: {
     title: 'Playground',
     intro:
-      'Cose semplici che ho costruito e che volevo mostrare, così, perché mi andava. Alcune sono finite in produzione, altre sono rimaste nel cassetto.',
+      'Cose semplici che ho costruito e che volevo mostrare, così, perché mi andava. Alcune sono finite in produzione, altre no.',
     openLabel: 'Apri ↗',
     sourceLabel: 'Codice ↗',
     loading: 'caricamento',

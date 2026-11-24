@@ -43,7 +43,7 @@ export const en: Dict = {
   playground: {
     title: 'Playground',
     intro:
-      'Simple things I built and wanted to show, just because. Some shipped, some never left the sketchbook.',
+      "Simple things I built and wanted to show, just because. Some shipped, some didn't.",
     openLabel: 'Open ↗',
     sourceLabel: 'Source ↗',
     loading: 'loading',
