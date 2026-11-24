@@ -1,0 +1,80 @@
+@layer lively {
+  [data-mode='lively'] {
+    /* Stack: one short fact per row, larger than body text; plain's dash
+       before it is plain only. */
+    [data-part='fact'] {
+      padding: 1.05rem 0 1.15rem;
+      color: var(--lv-fg);
+      font-size: clamp(1.05rem, 1.2vw, 1.2rem);
+      line-height: 1.5;
+
+      > [aria-hidden] {
+        display: none;
+      }
+    }
+
+    /* About: the wrapper plain needs for one block of text steps aside;
+       each part's paragraph at reading size. */
+    [data-part='about-text'] {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      color: var(--lv-fg);
+      animation: none;
+
+      p {
+        max-width: 34ch;
+        margin: 0;
+        font-size: clamp(1.3rem, 1.9vw, 1.7rem);
+        font-weight: var(--lv-display-weight);
+        line-height: 1.4;
+        letter-spacing: -0.015em;
+      }
+    }
+
+    /* 404: where to go, each page with a hint. */
+    [data-part='where'] {
+      max-width: 48rem;
+      margin: 0 auto;
+
+      h2 {
+        margin: 0 0 1.25rem;
+      }
+    }
+
+    .lv-where {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid var(--lv-line);
+
+      a {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 0.25rem 1.5rem;
+        padding: 1.1rem 0;
+        border-bottom: 1px solid var(--lv-line);
+      }
+    }
+
+    .lv-where-name {
+      font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+      font-weight: var(--lv-display-weight);
+      letter-spacing: -0.02em;
+      transition: transform 0.6s var(--lv-ease);
+    }
+
+    .lv-where-hint {
+      color: var(--lv-muted);
+    }
+
+    @media (hover: hover) {
+      .lv-where a:hover .lv-where-name {
+        transform: translateX(0.4rem);
+      }
+    }
+
+  }
+}

@@ -1,6 +1,13 @@
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
-import { SITE_URL } from '@/lib/site';
+import { DEMO_SLUGS } from '@/lib/demos';
+import { twoDigits } from '@/lib/lively/format';
+import { revealOrder } from '@/lib/reveal';
+import { EMAIL, SITE_URL } from '@/lib/site';
+import { CopyEmail } from '@/components/CopyEmail';
+import { ModeSwitch } from '@/components/ModeSwitch';
 import { SectionHeader } from '@/components/SectionHeader';
+import { SpiralDots } from '@/components/demos/SpiralDots';
+import { PageLayout } from '@/components/lively/PageLayout';
 
 /**
  * The same facts the page already states, in the form search engines read:
@@ -38,58 +45,113 @@ function structuredData(lang: Lang) {
   };
 }
 
+/**
+ * Plain mode renders this as it always has. Lively mode lays it out through
+ * PageLayout and app/lively.css, using the hooks here: data-part names a
+ * piece, data-entry marks an entry, data-reveal / revealOrder set up the
+ * scroll reveals (lib/reveal.ts). Two sections are lively only: the
+ * playground teaser and About.
+ */
 export function HomePage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];
+  const p = prefix(lang);
+
+  // In page order: the index lists these, and the ids are the anchors.
+  const sections = [
+    { id: 'work', title: dict.work.header },
+    { id: 'projects', title: dict.projects.header },
+    { id: 'playground', title: dict.playground.title },
+    { id: 'about', title: dict.about.title },
+    { id: 'contact', title: dict.contact.header },
+  ];
+
+  const hero = (
+    <section data-part="hero" className="gutter rise pt-8 sm:pt-12">
+      {/* One block per line (same layout as a <br>) so lively mode can
+          raise each line from behind its own edge. */}
+      <h1 data-reveal="mask" className="hero-title font-semibold leading-[1.04] tracking-tight">
+        <span data-line className="block">
+          <span>{dict.hero.line1}</span>
+        </span>
+        <span data-line className="block">
+          <span>
+            {dict.hero.line2}
+            <span data-part="dot" className="text-brand-accent">
+              .
+            </span>
+          </span>
+        </span>
+      </h1>
+
+      <div
+        data-part="meta"
+        data-reveal="rise"
+        style={revealOrder(3)}
+        className="only-plain mt-9 flex flex-wrap gap-x-10 gap-y-2 label text-muted-foreground"
+      >
+        {dict.hero.metaRow.map((m) => (
+          <span key={m}>{m}</span>
+        ))}
+      </div>
+
+      <p
+        data-part="blurb"
+        data-reveal="rise"
+        style={revealOrder(4)}
+        className="rise-late mt-10 max-w-[52ch] leading-relaxed sm:text-lg text-muted-foreground"
+      >
+        {dict.hero.blurb}
+      </p>
+
+      {/* Lively: where, under the blurb (the meta row's first two facts). */}
+      <p data-part="place" data-reveal="rise" style={revealOrder(5)} className="only-lively lv-mono">
+        {dict.hero.metaRow.slice(0, 2).join(' · ')}
+      </p>
+
+      {/* Plain only: lively mode has its switch in the column. */}
+      <p className="needs-js only-plain label mt-8 text-muted-foreground">
+        {dict.mode.plainNote}{' '}
+        <ModeSwitch className="cursor-pointer uppercase underline underline-offset-4 text-brand-accent transition-colors hover:text-foreground">
+          {dict.mode.showFancier}
+        </ModeSwitch>
+      </p>
+    </section>
+  );
 
   return (
-    <div>
+    <PageLayout lang={lang} hero={hero} sections={sections}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(lang)) }}
       />
-      <section className="gutter rise pt-8 sm:pt-12">
-        <h1
-          className="font-semibold leading-[1.04] tracking-tight"
-          style={{ fontSize: 'clamp(2.25rem, 4.5vw, 4.25rem)' }}
-        >
-          {dict.hero.line1}
-          <br />
-          {dict.hero.line2}
-          <span className="text-brand-accent">.</span>
-        </h1>
 
-        <div
-          className="mt-9 flex flex-wrap gap-x-10 gap-y-2 label text-muted-foreground">
-          {dict.hero.metaRow.map((m) => (
-            <span key={m}>{m}</span>
-          ))}
-        </div>
-
-        <p className="rise-late mt-10 max-w-[52ch] leading-relaxed sm:text-lg text-muted-foreground">
-          {dict.hero.blurb}
-        </p>
-      </section>
-
-      <section className="mt-20 sm:mt-28">
+      <section id="work" data-section data-part="work" className="mt-20 sm:mt-28">
         <SectionHeader index={1} title={dict.work.header} />
         <ul>
-          {dict.work.items.map((w) => (
+          {dict.work.items.map((w, i) => (
             <li
               key={w.title}
-              className="gutter group row-hover grid gap-x-10 gap-y-2 border-b py-7 sm:py-8 lg:grid-cols-[10rem_minmax(0,1fr)_minmax(0,1.3fr)] border-secondary-darker">
-              <span className="label lg:pt-1.5 text-muted-foreground">
+              data-entry
+              data-reveal="rise"
+              style={revealOrder(i)}
+              className="gutter group row-hover grid gap-x-10 gap-y-2 border-b py-7 sm:py-8 lg:grid-cols-[10rem_minmax(0,1fr)_minmax(0,1.3fr)] border-secondary-darker"
+            >
+              <span data-part="when" className="label lg:pt-1.5 text-muted-foreground">
                 {w.where}
               </span>
-              <h3 className="text-xl font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1.5 sm:text-2xl">
+              <h3
+                data-part="title"
+                className="text-xl font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1.5 sm:text-2xl"
+              >
                 {w.title}
               </h3>
-              <p className="max-w-[55ch] leading-relaxed lg:pt-0.5 text-muted-foreground">
+              <p data-part="text" className="max-w-[55ch] leading-relaxed lg:pt-0.5 text-muted-foreground">
                 {w.text}
               </p>
             </li>
           ))}
         </ul>
-        <p className="gutter pt-5 label text-muted-foreground">
+        <p data-part="aside" data-reveal="rise" className="gutter pt-5 label text-muted-foreground">
           {dict.work.fullHistory}{' '}
           <a href="/cv.pdf" className="underline underline-offset-4 transition-colors hover:text-brand-accent">
             {dict.work.cvLabel}
@@ -97,22 +159,27 @@ export function HomePage({ lang }: { lang: Lang }) {
         </p>
       </section>
 
-      <section className="mt-20 sm:mt-28">
+      <section id="projects" data-section data-part="projects" className="mt-20 sm:mt-28">
         <SectionHeader index={2} title={dict.projects.header} />
         <ul>
-          {dict.projects.items.map((project) => (
+          {dict.projects.items.map((project, i) => (
             <li
               key={project.title}
-              className="gutter group row-hover grid gap-x-10 gap-y-2 border-b py-7 sm:py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] border-secondary-darker">
-              <h3 className="text-xl font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1.5 sm:text-2xl">
+              data-entry
+              data-reveal="rise"
+              style={revealOrder(i)}
+              className="gutter group row-hover grid gap-x-10 gap-y-2 border-b py-7 sm:py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] border-secondary-darker"
+            >
+              <h3
+                data-part="title"
+                className="text-xl font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1.5 sm:text-2xl"
+              >
                 {project.title}
               </h3>
-              <div className="lg:pt-0.5">
-                <p className="max-w-[60ch] leading-relaxed text-muted-foreground">
-                  {project.text}
-                </p>
+              <div data-part="text" className="lg:pt-0.5">
+                <p className="max-w-[60ch] leading-relaxed text-muted-foreground">{project.text}</p>
                 {project.stack && (
-                  <p className="mt-3 font-mono text-xs leading-relaxed text-muted-foreground">
+                  <p data-part="stack" className="mt-3 font-mono text-xs leading-relaxed text-muted-foreground">
                     {project.stack}
                   </p>
                 )}
@@ -122,23 +189,57 @@ export function HomePage({ lang }: { lang: Lang }) {
         </ul>
       </section>
 
-      <section className="mt-20 sm:mt-28">
+      {/* Lively only: a way into the playground, with the spiral beside it. */}
+      <section id="playground" data-section data-part="playground" className="only-lively">
+        <SectionHeader index={3} title={dict.playground.title} />
+        <a href={`${p}/playground/`} data-entry data-part="teaser" data-reveal="rise">
+          <span data-part="text">
+            <span className="lv-teaser-text">{dict.playground.intro}</span>
+            <span className="lv-mono lv-teaser-link">
+              {dict.playground.open} · {twoDigits(DEMO_SLUGS.length)} →
+            </span>
+          </span>
+          <span data-part="spiral" aria-hidden>
+            <SpiralDots totalDots={150} size={150} dotRadius={1.8} className="lv-teaser-spiral" />
+          </span>
+        </a>
+      </section>
+
+      {/* Lively only: the about page's text, in short. */}
+      <section id="about" data-section data-part="about" className="only-lively">
+        <SectionHeader index={4} title={dict.about.title} />
+        <div data-entry data-reveal="rise">
+          {dict.about.parts.map((part, i) => (
+            <p key={part.title} className={i === 0 ? 'lv-lead' : 'lv-para'}>
+              {part.text}
+            </p>
+          ))}
+        </div>
+      </section>
+
+      <section id="contact" data-section data-part="contact" className="mt-20 sm:mt-28">
         <SectionHeader index={3} title={dict.contact.header} />
-        <div className="gutter pt-8 sm:pt-10">
+        <div data-part="email" data-reveal="rise" className="gutter pt-8 sm:pt-10">
           <a
-            href="mailto:callegher.mattia00@gmail.com"
-            className="group inline-flex items-baseline gap-3 font-semibold tracking-tight underline decoration-transparent underline-offset-8 transition-colors duration-300 hover:decoration-brand-accent"
-            style={{ fontSize: 'clamp(1.35rem, 2.8vw, 2.5rem)', overflowWrap: 'anywhere' }}
+            href={`mailto:${EMAIL}`}
+            className="contact-email group inline-flex items-baseline gap-3 font-semibold tracking-tight underline decoration-transparent underline-offset-8 transition-colors duration-300 hover:decoration-brand-accent"
           >
-            callegher.mattia00@gmail.com
+            {EMAIL}
             <span
               aria-hidden
-              className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 text-brand-accent">
+              className="only-plain transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 text-brand-accent"
+            >
               ↗
             </span>
           </a>
+          <span className="lv-actions only-lively">
+            <CopyEmail email={EMAIL} copy={dict.contact.copy} copied={dict.contact.copied} />
+            <a href={`mailto:${EMAIL}`}>{dict.contact.write}</a>
+            <a href="https://github.com/Calle097">{dict.footer.github} ↗</a>
+            <a href="/cv.pdf">{dict.nav.cv} ↓</a>
+          </span>
         </div>
       </section>
-    </div>
+    </PageLayout>
   );
 }

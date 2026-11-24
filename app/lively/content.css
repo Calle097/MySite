@@ -1,0 +1,119 @@
+@layer lively {
+  /* --- Content -----------------------------------------------------------
+     Section titles: plain's rule (number, then name) becomes a large title
+     with its number before it, counted (see .lv-flow). Entries: no rows,
+     a hairline above each that draws in and turns to the accent on hover;
+     the hovered one stays lit while its neighbours step back. */
+  [data-mode='lively'] {
+    [data-rule] {
+      display: flex;
+      justify-content: flex-start;
+      align-items: baseline;
+      gap: 1.25rem;
+      margin: 0 0 2rem;
+      padding: 0;
+      border: 0;
+      color: var(--lv-fg);
+      font-family: var(--lv-font);
+      font-size: clamp(2.2rem, 3.4vw, 3.4rem);
+      font-weight: var(--lv-display-weight);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      text-transform: none;
+
+      &::before {
+        content: counter(lv-section, decimal-leading-zero);
+        font-family: var(--lv-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        color: var(--lv-muted);
+      }
+
+      /* Plain's own number: the counter replaces it. */
+      > span:first-child {
+        display: none;
+      }
+    }
+
+    [data-entry] {
+      position: relative;
+      display: block;
+      margin: 0;
+      padding: 1.5rem 0 1.6rem;
+      border: 0;
+      background: none;
+      transition: opacity 0.5s ease;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        transform-origin: left;
+      }
+
+      &::before {
+        background: var(--lv-line);
+      }
+
+      &::after {
+        background: var(--lv-accent);
+        transform: scaleX(0);
+        transition: transform 0.7s var(--lv-ease);
+      }
+
+      [data-part='when'] {
+        display: block;
+        margin-bottom: 0.6rem;
+        padding: 0;
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+      }
+
+      [data-part='title'] {
+        margin: 0;
+        font-size: clamp(1.3rem, 1.7vw, 1.6rem);
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        transition: transform 0.6s var(--lv-ease);
+      }
+
+      [data-part='text'] {
+        display: block;
+        max-width: 58ch;
+        margin-top: 0.6rem;
+        padding: 0;
+        color: var(--lv-muted);
+      }
+
+      [data-part='stack'] {
+        margin-top: 0.9rem;
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        line-height: 1.7;
+        text-transform: uppercase;
+      }
+    }
+
+    @media (hover: hover) {
+      [data-entry]:hover {
+        &::after {
+          transform: scaleX(1);
+        }
+
+        [data-part='title'] {
+          transform: translateX(0.4rem);
+        }
+      }
+
+      section:has([data-entry]:hover) [data-entry]:not(:hover) {
+        opacity: 0.42;
+      }
+    }
+
+  }
+}

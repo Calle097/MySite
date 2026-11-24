@@ -1,0 +1,82 @@
+@layer lively {
+  /* --- Layout ------------------------------------------------------------
+     Left: the column, which holds still while the content scrolls past. It
+     is a size container, so its header adapts to the column, not the
+     window, and it sits above the content (z-index) so the header's
+     sideways growth covers it. overflow-x: clip keeps that growth (it
+     reaches the window's right edge) from adding a sideways scrollbar. */
+  [data-mode='lively'] {
+    .lv-page {
+      display: grid;
+      grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+      overflow-x: clip;
+    }
+
+    .lv-stage {
+      container: stage / inline-size;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      height: 100svh;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto auto;
+      /* Named: the header's growth reaches past it to the page's edges. */
+      --pad-x: clamp(1.5rem, 3vw, 3rem);
+      --pad-y: var(--pad-x);
+      padding: var(--pad-y) var(--pad-x);
+    }
+
+    .lv-stage-mid {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-block: 2rem;
+    }
+
+    /* The content: straight on the light, with a soft wash behind the text
+       instead of a panel; centred in its column so wide screens keep even
+       space either side. Section numbers count here, so lively-only
+       sections number in sequence. */
+    .lv-flow {
+      min-width: 0;
+      padding: 18vh clamp(1.5rem, 5vw, 6rem) 2.5rem clamp(2rem, 4vw, 4.5rem);
+      background: linear-gradient(
+        90deg,
+        transparent,
+        color-mix(in srgb, var(--lv-bg) 30%, transparent) 16%,
+        color-mix(in srgb, var(--lv-bg) 30%, transparent)
+      );
+      counter-reset: lv-section;
+    }
+
+    /* By their marker, not their place: About's sections sit in a wrapper. */
+    .lv-flow [data-section] {
+      max-width: 48rem;
+      margin: 0 auto;
+      counter-increment: lv-section;
+    }
+
+    .lv-flow [data-section] + [data-section] {
+      margin-top: clamp(6rem, 16vh, 10rem);
+    }
+
+    /* Lists inside sections: their rows are entries, so no list padding. */
+    .lv-flow [data-section] > ul {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Jumping to a section leaves a little air above its title. */
+    [data-section] {
+      scroll-margin-top: 3rem;
+    }
+
+    /* Shorter windows: tighten the column so everything still fits. */
+    @media (min-width: 900px) and (max-height: 820px) {
+      .lv-stage {
+        --pad-y: 1.25rem;
+      }
+    }
+  }
+}

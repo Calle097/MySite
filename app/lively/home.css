@@ -1,0 +1,94 @@
+@layer lively {
+  [data-mode='lively'] {
+    /* Home: the line after the work list. */
+    [data-part='aside'] {
+      padding: 1.25rem 0 0;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+    }
+
+    /* Home: the playground teaser, the spiral beside the text. */
+    [data-part='teaser'] {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 150px;
+      gap: 2rem;
+      align-items: center;
+
+      [data-part='text'] {
+        margin: 0;
+      }
+
+      [data-part='spiral'] {
+        color: var(--lv-accent);
+      }
+    }
+
+    .lv-teaser-text {
+      display: block;
+    }
+
+    .lv-teaser-link {
+      display: block;
+      margin-top: 1rem;
+      color: var(--lv-fg);
+    }
+
+    .lv-teaser-spiral {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Home: About, in short. */
+    .lv-lead {
+      margin: 0 0 1.5rem;
+      font-size: clamp(1.3rem, 1.9vw, 1.7rem);
+      font-weight: var(--lv-display-weight);
+      line-height: 1.4;
+      letter-spacing: -0.015em;
+    }
+
+    .lv-para {
+      max-width: 58ch;
+      margin: 0 0 1rem;
+      color: var(--lv-muted);
+    }
+
+    /* Home: contact. The address large enough to read, not to shout. */
+    [data-part='email'] {
+      padding: 0;
+    }
+
+    .contact-email {
+      font-size: clamp(1.4rem, 2.2vw, 2rem);
+      font-weight: var(--lv-display-weight);
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+
+    .lv-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.25rem;
+
+      > * {
+        padding: 0.5rem 0.85rem;
+        border: 1px solid var(--lv-line);
+        font-family: var(--lv-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--lv-muted);
+        transition:
+          color 0.3s ease,
+          border-color 0.3s ease;
+      }
+
+      > *:hover {
+        color: var(--lv-fg);
+        border-color: var(--lv-accent);
+      }
+    }
+  }
+}

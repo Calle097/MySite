@@ -1,0 +1,247 @@
+@layer lively {
+  /* --- Motion -----------------------------------------------------------
+     The column's header, index and switch fade in on arrival. Scroll
+     reveals (components/RevealObserver.tsx marks each [data-reveal]
+     data-shown as it enters the view): the title's lines rise from behind
+     a clean edge, section titles rise out of their own edge, everything
+     else fades up, entries' hairlines draw across. Content is hidden only
+     while the observer runs (data-observing on <html>): if the script never
+     starts, nothing stays hidden. */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-mode='lively'] {
+      .lv-header,
+      .lv-index,
+      .lv-stage-foot {
+        animation: lv-fade-in 1.2s ease 0.5s both;
+      }
+
+      .lv-header {
+        transition: border-color 0.25s ease 0.45s;
+
+        &.is-extended {
+          transition: border-color 0s;
+        }
+
+        &::before {
+          transition:
+            clip-path 0.6s var(--lv-ease),
+            opacity 0.25s ease 0.45s,
+            visibility 0s linear 0.7s;
+        }
+
+        &.is-extended::before {
+          transition:
+            clip-path 0.7s var(--lv-ease),
+            opacity 0.25s ease,
+            visibility 0s;
+        }
+      }
+
+      .lv-header-tools {
+        transition: transform 0.7s var(--lv-ease);
+      }
+
+      /* The pages slide out after the surface, one by one; they leave together. */
+      .lv-header-more {
+        transition: visibility 0s linear 0.4s;
+
+        a {
+          opacity: 0;
+          transform: translateX(-0.75rem);
+          transition:
+            color 0.3s ease,
+            opacity 0.3s ease,
+            transform 0.5s var(--lv-ease);
+        }
+      }
+
+      .lv-header.is-extended .lv-header-more {
+        transition: visibility 0s;
+
+        a {
+          opacity: 1;
+          transform: none;
+          transition:
+            color 0.3s ease,
+            opacity 0.5s ease,
+            transform 0.7s var(--lv-ease);
+          transition-delay: 0s, calc(var(--i, 0) * 50ms + 150ms), calc(var(--i, 0) * 50ms + 150ms);
+        }
+      }
+
+      /* The language list opens downward from the line, the options
+         following one by one, the haze fading in under them. */
+      .lv-header-langs {
+        transition:
+          visibility 0s linear 0.35s,
+          translate 0.7s var(--lv-ease);
+
+        &::before {
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .lv-langs {
+          clip-path: inset(0 0 100% 0);
+          transition: clip-path 0.35s var(--lv-ease);
+        }
+
+        li {
+          opacity: 0;
+          transform: translateY(-0.4rem);
+          transition:
+            opacity 0.3s ease,
+            transform 0.5s var(--lv-ease);
+        }
+      }
+
+      .lv-header.is-langs-open .lv-header-langs {
+        transition:
+          visibility 0s,
+          translate 0.7s var(--lv-ease);
+
+        &::before {
+          opacity: 1;
+          transition-duration: 0.5s;
+        }
+
+        .lv-langs {
+          clip-path: inset(0);
+          transition-duration: 0.6s;
+        }
+
+        li {
+          opacity: 1;
+          transform: none;
+          transition:
+            opacity 0.5s ease,
+            transform 0.7s var(--lv-ease);
+          transition-delay: calc(var(--i, 0) * 60ms + 120ms);
+        }
+      }
+
+      /* The phone menu: the pages rise from behind their edge one after
+         another once the circle opens, then the rest follows; EN swaps the
+         index for the languages (fade out, then they rise in). */
+      .lv-menu {
+        .lv-mask > span {
+          transform: translateY(108%);
+          transition: transform 1.2s var(--lv-ease);
+          transition-delay: calc(var(--i, 0) * 90ms);
+        }
+
+        .lv-menu-index li,
+        .lv-menu-foot {
+          opacity: 0;
+          transform: translateY(0.6rem);
+          transition:
+            opacity 0.7s ease,
+            transform 0.9s var(--lv-ease);
+          transition-delay: calc(var(--i, 0) * 60ms + 250ms);
+        }
+
+        &.is-open .lv-mask > span,
+        &.is-open .lv-menu-index li,
+        &.is-open .lv-menu-foot {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .lv-menu-index,
+      .lv-menu-langs {
+        transition:
+          opacity 0.35s ease,
+          visibility 0s linear 0.35s;
+      }
+
+      .lv-menu-slot.is-langs-open .lv-menu-langs,
+      .lv-menu-slot:not(.is-langs-open) .lv-menu-index {
+        transition:
+          opacity 0.35s ease 0.15s,
+          visibility 0s;
+      }
+
+      .lv-menu-langs li {
+        opacity: 0;
+        transform: translateY(0.5rem);
+        transition:
+          opacity 0.5s ease,
+          transform 0.7s var(--lv-ease);
+        transition-delay: calc(var(--i, 0) * 60ms + 150ms);
+      }
+
+      .lv-menu-slot.is-langs-open .lv-menu-langs li {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* Scroll reveals. */
+      [data-reveal='mask'] [data-line] {
+        overflow: clip;
+        padding-bottom: 0.1em;
+        margin-bottom: -0.1em;
+
+        > span {
+          display: inline-block;
+          transition: transform 1.2s var(--lv-ease);
+        }
+
+        &:nth-child(2) > span {
+          transition-delay: 90ms;
+        }
+      }
+
+      [data-reveal='rise'] {
+        transition:
+          opacity 0.9s ease,
+          transform 1.1s var(--lv-ease);
+        transition-delay: calc(var(--i, 0) * 90ms + 150ms);
+      }
+
+      [data-reveal='rule'] {
+        transition:
+          clip-path 1.2s var(--lv-ease),
+          transform 1.2s var(--lv-ease);
+      }
+
+      [data-entry]::before {
+        transition: transform 1.2s var(--lv-ease);
+        transition-delay: calc(var(--i, 0) * 90ms);
+      }
+
+      /* The crop marks draw in from their corners; they step and recolour
+         on hover. */
+      [data-frame]::before {
+        transition:
+          --lv-mark 0.9s var(--lv-ease) 0.2s,
+          inset 0.6s var(--lv-ease),
+          --lv-mark-color 0.4s ease;
+      }
+
+      &[data-observing] {
+        [data-reveal='frame']:not([data-shown])::before {
+          --lv-mark: 0px;
+        }
+
+        [data-reveal='mask']:not([data-shown]) [data-line] > span {
+          transform: translateY(108%);
+        }
+
+        [data-reveal='rise']:not([data-shown]) {
+          opacity: 0;
+          transform: translateY(0.75rem);
+        }
+
+        [data-reveal='rule']:not([data-shown]) {
+          clip-path: inset(0 0 100% 0);
+          transform: translateY(0.4em);
+        }
+
+        [data-entry][data-reveal]:not([data-shown])::before {
+          transform: scaleX(0);
+        }
+      }
+    }
+  }
+}

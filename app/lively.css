@@ -1,0 +1,46 @@
+/* ==========================================================================
+   The fancier version ("lively" in the code)
+   ==========================================================================
+   The split layout: a column that holds still on the left (header, the
+   page's title, its index, the version switch) and the content on the
+   right, over a slow liquid light. Designed in lab/; this is its real
+   implementation, on the markup plain mode already has:
+   components/lively/PageLayout.tsx adds the frame, the pages add hooks
+   (data-part, data-entry, data-reveal).
+
+   Every rule sits in the `lively` cascade layer (declared last in
+   app/globals.css), so it wins over plain styles and utilities by layer
+   order alone: shared markup keeps its utility classes and the fancier
+   version simply restyles it. Every rule is scoped to [data-mode='lively']
+   on <html>, set by lib/mode.ts; plain matches nothing here but the switch.
+
+   One file per part, imported in cascade order (within one layer, later
+   files win ties):
+     base        the switch between versions, tokens, page, registered props
+     layout      the column and the content
+     header      its sideways Menu, the language list
+     hero        the page's title, in the column
+     index       the index and the version switch
+     content     section titles, entries
+     pages       stack, about, 404
+     demos       the crop-mark frame, the playground, demo pages, embedding
+     home        the home page's own parts
+     footer
+     narrow      one column on narrow screens, the phone bar
+     phone-menu  the phone menu
+     motion      entrances, reveals, the menu's and header's choreography
+   ========================================================================== */
+
+@import './lively/base.css';
+@import './lively/layout.css';
+@import './lively/header.css';
+@import './lively/hero.css';
+@import './lively/index.css';
+@import './lively/content.css';
+@import './lively/pages.css';
+@import './lively/demos.css';
+@import './lively/home.css';
+@import './lively/footer.css';
+@import './lively/narrow.css';
+@import './lively/phone-menu.css';
+@import './lively/motion.css';

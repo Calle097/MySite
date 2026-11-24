@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import { fontVariables } from '@/lib/fonts';
 import { DICTS } from '@/lib/i18n';
+import { MODE_SCRIPT } from '@/lib/mode';
 import { SITE_URL } from '@/lib/site';
 import '../globals.css';
+import '../lively.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -30,8 +32,11 @@ location.replace((n||'/')+location.search);}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="it" className={fontVariables}>
+    // See the EN layout: MODE_SCRIPT sets attributes on <html> before React
+    // loads, and suppressHydrationWarning covers exactly those.
+    <html lang="it" className={fontVariables} suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: MODE_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: LOCALE_SCRIPT }} />
       </head>
       <body>{children}</body>
