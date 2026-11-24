@@ -1,0 +1,55 @@
+<!doctype html>
+<!--
+  Lively version: about. Standalone mockup on the shared shell (shell.css,
+  shell.js); open it directly in a browser. Not part of the site build.
+
+  The page has three paragraphs. Here each becomes a short section with
+  its own title (a proposal: "Film, then code", "First job", "Now"), so
+  About keeps the same rhythm as the other pages: the index on the left,
+  the story told in three steps on the right, each paragraph at reading
+  size. The alternative is no sections: the three paragraphs as one block
+  on the right, and no index.
+-->
+<html lang="en" data-page="about" data-palette="forest" data-font="satoshi" data-weight="light" data-bg="liquid" data-langs="2">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lively: about</title>
+    <link rel="stylesheet" href="shell.css" />
+    <style>
+      /* One paragraph per section, at reading size. */
+      .entry .lead { margin: 0; max-width: 34ch; }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="stage">
+        <div class="stage-mid">
+          <div class="hero">
+            <h1><span>About</span></h1>
+            <span class="mono">Based in Italy · Interested in working in Japan</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="flow">
+        <section id="film" data-section>
+          <h2>Film, then code</h2>
+          <div class="entry"><p class="lead">I studied film and media at university. Then I taught myself how to program, and it stuck.</p></div>
+        </section>
+
+        <section id="first-job" data-section>
+          <h2>First job</h2>
+          <div class="entry"><p class="lead">My first tech job was at an IT company: frontend work with React, while also being dispatched as QA on a large smart metering system, where I went from manual testing to Playwright automation and eventually coordinated the QA side.</p></div>
+        </section>
+
+        <section id="now" data-section>
+          <h2>Now</h2>
+          <div class="entry"><p class="lead">Now I freelance from Italy, and I would like to move to Japan for work.</p></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="shell.js"></script>
+  </body>
+</html>

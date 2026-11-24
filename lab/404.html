@@ -1,0 +1,35 @@
+<!doctype html>
+<!--
+  Lively version: 404. Standalone mockup on the shared shell (shell.css,
+  shell.js); open it directly in a browser. Not part of the site build.
+
+  Only the left column: the header, "404." and the way home. The right side
+  is left to the living background, nothing else.
+
+  Real-site note: today's 404 has no header on purpose. Caddy serves it
+  under whatever address was mistyped, and the header's links are relative
+  to a language tree. Here the header would need absolute links (or the
+  page keeps only the way home).
+-->
+<html lang="en" data-page="none" data-palette="forest" data-font="satoshi" data-weight="light" data-bg="liquid" data-langs="2">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lively: 404</title>
+    <link rel="stylesheet" href="shell.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="stage">
+        <div class="stage-mid">
+          <div class="hero">
+            <h1><span>404.</span></h1>
+            <p class="blurb">Page not found. <a href="concepts.html">Back home</a></p>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <script src="shell.js"></script>
+  </body>
+</html>

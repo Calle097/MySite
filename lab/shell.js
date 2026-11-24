@@ -21,9 +21,9 @@
   /* ---- the site's pages (lab files where they exist) ------------------ */
   const PAGES = [
     { id: 'home', name: 'Home', href: 'concepts.html' },
-    { id: 'about', name: 'About', href: '#' },
+    { id: 'about', name: 'About', href: 'about.html' },
     { id: 'playground', name: 'Playground', href: 'playground.html' },
-    { id: 'stack', name: 'Stack', href: '#' },
+    { id: 'stack', name: 'Stack', href: 'stack.html' },
     { id: 'cv', name: 'CV', menuName: 'CV ↓', href: '#' },
   ];
   const EMAIL = 'callegher.mattia00@gmail.com';
@@ -34,20 +34,31 @@
       .map((p, i) => `<a href="${p.href}"${isCurrent(p)}${stagger ? ` style="--i: ${i}"` : ''}>${p.name}</a>`)
       .join('');
 
-  /* ---- the page's own sections ----------------------------------------- */
+  /* ---- the index: the page's own sections, or a list it brings --------- */
+  // Usually the index lists the page's sections ([data-section], each with an
+  // <h2>) and follows the scroll. A page can bring its own list instead (a demo
+  // page lists all the demos, itself lit):
+  // window.LAB_INDEX = { label, current, items: [{ name, href }] }.
   const sections = [...document.querySelectorAll('[data-section]')];
-  // Read before the titles get their numbers and masks.
-  const names = sections.map((s) => s.dataset.name ?? s.querySelector('h2').textContent.trim());
+  const ownSections = !window.LAB_INDEX;
+  const index = window.LAB_INDEX ?? {
+    label: 'On this page',
+    // Read before the titles get their numbers and masks.
+    items: sections.map((s) => ({ name: s.dataset.name ?? s.querySelector('h2').textContent.trim(), href: `#${s.id}` })),
+  };
 
   /* ---- the shell's markup --------------------------------------------- */
   const langToggle = (controls) =>
     `<button class="mono" data-lang-toggle aria-controls="${controls}" aria-expanded="false" aria-label="Language: English"><span class="code">EN</span> <span class="caret" aria-hidden="true">▾</span></button>`;
   const versionSwitch =
     '<div class="version" role="group" aria-label="Version"><button aria-pressed="false">Plain</button><span class="sep">·</span><button aria-pressed="true">Lively</button></div>';
+  // Own sections are jumped to (data-goto); a brought list is plain links.
+  const itemState = (i) => (ownSections ? ` data-goto="${i}"` : i === index.current ? ' aria-current="true"' : '');
   const sectionList = (id) =>
-    `<ol class="sections" id="${id}">${names
-      .map((name, i) => `<li style="--i:${i}"><a href="#${sections[i].id}" data-goto="${i}" data-focus><span class="mono">${nn(i)}</span><span class="t">${name}</span></a></li>`)
+    `<ol class="sections" id="${id}">${index.items
+      .map(({ name, href }, i) => `<li style="--i:${i}"><a href="${href}"${itemState(i)} data-focus><span class="mono">${nn(i)}</span><span class="t">${name}</span></a></li>`)
       .join('')}</ol>`;
+  const hasIndex = index.items.length > 0;
 
   document.body.insertAdjacentHTML(
     'afterbegin',
@@ -63,7 +74,7 @@
         <ul class="pages">${PAGES.map((p, i) => `<li><a href="${p.href}"${isCurrent(p)}>${masked(p.menuName ?? p.name, i)}</a></li>`).join('')}</ul>
       </nav>
       <div class="menu-swap">
-        ${sections.length ? `<nav class="menu-group menu-index" aria-label="On this page"><span class="mono">On this page</span>${sectionList('menu-list')}</nav>` : ''}
+        ${hasIndex ? `<nav class="menu-group menu-index" aria-label="${index.label}"><span class="mono">${index.label}</span>${sectionList('menu-list')}</nav>` : ''}
         <nav class="menu-group menu-langs" id="menu-langs" aria-label="Language" inert>
           <span class="mono">Language</span>
           <ul class="lang-options langs-scroll" data-lang-list></ul>
@@ -92,13 +103,13 @@
   stage.insertAdjacentHTML(
     'beforeend',
     `${
-      sections.length
-        ? `<nav class="index" aria-label="Sections">
+      hasIndex
+        ? `<nav class="index" aria-label="${index.label}">
             <div class="index-head">
-              <span class="mono">Index</span>
+              <span class="mono">${ownSections ? 'Index' : index.label}</span>
               <span class="count" aria-hidden="true">
-                <span class="roll"><span class="roll-inner" id="roll">${names.map((_, i) => `<span>${nn(i)}</span>`).join('')}</span></span>
-                <span class="mono">/ ${String(names.length).padStart(2, '0')}</span>
+                <span class="roll"><span class="roll-inner" id="roll" style="--n: ${index.current ?? 0}">${index.items.map((_, i) => `<span>${nn(i)}</span>`).join('')}</span></span>
+                <span class="mono">/ ${String(index.items.length).padStart(2, '0')}</span>
               </span>
             </div>
             ${sectionList('index-list')}
@@ -108,7 +119,8 @@
     <div class="stage-foot"><span class="mono">Version</span>${versionSwitch}</div>`,
   );
 
-  document.querySelector('.flow').insertAdjacentHTML(
+  // A page without a content column (404) has no footer either.
+  document.querySelector('.flow')?.insertAdjacentHTML(
     'beforeend',
     `<footer class="foot">
       <span class="mono">Mattia Callegher · Italy</span>

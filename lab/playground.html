@@ -28,56 +28,7 @@
       /* Demos want more width than reading text. */
       .flow section { max-width: 56rem; }
 
-      /* ---- the frame: crop marks around a quiet ground ------------------ */
-      /* The marks' length and colour are registered properties, so they can animate. */
-      @property --mark { syntax: '<length>'; inherits: false; initial-value: 0px; }
-      @property --c { syntax: '<color>'; inherits: false; initial-value: transparent; }
-      .frame {
-        --gap: 0.65rem;
-        position: relative;
-        margin: var(--gap) var(--gap) calc(var(--gap) + 1.25rem);
-      }
-      .frame::before {
-        content: '';
-        position: absolute;
-        inset: calc(-1 * var(--gap));
-        pointer-events: none;
-        --c: color-mix(in srgb, var(--fg) 55%, transparent);
-        /* Eight hairlines, two at each corner. */
-        background:
-          linear-gradient(var(--c) 0 0) top left / var(--mark) 1px,
-          linear-gradient(var(--c) 0 0) top left / 1px var(--mark),
-          linear-gradient(var(--c) 0 0) top right / var(--mark) 1px,
-          linear-gradient(var(--c) 0 0) top right / 1px var(--mark),
-          linear-gradient(var(--c) 0 0) bottom left / var(--mark) 1px,
-          linear-gradient(var(--c) 0 0) bottom left / 1px var(--mark),
-          linear-gradient(var(--c) 0 0) bottom right / var(--mark) 1px,
-          linear-gradient(var(--c) 0 0) bottom right / 1px var(--mark);
-        background-repeat: no-repeat;
-      }
-      .entry.in .frame::before { --mark: 1rem; }
-      @media (hover: hover) {
-        .entry:hover .frame::before { inset: calc(-1 * var(--gap) - 0.4rem); --c: var(--accent); }
-      }
-      @media (prefers-reduced-motion: no-preference) {
-        .frame::before { transition: --mark 0.9s var(--ease) 0.2s, inset 0.6s var(--ease), --c 0.4s ease; }
-      }
-      @media (prefers-reduced-motion: reduce) { .frame::before { --mark: 1rem; } }
-      /* The ground: darker than the light, so every demo stands on the same
-         quiet surface; no border, the marks frame it. */
-      .view {
-        position: relative;
-        height: var(--h);
-        overflow: hidden;
-        background: color-mix(in srgb, var(--bg) 72%, transparent);
-      }
-      @media (max-width: 899px) { .view { height: var(--h-phone, var(--h)); } }
-
-      /* Under the frame: what it is built with, and where to go. */
-      .demo-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.5rem 1.5rem; margin-top: 1rem; }
-      .demo-links { display: flex; gap: 1.25rem; }
-      .demo-links a { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); transition: color 0.3s ease; }
-      .demo-links a:hover { color: var(--fg); }
+      /* (The frame and the demo links are in shell.css: demo pages use them too.) */
 
       /* ---- stand-ins -------------------------------------------------- */
       .stand-in { position: absolute; inset: 0; display: grid; place-content: center; gap: 0.5rem; text-align: center; padding: 1.5rem; }
@@ -137,7 +88,7 @@
           <div class="entry">
             <div class="frame"><div class="view" style="--h: 420px; --h-phone: 380px"><div data-spiral="500"></div></div></div>
             <p class="entry-text">500 dots placed with the golden angle, the same packing a sunflower uses. A pulse ripples outward forever. No libraries, just SVG.</p>
-            <div class="demo-meta"><span class="mono">SVG</span><span class="demo-links"><a href="#">Open ↗</a><a href="#">Source ↗</a></span></div>
+            <div class="demo-meta"><span class="mono">SVG</span><span class="demo-links"><a href="demo-spiral.html">Open ↗</a><a href="#">Source ↗</a></span></div>
           </div>
         </section>
 

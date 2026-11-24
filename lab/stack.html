@@ -1,0 +1,61 @@
+<!doctype html>
+<!--
+  Lively version: stack. Standalone mockup on the shared shell (shell.css,
+  shell.js); open it directly in a browser. Not part of the site build.
+
+  Split like home: the title, the source link and the line about how it was
+  built on the left, with the index of the three sections; on the right,
+  each section lists its facts, one per row, larger than body text. Rows
+  are entries, so they reveal, the light gathers behind the one you point
+  at and the others in its section step back.
+-->
+<html lang="en" data-page="stack" data-palette="forest" data-font="satoshi" data-weight="light" data-bg="liquid" data-langs="2">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lively: stack</title>
+    <link rel="stylesheet" href="shell.css" />
+    <style>
+      /* Facts: one short line per row. */
+      .entry.fact { padding: 1.05rem 0 1.15rem; }
+      .entry.fact .entry-text { margin: 0; max-width: none; color: var(--fg); font-size: clamp(1.05rem, 1.2vw, 1.2rem); }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="stage">
+        <div class="stage-mid">
+          <div class="hero">
+            <h1><span>How this site</span><span>is built.</span></h1>
+            <p class="blurb">The source is <a href="#">on GitHub</a>.</p>
+            <span class="mono">Built with help from Claude Code, reviewed line by line</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="flow">
+        <section id="stack" data-section>
+          <h2>Stack</h2>
+          <div class="entry fact"><p class="entry-text">Next.js 15, static export, served as plain files</p></div>
+          <div class="entry fact"><p class="entry-text">React 19, TypeScript, Tailwind CSS 4</p></div>
+          <div class="entry fact"><p class="entry-text">Framer Motion, playground only</p></div>
+          <div class="entry fact"><p class="entry-text">English and Italian without an i18n library: one static route tree per language, TypeScript dictionaries, a tiny script for detection and saved preference</p></div>
+        </section>
+
+        <section id="hosting" data-section>
+          <h2>Hosting</h2>
+          <div class="entry fact"><p class="entry-text">A small VPS I manage myself, Caddy in Docker, Cloudflare DNS</p></div>
+          <div class="entry fact"><p class="entry-text">Built and deployed by GitHub Actions on every push</p></div>
+        </section>
+
+        <section id="privacy" data-section>
+          <h2>Privacy</h2>
+          <div class="entry fact"><p class="entry-text">No analytics, cookies, or tracking scripts on my side. Traffic passes through Cloudflare, which keeps its own basic logs</p></div>
+          <div class="entry fact"><p class="entry-text">Works without JavaScript, except the playground</p></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="shell.js"></script>
+  </body>
+</html>

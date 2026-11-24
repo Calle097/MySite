@@ -1,0 +1,74 @@
+<!doctype html>
+<!--
+  Lively version: a demo page (the golden spiral). Standalone mockup on the
+  shared shell (shell.css, shell.js); open it directly in a browser. Not
+  part of the site build.
+
+  The left column stays, as on every page: a way back to the playground,
+  the demo's title, caption, what it is built with and its source, and the
+  index lists all seven demos with this one lit, so you can go from demo
+  to demo. On the right, the demo itself, large, in the same crop-mark
+  frame as in the playground.
+-->
+<html lang="en" data-page="playground" data-palette="forest" data-font="satoshi" data-weight="light" data-bg="liquid" data-langs="2">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lively: golden spiral</title>
+    <link rel="stylesheet" href="shell.css" />
+    <style>
+      /* The demo fills the right side, centred, as large as the window allows. */
+      .demo-main { display: grid; place-items: center; min-height: 100svh; padding: clamp(2rem, 5vw, 5rem); }
+      .demo-main .frame { width: calc(100% - 2 * var(--gap)); max-width: 56rem; margin: var(--gap); }
+      .demo-main .view { height: min(72svh, 680px); }
+      .demo-main [data-spiral] { position: absolute; inset: 0; display: grid; place-items: center; }
+      .demo-main [data-spiral] .spiral { width: min(80%, 460px); }
+      /* In the column, what it is built with and the source sit together. */
+      .hero .demo-meta { justify-content: flex-start; gap: 1.5rem; margin-top: 1.4rem; }
+      .back { display: inline-block; margin-bottom: 1.5rem; transition: color 0.3s ease; }
+      .back:hover { color: var(--fg); }
+      @media (max-width: 899px) {
+        .demo-main { min-height: 0; padding: 1rem 1.5rem 3rem; }
+        .demo-main .view { height: 380px; }
+      }
+    </style>
+    <script>
+      // The index lists every demo, this one lit (the shell reads this).
+      window.LAB_INDEX = {
+        label: 'Demos',
+        current: 1,
+        items: [
+          { name: 'Drive-in cards', href: 'playground.html#drive-in' },
+          { name: 'Golden spiral', href: 'demo-spiral.html' },
+          { name: 'CSS-only effects', href: 'playground.html#css-effects' },
+          { name: 'Sakura badge', href: 'playground.html#sakura' },
+          { name: 'Time picker', href: 'playground.html#time-picker' },
+          { name: 'Entity-chip composer', href: 'playground.html#chip-composer' },
+          { name: 'Transit drag', href: 'playground.html#transit-drag' },
+        ],
+      };
+    </script>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="stage">
+        <div class="stage-mid">
+          <div class="hero">
+            <a class="mono back" href="playground.html#spiral">← Playground</a>
+            <h1><span>Golden spiral</span></h1>
+            <p class="blurb">500 dots placed with the golden angle, the same packing a sunflower uses. A pulse ripples outward forever. No libraries, just SVG.</p>
+            <div class="demo-meta"><span class="mono">SVG</span><span class="demo-links"><a href="#">Source ↗</a></span></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="demo-main">
+        <div class="frame" data-reveal data-focus>
+          <div class="view"><div data-spiral="500"></div></div>
+        </div>
+      </main>
+    </div>
+
+    <script src="shell.js"></script>
+  </body>
+</html>
