@@ -1,0 +1,24 @@
+/* ChipComposer's chips and placeholder. In the components layer, as they
+   were in app/globals.css, so utilities on the same elements still win. */
+@layer components {
+  .composer-editor[data-empty]::before {
+    content: attr(data-placeholder);
+    color: var(--color-muted-foreground);
+    pointer-events: none;
+  }
+
+  .composer-chip {
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, var(--color-brand-accent) 60%, transparent);
+    background: color-mix(in srgb, var(--color-brand-accent) 18%, transparent);
+    color: var(--color-foreground);
+  }
+
+  .composer-chip-x {
+    color: var(--color-brand-accent);
+  }
+
+  .composer-chip-x:hover {
+    color: var(--color-foreground);
+  }
+}

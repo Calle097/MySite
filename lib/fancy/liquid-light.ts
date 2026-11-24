@@ -11,6 +11,8 @@
  * imports this module dynamically), so plain visitors never download it.
  */
 
+import { reducedMotion } from '../motion';
+
 // 2D simplex noise by Ian McEwan / Ashima Arts, MIT licence
 // (github.com/ashima/webgl-noise).
 const SIMPLEX = `
@@ -105,11 +107,22 @@ export function startLiquidLight(canvas: HTMLCanvasElement): () => void {
     gl.compileShader(shader);
     return shader;
   };
+  // The canvas keeps one context across starts (every switch back to the
+  // fancier version), so stopping frees what starting made.
+  const shaders = [compile(gl.VERTEX_SHADER, VERTEX), compile(gl.FRAGMENT_SHADER, FRAGMENT)];
   const program = gl.createProgram()!;
-  gl.attachShader(program, compile(gl.VERTEX_SHADER, VERTEX));
-  gl.attachShader(program, compile(gl.FRAGMENT_SHADER, FRAGMENT));
+  const buffer = gl.createBuffer();
+  const free = () => {
+    gl.deleteBuffer(buffer);
+    gl.deleteProgram(program);
+    shaders.forEach((s) => gl.deleteShader(s));
+  };
+  shaders.forEach((s) => gl.attachShader(program, s));
   gl.linkProgram(program);
-  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return () => {};
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    free();
+    return () => {};
+  }
   gl.useProgram(program);
   const u = (name: string) => gl.getUniformLocation(program, name);
   const uniforms = {
@@ -126,7 +139,7 @@ export function startLiquidLight(canvas: HTMLCanvasElement): () => void {
   };
   // One triangle covering the screen.
   const position = gl.getAttribLocation(program, 'a');
-  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
   gl.enableVertexAttribArray(position);
   gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
@@ -136,7 +149,7 @@ export function startLiquidLight(canvas: HTMLCanvasElement): () => void {
   const mouse = { x: 0.65, y: 0.55, tx: 0.65, ty: 0.55, on: 0, ton: 0 };
   const focus = { v: [0.5, 0.5, 0.1, 0.05], t: [0.5, 0.5, 0.1, 0.05], on: 0, ton: 0, el: null as Element | null };
   const born = performance.now();
-  const still = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const still = reducedMotion;
   let frame = 0;
 
   const resize = () => {
@@ -233,5 +246,6 @@ export function startLiquidLight(canvas: HTMLCanvasElement): () => void {
     document.removeEventListener('pointerover', onPointerOver);
     removeEventListener('resize', onResize);
     document.removeEventListener('visibilitychange', restart);
+    free();
   };
 }

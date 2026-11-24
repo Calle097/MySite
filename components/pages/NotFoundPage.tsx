@@ -1,4 +1,4 @@
-import { DICTS, prefix, type Lang } from '@/lib/i18n';
+import { DICTS, type Lang } from '@/lib/i18n';
 import { PAGES, isFile, pageHref } from '@/lib/pages';
 import { LiquidBackground } from '@/components/fancy/LiquidBackground';
 import { PageLayout } from '@/components/fancy/PageLayout';
@@ -19,7 +19,6 @@ import { PageLayout } from '@/components/fancy/PageLayout';
  */
 export function NotFoundPage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];
-  const p = prefix(lang);
   const destinations = PAGES.map((page) => ({
     href: pageHref(lang, page),
     name: `${dict.nav[page]}${isFile(page) ? ' ↓' : ''}`,
@@ -36,7 +35,7 @@ export function NotFoundPage({ lang }: { lang: Lang }) {
       </h1>
       <p className="only-plain mt-6 label text-muted-foreground">
         {dict.notFound.text}{' '}
-        <a href={`${p}/`} className="underline underline-offset-4 transition-colors hover:text-brand-accent">
+        <a href={pageHref(lang, 'home')} className="underline underline-offset-4 transition-colors hover:text-brand-accent">
           {dict.notFound.back}
         </a>
       </p>
@@ -49,23 +48,26 @@ export function NotFoundPage({ lang }: { lang: Lang }) {
   return (
     <>
       <LiquidBackground />
-      <PageLayout lang={lang} hero={hero}>
-        <section data-part="where" className="only-fancy" aria-labelledby="where-to-go">
-          <h2 id="where-to-go" className="fc-mono">
-            {dict.notFound.where}
-          </h2>
-          <ul className="fc-where">
-            {destinations.map((d) => (
-              <li key={d.href}>
-                <a href={d.href}>
-                  <span className="fc-where-name">{d.name}</span>
-                  <span className="fc-where-hint">{d.hint}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </PageLayout>
+      {/* SiteChrome holds <main> on every other page. */}
+      <main id="main">
+        <PageLayout lang={lang} hero={hero}>
+          <section data-part="where" className="only-fancy" aria-labelledby="where-to-go">
+            <h2 id="where-to-go" className="fc-mono">
+              {dict.notFound.where}
+            </h2>
+            <ul className="fc-where">
+              {destinations.map((d) => (
+                <li key={d.href}>
+                  <a href={d.href}>
+                    <span className="fc-where-name">{d.name}</span>
+                    <span className="fc-where-hint">{d.hint}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </PageLayout>
+      </main>
     </>
   );
 }

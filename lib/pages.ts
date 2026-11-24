@@ -1,3 +1,4 @@
+import type { DemoSlug } from './demos';
 import { prefix, type Lang } from './i18n';
 import { CV_PATH } from './site';
 
@@ -17,3 +18,6 @@ export function pageHref(lang: Lang, page: Page) {
   const p = prefix(lang);
   return page === 'home' ? `${p}/` : `${p}/${page}/`;
 }
+
+/** A demo's own page (the playground embeds it with #embed). */
+export const demoHref = (lang: Lang, slug: DemoSlug) => `${prefix(lang)}/demos/${slug}/`;

@@ -1,5 +1,6 @@
-import { DICTS, prefix, type Lang } from '@/lib/i18n';
+import { DICTS, type Lang } from '@/lib/i18n';
 import { DEMOS, DEMO_SLUGS } from '@/lib/demos';
+import { demoHref } from '@/lib/pages';
 import { SectionHeader } from '@/components/SectionHeader';
 import { PageLayout } from '@/components/fancy/PageLayout';
 
@@ -11,7 +12,6 @@ import { PageLayout } from '@/components/fancy/PageLayout';
  */
 export function PlaygroundPage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];
-  const p = prefix(lang);
   const sections = DEMO_SLUGS.map((slug) => ({ id: slug, title: dict.playground.items[slug].title }));
 
   const hero = (
@@ -32,7 +32,7 @@ export function PlaygroundPage({ lang }: { lang: Lang }) {
         {DEMO_SLUGS.map((slug, i) => {
           const { height, source, tech } = DEMOS[slug];
           const { title, caption } = dict.playground.items[slug];
-          const src = `${p}/demos/${slug}/`;
+          const src = demoHref(lang, slug);
 
           return (
             <section key={slug} id={slug} data-section className="mt-20 sm:mt-24">

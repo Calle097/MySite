@@ -14,7 +14,7 @@ export function SpiralDemoPage({ lang }: { lang: Lang }) {
           </p>
         </noscript>
         <div className="text-brand-accent">
-          <SpiralDots size={340} totalDots={500} dotRadius={2} duration={3} className="max-w-full" />
+          <SpiralDots size={340} dotRadius={2} className="max-w-full" />
         </div>
       </div>
     </DemoLayout>

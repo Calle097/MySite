@@ -24,10 +24,16 @@ export function LiquidBackground() {
       const fancy = html.dataset.mode === 'fancy';
       if (fancy && !stop && !starting && canvas.current) {
         starting = true;
-        const { startLiquidLight } = await import('@/lib/fancy/liquid-light');
-        starting = false;
+        let light: typeof import('@/lib/fancy/liquid-light');
+        try {
+          light = await import('@/lib/fancy/liquid-light');
+        } catch {
+          return; // Offline or a missing chunk: no light, and the next switch tries again.
+        } finally {
+          starting = false;
+        }
         // The mode (or the page) may have changed while it loaded.
-        if (!gone && html.dataset.mode === 'fancy' && canvas.current) stop = startLiquidLight(canvas.current);
+        if (!gone && html.dataset.mode === 'fancy' && canvas.current) stop = light.startLiquidLight(canvas.current);
       } else if (!fancy && stop) {
         stop();
         stop = null;

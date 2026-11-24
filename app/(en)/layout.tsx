@@ -2,22 +2,22 @@ import type { Metadata } from 'next';
 import { fontVariables } from '@/lib/fonts';
 import { DICTS } from '@/lib/i18n';
 import { MODE_SCRIPT } from '@/lib/mode';
-import { SITE_URL } from '@/lib/site';
+import { NAME, SITE_URL } from '@/lib/site';
 import '../globals.css';
 import '../fancy.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Mattia Callegher — Frontend Developer & QA Engineer',
-    template: '%s — Mattia Callegher',
+    default: `${NAME} — Frontend Developer & QA Engineer`,
+    template: `%s — ${NAME}`,
   },
   description: DICTS.en.description,
   openGraph: {
     type: 'website',
-    siteName: 'Mattia Callegher',
+    siteName: NAME,
     locale: 'en',
-    title: 'Mattia Callegher — Frontend Developer & QA Engineer',
+    title: `${NAME} — Frontend Developer & QA Engineer`,
     description: DICTS.en.description,
   },
 };
@@ -36,7 +36,7 @@ var path=location.pathname;
 if(path.indexOf('/demos')===0||path==='/it'||path.indexOf('/it/')===0)return;
 var p=localStorage.getItem('site-lang');
 if(p==='it'||(!p&&(navigator.language||'').toLowerCase().indexOf('it')===0)){
-location.replace('/it'+(path==='/'?'/':path)+location.search);}
+location.replace('/it'+(path==='/'?'/':path)+location.search+location.hash);}
 }catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

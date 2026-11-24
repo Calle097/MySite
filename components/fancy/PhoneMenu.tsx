@@ -6,8 +6,9 @@ import type { Lang } from '@/lib/i18n';
 import { useCurrentSection } from '@/lib/fancy/current-section';
 import { MODE_EVENT } from '@/lib/mode';
 import { EASE, circleFrames, reducedMotion } from '@/lib/motion';
-import { NavLink } from '../NavLink';
+import { NAME } from '@/lib/site';
 import { LanguageList, LanguageToggle } from './LanguageList';
+import { NavLink } from './NavLink';
 import { SectionList, type IndexItem } from './SectionList';
 import type { ChromeLabels, PageLink } from './types';
 import { VersionSwitch } from './VersionSwitch';
@@ -16,18 +17,10 @@ import { VersionSwitch } from './VersionSwitch';
     breakpoints in app/fancy/ (narrow.css and the short-screen queries). */
 const WIDE = 900;
 
-/** Locks the page under the menu: overflow hidden on <html>, with the
-    scrollbar's width put back as padding so nothing shifts sideways. */
-function lockPage(on: boolean) {
-  const html = document.documentElement;
-  if (on) html.style.setProperty('--scrollbar-w', `${innerWidth - html.clientWidth}px`);
-  html.classList.toggle('fc-menu-open', on);
-}
-
 /**
  * Narrow screens: one bar (name · Menu) and a full-screen menu that opens
- * as a circle from its button. While it is open the page underneath can't
- * move.
+ * as a circle from its button. It is a modal dialog: while it is open the
+ * page underneath can't move, take focus or be read.
  *
  * Inside: the pages, then one slot that shows either the index or, while
  * EN is open, the languages (so the menu never grows), then EN and the
@@ -54,6 +47,8 @@ export function PhoneMenu({
   const sectionList = useRef<HTMLDivElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
+  const closing = useRef(false);
+  const held = useRef<HTMLElement[]>([]);
   const [open, setOpen] = useState(false);
   const [shown, setShown] = useState(false);
   const [langsOpen, setLangsOpen] = useState(false);
@@ -76,18 +71,41 @@ export function PhoneMenu({
     return el.animate({ clipPath: opening ? frames : [...frames].reverse() }, { duration: 650, easing: EASE });
   };
 
+  // The page under the open menu: overflow locked on <html> (the
+  // scrollbar's width put back as padding, so nothing shifts sideways), and
+  // everything around the menu inert. Only what this made inert is released.
+  const holdPage = (on: boolean) => {
+    const html = document.documentElement;
+    if (on) html.style.setProperty('--scrollbar-w', `${innerWidth - html.clientWidth}px`);
+    html.classList.toggle('fc-menu-open', on);
+    held.current.forEach((el) => (el.inert = false));
+    held.current = [];
+    if (!on) return;
+    for (let el: HTMLElement | null = menu.current; el && el !== document.body; el = el.parentElement) {
+      for (const sibling of el.parentElement?.children ?? []) {
+        if (sibling !== el && sibling instanceof HTMLElement && !sibling.inert) {
+          sibling.inert = true;
+          held.current.push(sibling);
+        }
+      }
+    }
+  };
+
   const openMenu = (button: HTMLButtonElement) => {
     opener.current = button;
-    lockPage(true);
+    holdPage(true);
     setOpen(true);
   };
 
   const closeMenu = () => {
-    // Unlock first: a section link can start scrolling the page right away,
-    // while the circle is still closing over it.
-    lockPage(false);
+    if (closing.current) return;
+    closing.current = true;
+    // Release first: a section link can start scrolling the page right
+    // away, while the circle is still closing over it.
+    holdPage(false);
     setShown(false);
     const done = () => {
+      closing.current = false;
       setOpen(false);
       setLangsOpen(false);
       opener.current?.focus({ preventScroll: true });
@@ -127,7 +145,7 @@ export function PhoneMenu({
     // Switching to plain closes it at once, without the circle (plain never
     // shows the menu), so switching back finds it closed.
     const onModeChange = () => {
-      lockPage(false);
+      holdPage(false);
       setShown(false);
       setOpen(false);
       setLangsOpen(false);
@@ -142,8 +160,8 @@ export function PhoneMenu({
     };
   }, [open, langsOpen]);
 
-  // Leaving the page (a link in the menu) must not leave it locked.
-  useEffect(() => () => lockPage(false), []);
+  // Leaving the page (a link in the menu) must not leave it held.
+  useEffect(() => () => holdPage(false), []);
 
   const goToSection = (i: number, e: MouseEvent<HTMLAnchorElement>) => {
     const target = document.getElementById(index.items[i].href.slice(1));
@@ -158,7 +176,7 @@ export function PhoneMenu({
     <>
       <header className="fc-phone-bar only-fancy">
         <Link href={homeHref} className="fc-name">
-          Mattia Callegher
+          {NAME}
         </Link>
         <button
           type="button"
@@ -174,12 +192,15 @@ export function PhoneMenu({
       <div
         ref={menu}
         id="fc-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label={labels.menu}
         className={['fc-menu', 'only-fancy', shown && 'is-open'].filter(Boolean).join(' ')}
         hidden={!open}
       >
         <div className="fc-menu-top">
           <Link href={homeHref} className="fc-name">
-            Mattia Callegher
+            {NAME}
           </Link>
           <button ref={closeButton} type="button" className="fc-mono" onClick={closeMenu}>
             {labels.close}
@@ -200,7 +221,9 @@ export function PhoneMenu({
               );
               return (
                 <li key={page.href}>
-                  {page.file ? <a href={page.href}>{text}</a> : <NavLink href={page.href}>{text}</NavLink>}
+                  <NavLink href={page.href} file={page.file}>
+                    {text}
+                  </NavLink>
                 </li>
               );
             })}

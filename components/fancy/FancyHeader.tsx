@@ -3,9 +3,10 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import type { Lang } from '@/lib/i18n';
+import { NAME } from '@/lib/site';
 import { MODE_EVENT } from '@/lib/mode';
-import { NavLink } from '../NavLink';
 import { LanguageList, LanguageToggle } from './LanguageList';
+import { NavLink } from './NavLink';
 import type { ChromeLabels, PageLink } from './types';
 
 /**
@@ -84,26 +85,25 @@ export function FancyHeader({
   }, [extended, langsOpen]);
 
   const pageLinks = (stagger: boolean, onClick?: () => void) =>
-    links.map((l, i) => {
-      const style = stagger ? ({ '--i': i } as CSSProperties) : undefined;
-      return l.file ? (
-        <a key={l.href} href={l.href} style={style} onClick={onClick}>
-          {l.label}
-        </a>
-      ) : (
-        <NavLink key={l.href} href={l.href} style={style} onClick={onClick}>
-          {l.label}
-        </NavLink>
-      );
-    });
+    links.map((l, i) => (
+      <NavLink
+        key={l.href}
+        href={l.href}
+        file={l.file}
+        style={stagger ? ({ '--i': i } as CSSProperties) : undefined}
+        onClick={onClick}
+      >
+        {l.label}
+      </NavLink>
+    ));
 
   return (
     <header
       ref={header}
       className={['fc-header', 'only-fancy', extended && 'is-extended', langsOpen && 'is-langs-open'].filter(Boolean).join(' ')}
     >
-      <Link href={homeHref} className="fc-name" aria-label={`Mattia Callegher, ${labels.home}`}>
-        Mattia Callegher
+      <Link href={homeHref} className="fc-name" aria-label={`${NAME}, ${labels.home}`}>
+        {NAME}
       </Link>
       <nav className="fc-header-nav" aria-label={labels.pages}>
         {pageLinks(false)}

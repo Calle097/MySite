@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { reducedMotion } from '@/lib/motion';
 
 /**
  * Scrollable hour/minute picker. Built for a client project after every free
@@ -125,7 +126,7 @@ function ScrollColumn({
     const target = idx * ITEM_HEIGHT + ITEM_HEIGHT / 2 - (visibleItems * ITEM_HEIGHT) / 2;
     // Jump on open, glide on later changes — smooth-scrolling from 0 every
     // time the popover mounts animates the list out from under the finger.
-    el.scrollTo({ top: Math.max(0, target), behavior: firstScroll.current ? 'auto' : 'smooth' });
+    el.scrollTo({ top: Math.max(0, target), behavior: firstScroll.current || reducedMotion() ? 'auto' : 'smooth' });
     firstScroll.current = false;
   }, [selected, items, visibleItems]);
 
@@ -286,8 +287,7 @@ export function TimePicker({
     };
   }, [open, close]);
 
-  /** The columns render disabled slots — nothing used to stop OK or "now"
-      from committing one anyway. */
+  /** A disabled slot can be scrolled to, so OK and "now" check it too. */
   const isBlocked = (h: number, m: number) => !!shouldDisableHour?.(h) || !!shouldDisableMinute?.(m);
   const okBlocked = isBlocked(localHour, localMinute);
 

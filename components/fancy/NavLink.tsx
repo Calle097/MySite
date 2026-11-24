@@ -2,30 +2,41 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
-/** A nav link that marks itself as the current page (aria-current), which the fancier version draws in the full text colour. */
+/**
+ * A link in the fancier version's page lists (the header, the phone menu).
+ * A route marks itself as the current page (aria-current), which the lists
+ * draw in the full text colour. A file (the CV) is a plain <a>: a Next
+ * <Link> would prefetch it as an RSC payload.
+ */
 export function NavLink({
   href,
-  className,
+  file,
   style,
   onClick,
   children,
 }: {
   href: string;
-  className?: string;
+  file?: boolean;
   style?: CSSProperties;
   onClick?: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const pathname = usePathname() ?? '/';
+  if (file) {
+    return (
+      <a href={href} style={style} onClick={onClick}>
+        {children}
+      </a>
+    );
+  }
   const withSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);
 
   return (
     <Link
       href={href}
       aria-current={withSlash(pathname) === withSlash(href) ? 'page' : undefined}
-      className={className}
       style={style}
       onClick={onClick}
     >

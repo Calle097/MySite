@@ -1,7 +1,9 @@
 // Canonical site origin for absolute URLs (hreflang, sitemap, OpenGraph).
-// Set NEXT_PUBLIC_SITE_URL in the deploy workflow once the domain exists;
-// the fallback keeps local builds working.
+// The deploy workflow sets NEXT_PUBLIC_SITE_URL from the SITE_URL repository
+// variable (and warns if it's missing); the fallback keeps local builds working.
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
+
+export const NAME = 'Mattia Callegher';
 
 // Public on purpose: the contact section and the footer both show it.
 export const EMAIL = 'callegher.mattia00@gmail.com';

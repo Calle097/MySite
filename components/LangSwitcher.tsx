@@ -10,11 +10,17 @@ export function LangSwitcher({ lang }: { lang: Lang }) {
 
   const item = (l: Lang, label: string) =>
     lang === l ? (
-      <span aria-current="true" className="text-foreground">
+      <span aria-current="true" lang={l} className="text-foreground">
         {label}
       </span>
     ) : (
-      <a href={pathIn(l, pathname)} onClick={() => rememberLang(l)} className="transition-colors hover:text-brand-accent">
+      <a
+        href={pathIn(l, pathname)}
+        lang={l}
+        hrefLang={l}
+        onClick={() => rememberLang(l)}
+        className="transition-colors hover:text-brand-accent"
+      >
         {label}
       </a>
     );

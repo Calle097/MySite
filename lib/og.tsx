@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { DICTS, type Lang } from './i18n';
+import { NAME } from './site';
 
 /**
  * The social card, shared by both language trees — `app/(en)/opengraph-image.tsx`
@@ -12,8 +13,7 @@ import { DICTS, type Lang } from './i18n';
  * Satori (what powers ImageResponse) supports a subset of CSS: flexbox only,
  * `display: flex` spelled out on anything with more than one child, and no
  * Tailwind — hence the literal hex values instead of var(--color-*).
- */
-/**
+ *
  * Drawn at 2x the 1200x630 the platforms ask for. They all downscale and
  * re-encode to JPEG, and the card is displayed around 600 CSS px wide — which
  * is 1200+ device pixels on any modern screen, leaving a 1200px asset with no
@@ -39,7 +39,7 @@ const MUTED = '#9fb3c8';
 const ACCENT = '#46a08e';
 
 export const ogAlt = (lang: Lang) =>
-  `Mattia Callegher — ${DICTS[lang].hero.line1} ${DICTS[lang].hero.line2}`;
+  `${NAME} — ${DICTS[lang].hero.line1} ${DICTS[lang].hero.line2}`;
 
 export function ogImage(lang: Lang) {
   const dict = DICTS[lang];
@@ -60,7 +60,7 @@ export function ogImage(lang: Lang) {
         }}
       >
         <div style={{ display: 'flex', fontSize: px(30), fontWeight: 600, letterSpacing: '-0.02em' }}>
-          Mattia Callegher
+          {NAME}
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column' }}>

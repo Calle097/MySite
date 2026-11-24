@@ -1,8 +1,9 @@
 import { DICTS, prefix, type Lang } from '@/lib/i18n';
+import { pageHref } from '@/lib/pages';
 import { DEMO_SLUGS } from '@/lib/demos';
 import { twoDigits } from '@/lib/format';
 import { revealOrder } from '@/lib/reveal';
-import { CV_PATH, EMAIL, GITHUB_URL, SITE_URL } from '@/lib/site';
+import { CV_PATH, EMAIL, GITHUB_URL, NAME, SITE_URL } from '@/lib/site';
 import { CopyEmail } from '@/components/CopyEmail';
 import { ModeSwitch } from '@/components/ModeSwitch';
 import { SectionHeader } from '@/components/SectionHeader';
@@ -26,7 +27,7 @@ function structuredData(lang: Lang) {
         '@type': 'Person',
         // Stable across both language trees — one person, described twice.
         '@id': `${SITE_URL}/#person`,
-        name: 'Mattia Callegher',
+        name: NAME,
         url: home,
         jobTitle: `${dict.hero.line1} ${dict.hero.line2}`,
         description: dict.description,
@@ -37,7 +38,7 @@ function structuredData(lang: Lang) {
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
         url: home,
-        name: 'Mattia Callegher',
+        name: NAME,
         inLanguage: lang,
         publisher: { '@id': `${SITE_URL}/#person` },
       },
@@ -54,7 +55,6 @@ function structuredData(lang: Lang) {
  */
 export function HomePage({ lang }: { lang: Lang }) {
   const dict = DICTS[lang];
-  const p = prefix(lang);
   const [place, wish] = dict.hero.metaRow;
 
   // In page order: the index lists these, and the ids are the anchors.
@@ -193,7 +193,7 @@ export function HomePage({ lang }: { lang: Lang }) {
       {/* Fancier only: a way into the playground, with the spiral beside it. */}
       <section id="playground" data-section data-part="playground" className="only-fancy">
         <SectionHeader index={3} title={dict.playground.title} />
-        <a href={`${p}/playground/`} data-entry data-part="teaser" data-reveal="rise">
+        <a href={pageHref(lang, 'playground')} data-entry data-part="teaser" data-reveal="rise">
           <span data-part="text">
             <span className="fc-teaser-text">{dict.playground.intro}</span>
             <span className="fc-mono fc-teaser-link">

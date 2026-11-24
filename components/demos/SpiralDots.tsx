@@ -1,13 +1,17 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { reducedMotion } from '@/lib/motion';
+
+/** Room between the outermost dots and the edge. */
+const MARGIN = 2;
+/** One pulse, in seconds; the wave takes as long to cross the spiral. */
+const DURATION = 3;
 
 interface SpiralDotsProps {
   totalDots?: number;
   size?: number;
   dotRadius?: number;
-  margin?: number;
-  duration?: number;
   className?: string;
 }
 
@@ -21,8 +25,6 @@ export function SpiralDots({
   totalDots = 500,
   size = 200,
   dotRadius = 1.5,
-  margin = 2,
-  duration = 3,
   className = '',
 }: SpiralDotsProps) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -34,10 +36,10 @@ export function SpiralDots({
     // SMIL <animate> ignores prefers-reduced-motion — a CSS media query can't
     // reach it — so the preference is honoured by simply not emitting the
     // animation elements. The spiral itself still renders, just static.
-    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const still = reducedMotion();
     const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
     const CENTER = size / 2;
-    const MAX_RADIUS = CENTER - margin - dotRadius;
+    const MAX_RADIUS = CENTER - MARGIN - dotRadius;
     const svgNS = 'http://www.w3.org/2000/svg';
 
     svg.innerHTML = '';
@@ -63,8 +65,8 @@ export function SpiralDots({
       const animR = document.createElementNS(svgNS, 'animate');
       animR.setAttribute('attributeName', 'r');
       animR.setAttribute('values', `${dotRadius * 0.5};${dotRadius * 1.5};${dotRadius * 0.5}`);
-      animR.setAttribute('dur', `${duration}s`);
-      animR.setAttribute('begin', `${frac * duration}s`);
+      animR.setAttribute('dur', `${DURATION}s`);
+      animR.setAttribute('begin', `${frac * DURATION}s`);
       animR.setAttribute('repeatCount', 'indefinite');
       animR.setAttribute('calcMode', 'spline');
       animR.setAttribute('keySplines', '0.4 0 0.6 1;0.4 0 0.6 1');
@@ -73,14 +75,14 @@ export function SpiralDots({
       const animO = document.createElementNS(svgNS, 'animate');
       animO.setAttribute('attributeName', 'opacity');
       animO.setAttribute('values', '0.25;1;0.25');
-      animO.setAttribute('dur', `${duration}s`);
-      animO.setAttribute('begin', `${frac * duration}s`);
+      animO.setAttribute('dur', `${DURATION}s`);
+      animO.setAttribute('begin', `${frac * DURATION}s`);
       animO.setAttribute('repeatCount', 'indefinite');
       animO.setAttribute('calcMode', 'spline');
       animO.setAttribute('keySplines', '0.4 0 0.6 1;0.4 0 0.6 1');
       c.appendChild(animO);
     }
-  }, [totalDots, size, dotRadius, margin, duration]);
+  }, [totalDots, size, dotRadius]);
 
   return <svg ref={svgRef} width={size} height={size} viewBox={`0 0 ${size} ${size}`} className={className} aria-hidden="true" />;
 }

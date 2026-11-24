@@ -30,7 +30,7 @@ export function SectionIndex({
         <span className="fc-mono">{label}</span>
         <span className="fc-count" aria-hidden>
           <span className="fc-roll">
-            <span className="fc-roll-inner" style={{ '--n': Math.max(current, 0) } as CSSProperties}>
+            <span className="fc-roll-inner" style={{ '--n': current } as CSSProperties}>
               {items.map((item, i) => (
                 <span key={item.href}>{twoDigits(i + 1)}</span>
               ))}

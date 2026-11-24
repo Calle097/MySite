@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import './chip-composer.css';
 
 /**
  * An @-mention composer built directly on DOM Range/Selection — no Lexical,
@@ -50,8 +51,8 @@ const ZWSP = '​';
 const MARKER_ATTR = 'data-marker';
 const CHIP_ATTR = 'data-chip-id';
 
-/** Palette width. One definition — it was previously stated three times (a
-    local const, a `w-58` class, and an inline style that silently won). */
+/** Palette width: the one place it is set (the positioning maths reads it
+    too). */
 const PALETTE_WIDTH = 232;
 /** Ids are derived from a useId() prefix so two composers on one page can't
     collide — the same reason TimePicker takes an idPrefix. */
@@ -297,6 +298,9 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    // While an IME composition is open every key is its own: Enter commits
+    // the candidate, so taking it would insert a chip instead of the text.
+    if (e.nativeEvent.isComposing) return;
     if (open) {
       if (e.key === 'ArrowDown') {
         e.preventDefault();
@@ -308,9 +312,7 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
         setActiveIndex((i) => Math.max(i - 1, 0));
         return;
       }
-      // Shift+Tab is "leave the field backwards", not "commit". And while an
-      // IME composition is open, Enter commits the candidate — stealing it
-      // would insert a chip instead of the character the user is typing.
+      // Shift+Tab is "leave the field backwards", not "commit".
       if (e.key === 'Enter' || (e.key === 'Tab' && !e.shiftKey)) {
         e.preventDefault();
         if (results[activeIndex]) insertChip(results[activeIndex]);
@@ -325,7 +327,6 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
     if (e.key === 'Backspace' && removeAdjacentChip('backward')) e.preventDefault();
     if (e.key === 'Delete' && removeAdjacentChip('forward')) e.preventDefault();
   };
-
 
   // The listeners below are registered once, against document and the editor
   // node, but must call into the *current* render's closures. One ref
@@ -355,9 +356,9 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
     return () => el.removeEventListener('beforeinput', handler);
   }, []);
 
-  // Dismissal. The palette previously had none of this: arrow keys move the
-  // caret without firing `input`, so it would sit there with a stale query,
-  // and clicking elsewhere on the page left it open indefinitely.
+  // Dismissal. Arrow keys move the caret without firing `input`, so the
+  // query is re-read on every selection change; a click anywhere else on the
+  // page closes the palette.
   useEffect(() => {
     if (!open) return;
 
@@ -383,8 +384,7 @@ export function ChipComposer({ strings }: { strings: ComposerStrings }) {
   }, [open]);
 
   // Remember where the caret was, so the palette can still act on it after
-  // focus moves to a palette button. Same body on keyup and blur — it used to
-  // be inlined twice, verbatim.
+  // focus moves to a palette button (on keyup and on blur).
   const saveRange = () => {
     const sel = window.getSelection();
     if (sel && sel.rangeCount > 0 && editorRef.current?.contains(sel.getRangeAt(0).commonAncestorContainer)) {

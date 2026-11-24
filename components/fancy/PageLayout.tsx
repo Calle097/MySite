@@ -9,7 +9,7 @@ import type { IndexItem } from './SectionList';
 import type { ChromeLabels } from './types';
 import { VersionSwitch } from './VersionSwitch';
 
-export type Section = { id: string; title: string };
+type Section = { id: string; title: string };
 
 /**
  * Every page's frame. Plain mode doesn't style any of its wrappers, so a

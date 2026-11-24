@@ -37,6 +37,7 @@ addEventListener('storage',function(e){if(e.key==='${MODE_KEY}'){apply();dispatc
     app/fancy.css can key entrance delays off data-entering while it lasts. */
 const ENTERING_MS = 1800;
 let switching = false;
+let entering: ReturnType<typeof setTimeout> | undefined;
 
 /**
  * Flip the mode with the circle reveal: the browser snapshots the page, the
@@ -51,12 +52,16 @@ export async function switchMode(x: number, y: number) {
   const html = document.documentElement;
   const toFancy = html.dataset.mode !== 'fancy';
   const apply = () => {
+    // A quick switch back and forth must not let the first timer cut the
+    // second entrance short.
+    clearTimeout(entering);
     if (toFancy) {
       html.dataset.mode = 'fancy';
       html.dataset.entering = '';
-      setTimeout(() => delete html.dataset.entering, ENTERING_MS);
+      entering = setTimeout(() => delete html.dataset.entering, ENTERING_MS);
     } else {
       delete html.dataset.mode;
+      delete html.dataset.entering;
     }
     try {
       localStorage.setItem(MODE_KEY, toFancy ? 'fancy' : 'plain');

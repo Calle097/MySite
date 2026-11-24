@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Flower } from 'lucide-react';
+import './sakura.css';
 
 /**
  * A pill badge with cherry-blossom petals falling inside it. Petal positions

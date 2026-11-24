@@ -5,10 +5,20 @@ import { useEffect, useRef } from 'react';
 /**
  * Mobile nav dropdown on a native <details>, so it stays usable with
  * JavaScript disabled (summary toggles open/closed). JS adds the extras:
- * closing on a tap outside. suppressHydrationWarning because the user can
- * toggle it before hydration, which legitimately changes the `open` attribute.
+ * closing on a tap outside and on Escape. suppressHydrationWarning because
+ * the user can toggle it before hydration, which legitimately changes the
+ * `open` attribute.
  */
-export function MobileMenu({ label, children }: { label: React.ReactNode; children: React.ReactNode }) {
+export function MobileMenu({
+  label,
+  navLabel,
+  children,
+}: {
+  label: React.ReactNode;
+  /** The panel is the page's navigation on phones: its accessible name. */
+  navLabel: string;
+  children: React.ReactNode;
+}) {
   const ref = useRef<HTMLDetailsElement>(null);
 
   useEffect(() => {
@@ -18,8 +28,19 @@ export function MobileMenu({ label, children }: { label: React.ReactNode; childr
         el.open = false;
       }
     };
+    const onKeyDown = (e: KeyboardEvent) => {
+      const el = ref.current;
+      if (e.key === 'Escape' && el?.open) {
+        el.open = false;
+        el.querySelector('summary')?.focus();
+      }
+    };
     document.addEventListener('pointerdown', onPointerDown);
-    return () => document.removeEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
   }, []);
 
   return (
@@ -30,9 +51,12 @@ export function MobileMenu({ label, children }: { label: React.ReactNode; childr
       </summary>
       {/* Positioned against the sticky header (nearest positioned ancestor),
           so it spans the full width just below the glass. */}
-      <div className="menu-panel absolute inset-x-0 top-full z-50 flex flex-col gap-5 border-b p-6 font-mono text-sm">
+      <nav
+        aria-label={navLabel}
+        className="menu-panel absolute inset-x-0 top-full z-50 flex flex-col gap-5 border-b p-6 font-mono text-sm"
+      >
         {children}
-      </div>
+      </nav>
     </details>
   );
 }

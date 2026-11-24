@@ -4,8 +4,8 @@
    `fancy` comes last, so the fancier version (app/fancy.css) wins over every plain
    style and utility by layer order alone — no specificity contests, no
    !important. All site CSS lives in a layer: unlayered rules would beat
-   every layer and break that guarantee. (Demo-only stylesheets under
-   components/demos keep to their own class names.) */
+   every layer and break that guarantee. (Demo-only stylesheets sit
+   next to their demos in components/demos.) */
 @layer theme, base, components, utilities, fancy;
 
 /* Map the next/font variables to Tailwind font utilities. One family
@@ -16,6 +16,14 @@
   --font-sans: var(--font-wix);
   --font-display: var(--font-wix);
   --font-mono: var(--font-plex-mono);
+}
+
+/* Where the header's full nav takes over from the mobile menu. One name
+   used by both (nav:flex on the nav, nav:hidden on the menu), so they can
+   never disagree. 56rem: below it the full nav no longer fits on one line —
+   at the old 40rem (sm) the name wrapped and "/cv ↓" broke apart. */
+@theme {
+  --breakpoint-nav: 56rem;
 }
 
 /* Palette: dark navy, one theme for everyone. Light text; hairlines sit
@@ -29,14 +37,6 @@
    below and the remaining dynamic color-mix() styles in components can go on
    reading var(--color-*). `inline` would bake the values into the utilities
    and leave every one of those var() references undefined. */
-/* Where the header's full nav takes over from the mobile menu. One name
-   used by both (nav:flex on the nav, nav:hidden on the menu), so they can
-   never disagree. 56rem: below it the full nav no longer fits on one line —
-   at the old 40rem (sm) the name wrapped and "/cv ↓" broke apart. */
-@theme {
-  --breakpoint-nav: 56rem;
-}
-
 @theme {
   --color-background: #182454;
   --color-background-edge: #17224f;
@@ -176,41 +176,13 @@
     display: none !important;
   }
 
-  /* Entity chips inside the ChipComposer demo. */
-  .composer-editor[data-empty]::before {
-    content: attr(data-placeholder);
-    color: var(--color-muted-foreground);
-    pointer-events: none;
-  }
-
-  .composer-chip {
-    border-radius: 9999px;
-    border: 1px solid color-mix(in srgb, var(--color-brand-accent) 60%, transparent);
-    background: color-mix(in srgb, var(--color-brand-accent) 18%, transparent);
-    color: var(--color-foreground);
-  }
-
-  .composer-chip-x {
-    color: var(--color-brand-accent);
-  }
-
-  .composer-chip-x:hover {
-    color: var(--color-foreground);
-  }
-
-  /* Petals inside the SakuraBadge component. */
-  .sakura-petal {
-    animation: sakura-fall 2s ease-in infinite;
-  }
-
   /* Every decorative animation in this file opts out together. Keep new
      ones listed here. SpiralDots can't be covered from CSS (SMIL ignores
      media queries) so it checks the same preference in JS. */
   @media (prefers-reduced-motion: reduce) {
     .rise,
     .rise-late,
-    .menu-panel,
-    .sakura-petal {
+    .menu-panel {
       animation: none;
     }
   }
@@ -235,19 +207,5 @@
   to {
     opacity: 1;
     transform: none;
-  }
-}
-
-@keyframes sakura-fall {
-  0% {
-    transform: translateY(0) translateX(0) rotate(0deg);
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateY(20px) translateX(8px) rotate(360deg);
-    opacity: 0;
   }
 }

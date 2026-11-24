@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { DICTS, prefix, type Lang } from '@/lib/i18n';
+import { DICTS, type Lang } from '@/lib/i18n';
 import { PAGES, isFile, pageHref } from '@/lib/pages';
-import { EMAIL, GITHUB_URL, SOURCE_URL } from '@/lib/site';
+import { EMAIL, GITHUB_URL, NAME, SOURCE_URL } from '@/lib/site';
 import { LangSwitcher } from './LangSwitcher';
 import { MobileMenu } from './MobileMenu';
 import { ModeSwitch } from './ModeSwitch';
@@ -16,7 +16,6 @@ import { LiquidBackground } from './fancy/LiquidBackground';
  */
 export function SiteChrome({ lang, children }: { lang: Lang; children: React.ReactNode }) {
   const dict = DICTS[lang];
-  const p = prefix(lang);
 
   // File-path labels, plain mode's look.
   const pathLinks = PAGES.map((page) => ({
@@ -40,8 +39,8 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
             among the pages. Below 360px it would push the header to two
             lines, so it steps aside there; the hero's line still offers it. */}
         <span className="flex items-baseline gap-4">
-          <Link href={`${p}/`} className="font-display text-lg font-semibold tracking-tight">
-            Mattia Callegher
+          <Link href={pageHref(lang, 'home')} className="font-display text-lg font-semibold tracking-tight">
+            {NAME}
           </Link>
           <ModeSwitch className="needs-js label cursor-pointer whitespace-nowrap text-muted-foreground transition-colors hover:text-brand-accent max-[22.5rem]:hidden">
             {dict.mode.getFancy}
@@ -68,7 +67,7 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
 
         {/* Mobile nav — plain <a> links so navigation is a document load and
             the menu closes on selection. */}
-        <MobileMenu label="menu ▾">
+        <MobileMenu label="menu ▾" navLabel={dict.nav.pages}>
           {pathLinks.map((l) => (
             <a key={l.href} href={l.href} className="transition-colors hover:text-brand-accent">
               {l.label}

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { DEMOS, DEMO_SLUGS, type DemoSlug } from '@/lib/demos';
-import { DICTS, prefix, type Lang } from '@/lib/i18n';
+import { DICTS, type Lang } from '@/lib/i18n';
+import { demoHref, pageHref } from '@/lib/pages';
 import { EmbedMarker } from '../EmbedMarker';
 import { PageLayout } from './PageLayout';
 
@@ -17,13 +18,12 @@ import { PageLayout } from './PageLayout';
  */
 export function DemoLayout({ lang, slug, children }: { lang: Lang; slug: DemoSlug; children: ReactNode }) {
   const dict = DICTS[lang];
-  const p = prefix(lang);
   const { title, caption } = dict.playground.items[slug];
   const { tech, source } = DEMOS[slug];
 
   const hero = (
     <div data-part="hero" className="only-fancy">
-      <a href={`${p}/playground/#${slug}`} className="fc-mono fc-back">
+      <a href={`${pageHref(lang, 'playground')}#${slug}`} className="fc-mono fc-back">
         ← {dict.nav.playground}
       </a>
       <h1 className="page-title">{title}</h1>
@@ -43,11 +43,13 @@ export function DemoLayout({ lang, slug, children }: { lang: Lang; slug: DemoSlu
       hero={hero}
       index={{
         label: dict.nav.demos,
-        items: DEMO_SLUGS.map((s) => ({ href: `${p}/demos/${s}/`, title: dict.playground.items[s].title })),
+        items: DEMO_SLUGS.map((s) => ({ href: demoHref(lang, s), title: dict.playground.items[s].title })),
         current: DEMO_SLUGS.indexOf(slug),
       }}
     >
       <EmbedMarker />
+      {/* Plain shows no column, so the page's heading is for screen readers. */}
+      <h1 className="only-plain sr-only">{title}</h1>
       <div data-frame data-reveal="frame" data-part="demo">
         <div data-frame-view>{children}</div>
       </div>
