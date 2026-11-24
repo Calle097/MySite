@@ -28,6 +28,10 @@
      narrow      one column on narrow screens, the phone bar
      phone-menu  the phone menu
      motion      entrances, reveals, the menu's and header's choreography
+
+   Narrow screens start below 900px (narrow.css and the short-screen
+   queries); components/fancy/PhoneMenu.tsx closes the menu at the same
+   width (WIDE), so change them together.
    ========================================================================== */
 
 @import './fancy/base.css';

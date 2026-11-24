@@ -193,10 +193,18 @@
       }
 
       [data-reveal='rise'] {
+        --rise-delay: calc(var(--i, 0) * 90ms + 150ms);
         transition:
-          opacity 0.9s ease,
-          transform 1.1s var(--fc-ease);
-        transition-delay: calc(var(--i, 0) * 90ms + 150ms);
+          opacity 0.9s ease var(--rise-delay),
+          transform 1.1s var(--fc-ease) var(--rise-delay);
+
+        /* An entry also steps back on hover (content.css): keep that. */
+        &[data-entry] {
+          transition:
+            opacity 0.9s ease var(--rise-delay),
+            transform 1.1s var(--fc-ease) var(--rise-delay),
+            filter 0.5s ease;
+        }
       }
 
       [data-reveal='rule'] {

@@ -52,6 +52,9 @@
        ~6.7:1, in the menu's glow ~5:1. */
     --fc-surface: color-mix(in oklab, var(--fc-bg) 55%, #343a38);
     --fc-glow: color-mix(in oklab, var(--fc-light) 50%, #404543);
+    /* The bars (the unfolded header, the phone bar): the surface, see-
+       through over a 14px blur. */
+    --fc-bar: color-mix(in srgb, var(--fc-surface) 70%, transparent);
 
     --fc-font: var(--font-fancy), system-ui, sans-serif;
     --fc-mono: var(--font-plex-mono), ui-monospace, monospace;

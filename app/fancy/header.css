@@ -14,7 +14,9 @@
       grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
       gap: 0.75rem 1.5rem;
-      padding-bottom: 1.1rem;
+      /* The room above the line; the unfolded pages stop there too. */
+      --below: 1.1rem;
+      padding-bottom: var(--below);
       border-bottom: 1px solid var(--fc-line);
     }
 
@@ -30,7 +32,10 @@
       gap: 1.25rem;
       font-size: 0.92rem;
       color: var(--fc-muted);
+    }
 
+    /* The pages, in the column or unfolded across the window. */
+    :is(.fc-header-nav, .fc-header-more) {
       a {
         transition: color 0.3s ease;
       }
@@ -79,7 +84,7 @@
       left: calc(-1 * var(--pad-x));
       width: var(--full, 100vw);
       border-bottom: 1px solid var(--fc-line);
-      background: color-mix(in srgb, var(--fc-surface) 70%, transparent);
+      background: var(--fc-bar);
       backdrop-filter: blur(14px);
       pointer-events: none;
       visibility: hidden;
@@ -107,7 +112,7 @@
     .fc-header-more {
       position: absolute;
       top: 0;
-      bottom: 1.1rem;
+      bottom: var(--below);
       left: calc(var(--full, 100vw) / 2 - var(--pad-x));
       translate: -50% 0;
       align-items: center;
@@ -116,15 +121,6 @@
       color: var(--fc-muted);
       white-space: nowrap;
       visibility: hidden;
-
-      a {
-        transition: color 0.3s ease;
-      }
-
-      a:hover,
-      a[aria-current='page'] {
-        color: var(--fc-fg);
-      }
     }
 
     .fc-header.is-extended .fc-header-more {

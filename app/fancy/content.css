@@ -42,7 +42,10 @@
       padding: 1.5rem 0 1.6rem;
       border: 0;
       background: none;
-      transition: opacity 0.5s ease;
+      /* Neighbours step back with filter, not opacity: opacity belongs to
+         the scroll reveal (motion.css), whose slower, staggered transition
+         would otherwise replace this one on entries that also rise. */
+      transition: filter 0.5s ease;
 
       &::before,
       &::after {
@@ -111,9 +114,8 @@
       }
 
       section:has([data-entry]:hover) [data-entry]:not(:hover) {
-        opacity: 0.42;
+        filter: opacity(0.42);
       }
     }
-
   }
 }

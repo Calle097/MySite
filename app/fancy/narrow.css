@@ -61,7 +61,7 @@
         align-items: baseline;
         padding: 1rem 1.25rem;
         border-bottom: 1px solid var(--fc-line);
-        background: color-mix(in srgb, var(--fc-surface) 70%, transparent);
+        background: var(--fc-bar);
         backdrop-filter: blur(14px);
       }
     }
