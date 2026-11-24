@@ -200,9 +200,9 @@ export const it: Dict = {
           'Niente analytics, cookie o script di tracciamento da parte mia. Il traffico passa da Cloudflare, che tiene i suoi log di base',
           {
             plain:
-              'Questa versione funziona anche senza JavaScript, playground escluso. Quella più elaborata no: luce, menu e animazioni ne hanno bisogno.',
+              'Questa versione funziona anche senza JavaScript, playground escluso. Quella animata no: luce, menu e movimento ne hanno bisogno.',
             fancier:
-              'La versione semplice funziona anche senza JavaScript, playground escluso. Questa no: luce, menu e animazioni ne hanno bisogno.',
+              'La versione semplice funziona anche senza JavaScript, playground escluso. Questa no: luce, menu e movimento ne hanno bisogno.',
           },
         ],
       },
@@ -239,11 +239,11 @@ export const it: Dict = {
   },
   mode: {
     plainNote: 'Questa è la versione semplice.',
-    showFancier: 'Prova quella più elaborata →',
-    getFancy: 'elaborata',
+    showFancier: 'Prova quella animata →',
+    getFancy: 'animata',
     version: 'Versione',
     plain: 'Semplice',
-    fancier: 'Elaborata',
+    fancier: 'Animata',
   },
   footer: { location: 'Mattia Callegher — Italia', email: 'Email', github: 'GitHub', source: 'Codice', elsewhere: 'Altrove' },
   skipToContent: 'Vai al contenuto',
