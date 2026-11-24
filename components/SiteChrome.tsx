@@ -5,6 +5,7 @@ import { LangSwitcher } from './LangSwitcher';
 import { MobileMenu } from './MobileMenu';
 import { ModeSwitch } from './ModeSwitch';
 import { RevealObserver } from './RevealObserver';
+import { LiquidBackground } from './lively/LiquidBackground';
 
 /**
  * The site's frame around every page: the skip link, and plain mode's
@@ -27,6 +28,7 @@ export function SiteChrome({ lang, children }: { lang: Lang; children: React.Rea
 
   return (
     <div className="flex min-h-dvh flex-col">
+      <LiquidBackground />
       <a
         href="#main"
         className="site-chrome sr-only font-mono text-sm focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:px-4 focus:py-2 bg-brand-accent text-background"

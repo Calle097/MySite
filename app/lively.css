@@ -81,11 +81,14 @@
   }
 
   /* --- 3. Page ------------------------------------------------------------- */
+  /* The page's colour is on <html>; <body> stays clear, so the light
+     (components/lively/LiquidBackground.tsx), fixed behind everything,
+     shows through. */
   [data-mode='lively'] {
     background: var(--lv-bg);
 
     body {
-      background: var(--lv-bg);
+      background: none;
       color: var(--lv-fg);
       font-family: var(--lv-font);
       font-size: 16px;
@@ -95,6 +98,15 @@
 
     ::selection {
       background: color-mix(in srgb, var(--lv-accent) 30%, transparent);
+    }
+
+    .lv-light {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      display: block;
+      width: 100%;
+      height: 100%;
     }
 
     /* The small uppercase label of the design. */
